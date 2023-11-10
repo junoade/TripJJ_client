@@ -12,9 +12,9 @@ const router = useRouter();
 
 const selectOption = ref([
   { text: "검색조건", value: "" },
-  { text: "글번호", value: "article_no" },
-  { text: "제목", value: "subject" },
-  { text: "작성자아이디", value: "user_id" },
+  { text: "글번호", value: "articleNo" },
+  { text: "제목", value: "title" },
+  { text: "작성자아이디", value: "userId" },
 ]);
 
 const articles = ref([]);
@@ -25,6 +25,7 @@ const param = ref({
   // pgno: currentPage.value,
   // spp: VITE_ARTICLE_LIST_SIZE,
   key: "",
+  // word: Object,
   word: "",
 });
 
