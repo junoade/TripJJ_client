@@ -11,7 +11,7 @@ defineProps({ article: Object });
         :to="{ name: 'article-view', params: { articleno: article.articleNo } }"
         class="article-title link-dark"
       >
-        {{ article.subject }}
+        {{ article.title }}
       </router-link>
     </td>
     <td>{{ article.userName }}</td>

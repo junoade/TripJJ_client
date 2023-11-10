@@ -15,10 +15,10 @@ const article = ref({
   // articleNo: 0,
   title: "",
   content: "",
-  userId: ""
+  userId: "",
   // userName: "",
-  // hit: 0,
-  // registerTime: "",
+  hit: 0,
+  registerTime: "",
 });
 
 if (props.type === "modify") {
@@ -70,7 +70,7 @@ function writeArticle() {
   registQna(article.value, () => {
     console.log("게시글 등록 성공");
     alert("게시글 등록 완료!");
-    router.push({ name: "article-list" });
+    moveList(); // redirect 용
   }, (error) => {
     console.log("게시글 등록 실패", error);
     alert("게시글 등록 실패 ! 다시 확인해주세요.");
