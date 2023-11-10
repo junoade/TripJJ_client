@@ -32,7 +32,7 @@ import NavbarMyPage from "./NavbarMypage.vue"
           </li>
           <navbar-my-page/>
         </ul>
-        <form class="d-flex" role="search">
+        <!-- <form class="d-flex" role="search">
           <input
             class="form-control me-2"
             type="search"
@@ -40,7 +40,7 @@ import NavbarMyPage from "./NavbarMypage.vue"
             aria-label="Search"
           />
           <button class="btn btn-outline-success" type="button">search</button>
-        </form>
+        </form> -->
       </div>
     </div>
   </nav>
