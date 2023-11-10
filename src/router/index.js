@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TheMainView from "../views/TheMainView.vue";
 // import TheBoardView from "../views/TheBoardView.vue";
-import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
+// import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
 
 
 const router = createRouter({
@@ -11,11 +11,6 @@ const router = createRouter({
       path: "/",
       name: "main",
       component: TheMainView,
-    },
-    {
-      path: "/estations",
-      name: "estations",
-      component: TheElectricChargingStationView,
     },
     {
       path: "/board",
