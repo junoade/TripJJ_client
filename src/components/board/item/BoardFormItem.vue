@@ -12,13 +12,13 @@ const props = defineProps({ type: String });
 const isUseId = ref(false);
 
 const article = ref({
-  articleNo: 0,
-  subject: "",
+  // articleNo: 0,
+  title: "",
   content: "",
-  userId: "",
-  userName: "",
-  hit: 0,
-  registerTime: "",
+  userId: ""
+  // userName: "",
+  // hit: 0,
+  // registerTime: "",
 });
 
 if (props.type === "modify") {
@@ -28,15 +28,15 @@ if (props.type === "modify") {
   isUseId.value = true;
 }
 
-const subjectErrMsg = ref("");
+const titleErrMsg = ref("");
 const contentErrMsg = ref("");
 watch(
-  () => article.value.subject,
+  () => article.value.title,
   (value) => {
     let len = value.length;
     if (len == 0 || len > 30) {
-      subjectErrMsg.value = "제목을 확인해 주세요!!!";
-    } else subjectErrMsg.value = "";
+      titleErrMsg.value = "제목을 확인해 주세요!!!";
+    } else titleErrMsg.value = "";
   },
   { immediate: true } // 유효성 검사
 );
@@ -54,8 +54,8 @@ watch(
 function onSubmit() {
   // event.preventDefault();
 
-  if (subjectErrMsg.value) {
-    alert(subjectErrMsg.value);
+  if (titleErrMsg.value) {
+    alert(titleErrMsg.value);
   } else if (contentErrMsg.value) {
     alert(contentErrMsg.value);
   } else {
@@ -67,7 +67,7 @@ function writeArticle() {
   console.log("글등록하자!!", article.value);
   // API 호출
 
-  registQna(article);
+  registQna(article.value);
 }
 
 function updateArticle() {
@@ -93,8 +93,8 @@ function moveList() {
       />
     </div>
     <div class="mb-3">
-      <label for="subject" class="form-label">제목 : </label>
-      <input type="text" class="form-control" v-model="article.subject" placeholder="제목..." />
+      <label for="title" class="form-label">제목 : </label>
+      <input type="text" class="form-control" v-model="article.title" placeholder="제목..." />
     </div>
     <div class="mb-3">
       <label for="content" class="form-label">내용 : </label>

@@ -14,7 +14,7 @@ function detailQna(articleno, success, fail) {
 
 function registQna(article, success, fail) {
   console.log("boardjs article", article);
-  local.post(api_name, JSON.stringify(article)).then(success).catch(fail);
+  local.post(`${api_name}/write`, JSON.stringify(article)).then(success).catch(fail);
 }
 
 function getModifyQna(articleno, success, fail) {
