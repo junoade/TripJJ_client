@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { detailQna } from '@/api/qna'
+import { deleteQna, detailQna } from '@/api/qna'
 
 const route = useRoute();
 const router = useRouter();
@@ -42,6 +42,13 @@ function onDeleteArticle() {
   // const { articleno } = route.params;
   console.log(articleno + "번글 삭제하러 가자!!!");
    // API 호출
+  deleteQna(articleno, () => {
+    alert("게시글이 삭제되었습니다.");
+    moveList();
+  }, (error) => {
+    console.log(error);
+    alert("서버 오류로 인해 삭제되지 않았습니다.");
+  });
 }
 </script>
 
