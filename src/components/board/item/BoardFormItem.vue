@@ -2,7 +2,7 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { registQna } from "@/api/qna";
+import { registQna, modifyQna, getModifyQna } from "@/api/qna";
 
 const router = useRouter();
 const route = useRoute();
@@ -12,7 +12,7 @@ const props = defineProps({ type: String });
 const isUseId = ref(false);
 
 const article = ref({
-  // articleNo: 0,
+  articleNo: 0,
   title: "",
   content: "",
   userId: "",
@@ -25,6 +25,14 @@ if (props.type === "modify") {
   let { articleno } = route.params;
   console.log(articleno + "번글 얻어와서 수정할거야");
   // API 호출
+  getModifyQna(articleno, ({data}) => {
+    console.log(data);
+    article.value = data;
+  }, (error) => {
+    alert("조회 실패");
+  });
+
+
   isUseId.value = true;
 }
 
@@ -73,17 +81,27 @@ function writeArticle() {
     moveList(); // redirect 용
   }, (error) => {
     console.log("게시글 등록 실패", error);
-    alert("게시글 등록 실패 ! 다시 확인해주세요.");
+    alert("게시글 등록 실패! 다시 확인해주세요.");
   });
 }
 
 function updateArticle() {
   console.log(article.value.articleNo + "번글 수정하자!!", article.value);
    // API 호출
+   modifyQna(article.value, ()=> {
+    alert("게시글 수정 완료!");
+    moveDetail(article.value.articleNo);
+   }, (error) => {
+    alert("게시글 수정 실패! 다시 확인해주세요.");
+   });
 }
 
 function moveList() {
   router.push({ name: "article-list" });
+}
+
+function moveDetail(articleno) {
+  router.push({name: "article-view", params: { articleno } })
 }
 </script>
 
