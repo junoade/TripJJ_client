@@ -14,9 +14,9 @@ defineProps({ article: Object });
         {{ article.title }}
       </router-link>
     </td>
-    <td>{{ article.userName }}</td>
+    <td>{{ article.userId }}</td>
     <td>{{ article.hit }}</td>
-    <td>{{ article.registerTime }}</td>
+    <td>{{ article.publishedDate }}</td>
   </tr>
 </template>
 
