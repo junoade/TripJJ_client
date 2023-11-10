@@ -25,8 +25,8 @@ if (props.type === "modify") {
   let { articleno } = route.params;
   console.log(articleno + "번글 얻어와서 수정할거야");
   // API 호출
-  getModifyQna(articleno, ({data}) => {
-    console.log(data);
+  getModifyQna(articleno, ({data}) =>{
+    console.log(data); 
     article.value = data;
   }, (error) => {
     alert("조회 실패");

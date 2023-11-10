@@ -42,6 +42,21 @@ const router = createRouter({
           name: "article-modify",
           component: () => import("@/components/board/BoardModify.vue"),
         },
+        {
+          path: "reply/:articleno",
+          name: "article-reply",
+          component: () => import("@/components/board/BoardReplyWrite.vue"),
+        },
+        {
+          path: "reply/modify/:articleno/:replyno",
+          name: "article-reply-modify",
+          component: () => import("@/components/board/BoardReplyModify.vue"),
+        },
+        {
+          path: "reply/delete/:replyno",
+          name: "article-reply-delete",
+          component: () => import("@/components/board/ReplyDelete.vue"),
+        },
       ],
     },
   ],
