@@ -2,6 +2,8 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
+import { registQna } from "@/api/qna";
+
 const router = useRouter();
 const route = useRoute();
 
@@ -36,7 +38,7 @@ watch(
       subjectErrMsg.value = "제목을 확인해 주세요!!!";
     } else subjectErrMsg.value = "";
   },
-  { immediate: true }
+  { immediate: true } // 유효성 검사
 );
 watch(
   () => article.value.content,
@@ -46,7 +48,7 @@ watch(
       contentErrMsg.value = "내용을 확인해 주세요!!!";
     } else contentErrMsg.value = "";
   },
-  { immediate: true }
+  { immediate: true } // 감시 즉시 !
 );
 
 function onSubmit() {
@@ -63,7 +65,9 @@ function onSubmit() {
 
 function writeArticle() {
   console.log("글등록하자!!", article.value);
-   // API 호출
+  // API 호출
+
+  registQna(article);
 }
 
 function updateArticle() {

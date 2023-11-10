@@ -6,6 +6,8 @@ import VSelect from "@/components/common/VSelect.vue";
 import BoardListItem from "@/components/board/item/BoardListItem.vue";
 import PageNavigation from "@/components/common/PageNavigation.vue";
 
+import { getQnaList } from "@/api/qna";
+
 const router = useRouter();
 
 const selectOption = ref([
@@ -20,8 +22,8 @@ const currentPage = ref(1);
 const totalPage = ref(0);
 const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 const param = ref({
-  pgno: currentPage.value,
-  spp: VITE_ARTICLE_LIST_SIZE,
+  // pgno: currentPage.value,
+  // spp: VITE_ARTICLE_LIST_SIZE,
   key: "",
   word: "",
 });
@@ -37,7 +39,15 @@ const changeKey = (val) => {
 
 const getArticleList = () => {
   console.log("서버에서 글목록 얻어오자!!!", param.value);
-   // API 호출
+  // API 호출
+  getQnaList(param.value, ({ data }) => {
+    console.log(data);
+    articles.value = data.articles;
+    currentPage.value = data.currentPage;
+    totalPage.value = data.totalPageCount;
+  }, (error) => {
+    console.log("에러 발생");
+  })
 };
 
 const onPageChange = (val) => {
