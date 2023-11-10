@@ -2,6 +2,8 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
+import { detailQna } from '@/api/qna'
+
 const route = useRoute();
 const router = useRouter();
 
@@ -9,6 +11,7 @@ const router = useRouter();
 const { articleno } = route.params;
 
 const article = ref({});
+const replies = ref([]);
 
 onMounted(() => {
   getArticle();
@@ -18,6 +21,13 @@ const getArticle = () => {
   // const { articleno } = route.params;
   console.log(articleno + "번글 얻으러 가자!!!");
    // API 호출
+  detailQna(articleno, ({data})=> {
+    article.value = data.article;
+    replies.value = data.replies;
+  }, (error) => {
+    console.log(error);
+  })
+   
 };
 
 function moveList() {
@@ -45,7 +55,7 @@ function onDeleteArticle() {
       </div>
       <div class="col-lg-10 text-start">
         <div class="row my-2">
-          <h2 class="text-secondary px-5">{{ article.articleNo }}. {{ article.subject }}</h2>
+          <h2 class="text-secondary px-5">{{ article.articleNo }}. {{ article.title }}</h2>
         </div>
         <div class="row">
           <div class="col-md-8">
@@ -55,14 +65,12 @@ function onDeleteArticle() {
                 src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
               />
               <p>
-                <span class="fw-bold">안효인</span> <br />
-                <span class="text-secondary fw-light">
-                  {{ article.registerTime }}1 조회 : {{ article.hit }}
-                </span>
+                <span class="fw-bold">{{ article.userId}}</span> <br />
+                <span class="text-secondary fw-light">조회수 : {{ article.hit }}</span>
               </p>
             </div>
           </div>
-          <div class="col-md-4 align-self-center text-end">댓글 : 17</div>
+          <div class="col-md-4 align-self-center text-end">댓글수 : len(replies)</div>
           <div class="divider mb-3"></div>
           <div class="text-secondary">
             {{ article.content }}
