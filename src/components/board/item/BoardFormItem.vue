@@ -67,7 +67,14 @@ function writeArticle() {
   console.log("글등록하자!!", article.value);
   // API 호출
 
-  registQna(article.value);
+  registQna(article.value, () => {
+    console.log("게시글 등록 성공");
+    alert("게시글 등록 완료!");
+    router.push({ name: "article-list" });
+  }, (error) => {
+    console.log("게시글 등록 실패", error);
+    alert("게시글 등록 실패 ! 다시 확인해주세요.");
+  });
 }
 
 function updateArticle() {
