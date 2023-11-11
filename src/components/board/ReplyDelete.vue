@@ -7,16 +7,16 @@ import { deleteReply } from "@/api/qna";
 const route = useRoute();
 const router = useRouter();
 
-const { replayno } = route.params;
-console.log(replayno);
+const { replyno } = route.params;
+console.log(replyno);
 
 onMounted(() => {
     removeReply();
 })
 
 const removeReply = () => {
-    console.log(replayno + "번 댓글 삭제하자");
-    deleteReply(replayno, () =>{
+    console.log(replyno + "번 댓글 삭제하자");
+    deleteReply(replyno, () =>{
         alert("삭제 성공");
         router.go(-1); // 이전 페이지로 돌아감
     }, (error) => {
