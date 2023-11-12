@@ -1,5 +1,29 @@
 <script setup>
-    // 유효성 검증 관련
+import { ref } from "vue";
+
+
+import {doLogin} from "@/api/auth.js";
+
+const userInfo = ref({
+    id: "",
+    password: ""
+})
+
+// 유효성 검증 관련
+
+// 회원 로그인과 관련된 API 호출
+function onSubmit() {
+    // event.preventDefault();
+    console.log("로그인 폼 전송");
+    console.log("id", userInfo.value.id);
+    console.log("password", userInfo.value.password);
+
+    doLogin(userInfo.value, () => {
+        alert("로그인 성공");
+    }, (error) => {
+        alert("로그인 실패");
+    })
+}
 </script>
 
 <template>
@@ -13,10 +37,10 @@
                     <div class="card shadow-lg">
                         <div class="card-body p-5">
                             <h1 class="fs-4 card-title fw-bold mb-4">로그인</h1>
-                            <form method="POST" class="needs-validation" novalidate="" autocomplete="off">
+                            <form class="needs-validation" @submit.prevent="onSubmit" novalidate="" autocomplete="off">
                                 <div class="mb-3">
                                     <label class="mb-2 text-muted" for="id">아이디</label>
-                                    <input id="id" type="text" class="form-control" name="id" value="" required
+                                    <input id="id" type="text" class="form-control" v-model="userInfo.id" required
                                         autofocus>
                                     <div class="invalid-feedback">
                                         Email is invalid
@@ -30,7 +54,8 @@
                                             비밀번호 찾기
                                         </a>
                                     </div>
-                                    <input id="password" type="password" class="form-control" name="password" required>
+                                    <input id="password" type="password" class="form-control" v-model="userInfo.password" name="password"
+                                        required>
                                     <div class="invalid-feedback">
                                         Password is required
                                     </div>
