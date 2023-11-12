@@ -33,7 +33,7 @@ import NavbarMyPage from "./NavbarMypage.vue"
           <navbar-my-page/>
 
           <li class="nav-item">
-            <a href="#" class="nav-link">로그인</a>
+            <router-link :to="{name: 'login'}" class="nav-link">로그인</router-link>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">회원가입</a>
