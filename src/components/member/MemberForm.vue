@@ -19,6 +19,7 @@ function onSubmit() {
 
     doLogin(userInfo.value, () => {
         alert("로그인 성공");
+        // 
     }, (error) => {
         alert("로그인 실패");
     })
