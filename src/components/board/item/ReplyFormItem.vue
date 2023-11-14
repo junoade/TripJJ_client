@@ -11,21 +11,21 @@ const props = defineProps({ type: String });
 
 const isUseId = ref(false);
 
-const { articleno, replyno } = route.params;
+const { articleNo, replyNo } = route.params;
 console.log(route.params);
 
 const reply = ref({
   replyNo: 0,
-  articleNo: parseInt(articleno),
+  articleNo: parseInt(articleNo),
   comment: "",
   userId: "",
   publishedDate: "",
 });
 
 if (props.type === "modify") {
-  console.log(replyno + "번 댓글 얻어와서 수정할거야");
+  console.log(replyNo + "번 댓글 얻어와서 수정할거야");
   // API 호출
-  getModifyReply(replyno, ({data}) => {
+  getModifyReply(replyNo, ({data}) => {
     console.log(data);
     reply.value = data;
   }, (error) => {
@@ -92,7 +92,7 @@ function moveDetail(articleno) {
     <div class="mb-3">
       <label for="userid" class="form-label">작성자 ID : </label>
       <input
-        type="text"
+        type="text" id="userid"
         class="form-control"
         v-model="reply.userId"
         :disabled="isUseId"
@@ -102,7 +102,7 @@ function moveDetail(articleno) {
     
     <div class="mb-3">
       <label for="comment" class="form-label">내용 : </label>
-      <textarea class="form-control" v-model="reply.comment" rows="10"></textarea>
+      <textarea id="comment" class="form-control" v-model="reply.comment" rows="10"></textarea>
     </div>
     <div class="col-auto text-center">
       <button type="submit" class="btn btn-outline-primary mb-3" v-if="type === 'regist'">

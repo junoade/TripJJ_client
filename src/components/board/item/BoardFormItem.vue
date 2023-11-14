@@ -1,14 +1,11 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-
 import { registQna, modifyQna, getModifyQna } from "@/api/qna";
 
 const router = useRouter();
 const route = useRoute();
-
 const props = defineProps({ type: String });
-
 const isUseId = ref(false);
 
 const article = ref({
@@ -22,16 +19,15 @@ const article = ref({
 });
 
 if (props.type === "modify") {
-  let { articleno } = route.params;
-  console.log(articleno + "번글 얻어와서 수정할거야");
+  let { articleNo } = route.params;
+  console.log(articleNo + "번글 얻어와서 수정할거야");
   // API 호출
-  getModifyQna(articleno, ({data}) =>{
+  getModifyQna(articleNo, ({data}) =>{
     console.log(data); 
     article.value = data;
   }, (error) => {
     alert("조회 실패");
   });
-
 
   isUseId.value = true;
 }
@@ -75,14 +71,15 @@ function writeArticle() {
   console.log("글등록하자!!", article.value);
   // API 호출
 
-  registQna(article.value, () => {
-    console.log("게시글 등록 성공");
+  registQna(article.value, (data) => {
+    console.log(data.data);
     alert("게시글 등록 완료!");
-    moveList(); // redirect 용
+    moveDetail(data.data); // redirect
   }, (error) => {
     console.log("게시글 등록 실패", error);
     alert("게시글 등록 실패! 다시 확인해주세요.");
   });
+
 }
 
 function updateArticle() {
@@ -100,8 +97,8 @@ function moveList() {
   router.push({ name: "article-list" });
 }
 
-function moveDetail(articleno) {
-  router.push({name: "article-view", params: { articleno } })
+function moveDetail(articleNo) {
+  router.push({name: "article-view", params: { articleNo } })
 }
 </script>
 
@@ -110,8 +107,7 @@ function moveDetail(articleno) {
     <div class="mb-3">
       <label for="userid" class="form-label">작성자 ID : </label>
       <input
-        type="text"
-        class="form-control"
+        type="text" id="userid" class="form-control"
         v-model="article.userId"
         :disabled="isUseId"
         placeholder="작성자ID..."
@@ -119,11 +115,11 @@ function moveDetail(articleno) {
     </div>
     <div class="mb-3">
       <label for="title" class="form-label">제목 : </label>
-      <input type="text" class="form-control" v-model="article.title" placeholder="제목..." />
+      <input type="text" id="title" class="form-control" v-model="article.title" placeholder="제목..." />
     </div>
     <div class="mb-3">
       <label for="content" class="form-label">내용 : </label>
-      <textarea class="form-control" v-model="article.content" rows="10"></textarea>
+      <textarea id="content" class="form-control" v-model="article.content" rows="10"></textarea>
     </div>
     <div class="col-auto text-center">
       <button type="submit" class="btn btn-outline-primary mb-3" v-if="type === 'regist'">

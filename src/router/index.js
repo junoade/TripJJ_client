@@ -34,7 +34,7 @@ const router = createRouter({
           component: () => import("@/components/board/BoardList.vue"),
         },
         {
-          path: "view/:articleno",
+          path: "view/:articleNo",
           name: "article-view",
           component: () => import("@/components/board/BoardDetail.vue"),
         },
@@ -44,22 +44,22 @@ const router = createRouter({
           component: () => import("@/components/board/BoardWrite.vue"),
         },
         {
-          path: "modify/:articleno",
+          path: "modify/:articleNo",
           name: "article-modify",
           component: () => import("@/components/board/BoardModify.vue"),
         },
         {
-          path: "reply/:articleno",
+          path: "reply/:articleNo",
           name: "article-reply",
           component: () => import("@/components/board/BoardReplyWrite.vue"),
         },
         {
-          path: "reply/modify/:articleno/:replyno",
+          path: "reply/modify/:articleNo/:replyNo",
           name: "article-reply-modify",
           component: () => import("@/components/board/BoardReplyModify.vue"),
         },
         {
-          path: "reply/delete/:replyno",
+          path: "reply/delete/:replyNo",
           name: "article-reply-delete",
           component: () => import("@/components/board/ReplyDelete.vue"),
         },

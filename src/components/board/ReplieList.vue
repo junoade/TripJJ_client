@@ -12,7 +12,6 @@ defineProps({ replies: Array });
                 <div class="card-body p-4">
                     <h4 class="mb-0">답글 목록</h4>
                     <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
-                    
                     <ReplyListItem
                         v-for="reply in replies"
                         :key="reply.replyNo"
