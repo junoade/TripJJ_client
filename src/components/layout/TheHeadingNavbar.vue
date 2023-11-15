@@ -30,6 +30,10 @@ import NavbarMyPage from "./NavbarMypage.vue"
           <li class="nav-item">
             <router-link :to="{ name: 'board' }" class="nav-link">Q&A 게시판</router-link>
           </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'attraction' }" class="nav-link">관광지 검색</router-link>
+          </li>
+
           <navbar-my-page/>
 
           <li class="nav-item">
