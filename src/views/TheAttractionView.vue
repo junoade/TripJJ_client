@@ -84,8 +84,9 @@ const onChangeContentType = (val) => {
 }
 
 const getAttractionList = () => {
-
   console.log("검색 개시", conditions.value)
+
+  // API 호출
   listAttractions(conditions.value, ({ data }) => {
       console.log(data)
       attractions.value = data;
