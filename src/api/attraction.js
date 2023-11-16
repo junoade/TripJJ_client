@@ -2,8 +2,8 @@ import { localAxios } from "@/util/http-commons";
 
 const local = localAxios();
 
-function listAttractions(conditions, success, fail) {
-  local.get(`/attraction/search`, { param: conditions }).then(success).catch(fail);
+function listAttractions(param, success, fail) {
+  local.get(`/attraction/search`, { params: param }).then(success).catch(fail);
 }
 
 function listSido(success, fail) {
