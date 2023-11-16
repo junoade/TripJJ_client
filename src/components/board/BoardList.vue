@@ -6,11 +6,12 @@ import BoardListItem from "@/components/board/item/BoardListItem.vue";
 import PageNavigation from "@/components/common/PageNavigation.vue";
 import { getQnaList } from "@/api/qna";
 
-// store
+// 페이징
 import { usePageInfo } from "@/stores/pageInfo";
 import { storeToRefs } from "pinia";
 const pageInfo = usePageInfo()
 const { currentPage, totalPage } = storeToRefs(pageInfo);
+const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 
 const router = useRouter();
 
@@ -22,7 +23,6 @@ const selectOption = ref([
 ]);
 
 const articles = ref([]);
-const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 const param = ref({
   pgno: currentPage.value,
   spp: VITE_ARTICLE_LIST_SIZE,
@@ -31,6 +31,9 @@ const param = ref({
 });
 
 onMounted(() => {
+  // 현재 페이지 번호 초기화
+  currentPage.value = 1;
+  param.value.pgno = 1;
   getArticleList();
 });
 

@@ -32,7 +32,6 @@ const getArticle = () => {
 };
 
 function moveList() {
-  console.log()
   router.push({ name: "article-list" });
 }
 

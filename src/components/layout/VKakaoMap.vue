@@ -4,10 +4,9 @@ import { ref, watch, onMounted } from "vue";
 var map;      // 반응형으로 만들면 에러 발생!!!!!!!
 const positions = ref([]);
 const markers = ref([]);
-
 const props = defineProps({
-  stations: Array,
-  selectStation: Object
+  attractions: Array,
+  selectedAttraction: Object
 });
 
 onMounted(() => {
@@ -18,6 +17,7 @@ onMounted(() => {
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
       import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
     }&libraries=services,clusterer`;
+    
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
@@ -25,10 +25,11 @@ onMounted(() => {
 });
 
 watch(
-  () => props.selectStation.value,
+  () => props.selectedAttraction.value,
   () => {
+    console.log("이동: ", props.selectedAttraction)
     // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = new kakao.maps.LatLng(props.selectStation.lat, props.selectStation.lng);
+    var moveLatLon = new kakao.maps.LatLng(props.selectedAttraction.latitude, props.selectedAttraction.longitude);
 
     // 지도 중심을 부드럽게 이동시킵니다
     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
@@ -38,22 +39,24 @@ watch(
 );
 
 watch(
-  () => props.stations.value,
+  () => props.attractions.value,
   () => {
+    console.log("초기 마커 생성: ", props.attractions)
     positions.value = [];
-    props.stations.forEach((station) => {
+    props.attractions.forEach((attraction) => {
+      // console.log("마커 : ", attraction);
       let obj = {};
-      obj.latlng = new kakao.maps.LatLng(station.lat, station.lng);
-      obj.title = station.statNm;
-
+      obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
+      obj.title = attraction.title;
       positions.value.push(obj);
     });
-    loadMarkers();
+    loadMarkers(); 
   },
   { deep: true }  // 배열 내 내용이 바뀌면 깊은 감시 필요
 );
 
 const initMap = () => {
+  // console.log(props.attractions, props.selectedAttraction);
   const container = document.getElementById("map");
   const options = {
     center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -86,42 +89,42 @@ const loadMarkers = () => {
     });
     markers.value.push(marker);
 
-    // 추가
-    kakao.maps.event.addListener(marker, 'click', function() {
-      // 마커 위에 인포윈도우를 표시합니다
-      console.log("마커 클릭!")
+    // // 추가
+    // kakao.maps.event.addListener(marker, 'click', function() {
+    //   // 마커 위에 인포윈도우를 표시합니다
+    //   console.log("마커 클릭!")
 
-      // 커스텀 오버레이에 표시할 컨텐츠 입니다
-      // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-      // 별도의 이벤트 메소드를 제공하지 않습니다 
-      var content =
-        '<div class="wrap">' + 
-        '    <div class="info">' + 
-        '        <div class="title">' + 
-        '            카카오 스페이스닷원' + 
-        '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
-        '        </div>' + 
-        '        <div class="body">' + 
-        '            <div class="img">' +
-        '                <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png" width="73" height="70">' +
-        '           </div>' + 
-        '            <div class="desc">' + 
-        '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' + 
-        '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
-        '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
-        '            </div>' + 
-        '        </div>' + 
-        '    </div>' +    
-        '</div>';
+    //   // 커스텀 오버레이에 표시할 컨텐츠 입니다
+    //   // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+    //   // 별도의 이벤트 메소드를 제공하지 않습니다 
+    //   var content =
+    //     '<div class="wrap">' + 
+    //     '    <div class="info">' + 
+    //     '        <div class="title">' + 
+    //     '            카카오 스페이스닷원' + 
+    //     '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+    //     '        </div>' + 
+    //     '        <div class="body">' + 
+    //     '            <div class="img">' +
+    //     '                <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png" width="73" height="70">' +
+    //     '           </div>' + 
+    //     '            <div class="desc">' + 
+    //     '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' + 
+    //     '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
+    //     '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+    //     '            </div>' + 
+    //     '        </div>' + 
+    //     '    </div>' +    
+    //     '</div>';
 
-      // 마커 위에 커스텀오버레이를 표시합니다
-      // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-      var overlay = new kakao.maps.CustomOverlay({
-        content: content,
-        map: map,
-        position: marker.getPosition()       
-      });
-    });
+    //   // 마커 위에 커스텀오버레이를 표시합니다
+    //   // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+    //   var overlay = new kakao.maps.CustomOverlay({
+    //     content: content,
+    //     map: map,
+    //     position: marker.getPosition()       
+    //   });
+    // });
   });
 
   // 4. 지도를 이동시켜주기
@@ -139,6 +142,7 @@ const deleteMarkers = () => {
     markers.value.forEach((marker) => marker.setMap(null));
   }
 };
+
 </script>
 
 <template>
