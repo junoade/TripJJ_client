@@ -1,5 +1,7 @@
 <script setup>
-defineProps({ article: Object });
+defineProps({
+  article: Object
+});
 </script>
 
 <template>
@@ -8,7 +10,7 @@ defineProps({ article: Object });
     <th scope="row">{{ article.articleNo }}</th>
     <td class="text-start">
       <router-link
-        :to="{ name: 'article-view', params: { articleno: article.articleNo } }"
+        :to="{ name: 'article-view', params: { articleNo: article.articleNo } }"
         class="article-title link-dark"
       >
         {{ article.title }}

@@ -1,12 +1,17 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-
 import VSelect from "@/components/common/VSelect.vue";
 import BoardListItem from "@/components/board/item/BoardListItem.vue";
 import PageNavigation from "@/components/common/PageNavigation.vue";
-
 import { getQnaList } from "@/api/qna";
+
+// 페이징
+import { usePageInfo } from "@/stores/pageInfo";
+import { storeToRefs } from "pinia";
+const pageInfo = usePageInfo()
+const { currentPage, totalPage } = storeToRefs(pageInfo);
+const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 
 const router = useRouter();
 
@@ -18,9 +23,6 @@ const selectOption = ref([
 ]);
 
 const articles = ref([]);
-const currentPage = ref(1);
-const totalPage = ref(0);
-const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 const param = ref({
   pgno: currentPage.value,
   spp: VITE_ARTICLE_LIST_SIZE,
@@ -29,6 +31,9 @@ const param = ref({
 });
 
 onMounted(() => {
+  // 현재 페이지 번호 초기화
+  currentPage.value = 1;
+  param.value.pgno = 1;
   getArticleList();
 });
 
@@ -49,6 +54,13 @@ const getArticleList = () => {
     console.log("에러 발생");
   })
 };
+
+const onSearch = () => {
+  console.log("검색을 하자", param.value);
+  currentPage.value = 1;
+  param.value.pgno = 1;
+  getArticleList();
+}
 
 const onPageChange = (val) => {
   console.log(val + "번 페이지로 이동 준비 끝!!!");
@@ -87,7 +99,7 @@ const moveWrite = () => {
                   v-model="param.word"
                   placeholder="검색어..."
                 />
-                <button class="btn btn-dark" type="button" @click="getArticleList">검색</button>
+                <button class="btn btn-dark" type="button" @click="onSearch">검색</button>
               </div>
             </form>
           </div>

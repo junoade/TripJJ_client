@@ -8,7 +8,7 @@ const route = useRoute();
 const router = useRouter();
 
 // const articleno = ref(route.params.articleno);
-const { articleno } = route.params;
+const { articleNo } = route.params;
 
 const article = ref({});
 const replies = ref([]);
@@ -19,11 +19,11 @@ onMounted(() => {
 
 const getArticle = () => {
   // const { articleno } = route.params;
-  console.log(articleno + "번글 얻으러 가자!!!");
+  console.log(articleNo + "번글 얻으러 가자!!!");
   // API 호출
-  detailQna(articleno, ({ data }) => {
+  detailQna(articleNo, ({ data }) => {
     article.value = data.article;
-    replies.value = data.replies;
+    replies.value = data.article.replies;
     console.log(data);
   }, (error) => {
     console.log(error);
@@ -36,18 +36,18 @@ function moveList() {
 }
 
 function moveModify() {
-  router.push({ name: "article-modify", params: { articleno } });
+  router.push({ name: "article-modify", params: { articleNo } });
 }
 
 function moveReply() {
-  router.push({ name: "article-reply", params: { articleno } });
+  router.push({ name: "article-reply", params: { articleNo } });
 }
 
 function onDeleteArticle() {
   // const { articleno } = route.params;
-  console.log(articleno + "번글 삭제하러 가자!!!");
+  console.log(articleNo + "번글 삭제하러 가자!!!");
   // API 호출
-  deleteQna(articleno, () => {
+  deleteQna(articleNo, () => {
     alert("게시글이 삭제되었습니다.");
     moveList();
   }, (error) => {
@@ -58,6 +58,7 @@ function onDeleteArticle() {
 
 const getRepliesLength = computed(() => {
   return replies.value.length;
+  // return article.replies.length;
 })
 </script>
 
@@ -104,9 +105,7 @@ const getRepliesLength = computed(() => {
           </div>
 
           <!-- 답글 -->
-          <TheRepliesView
-            :replies="replies"
-          />
+          <TheRepliesView :replies="replies"/>
         </div>
       </div>
     </div>
