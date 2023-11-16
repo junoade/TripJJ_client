@@ -88,8 +88,8 @@ const getAttractionList = () => {
 
   // API 호출
   listAttractions(conditions.value, ({ data }) => {
-      console.log(data.attraction)
-      attractions.value = data.attraction;
+      console.log(data.attractions)
+      attractions.value = data.attractions;
     }, (error) => {
       console.log(error);
     }
