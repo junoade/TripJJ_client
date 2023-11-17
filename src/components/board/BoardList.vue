@@ -42,10 +42,10 @@ const changeKey = (val) => {
   param.value.key = val;
 };
 
-const getArticleList = () => {
+const getArticleList = async () => {
   console.log("서버에서 글목록 얻어오자!!!", param.value);
   // API 호출
-  getQnaList(param.value, ({ data }) => {
+  await getQnaList(param.value, ({ data }) => {
     console.log(data);
     articles.value = data.articles;
     currentPage.value = data.currentPage;

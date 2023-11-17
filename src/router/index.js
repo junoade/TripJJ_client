@@ -7,41 +7,22 @@ import TheAttractionView from "@/views/TheAttractionView.vue";
 // import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: "/",
-      name: "main",
-      component: TheMainView,
-    },{
-      path: "/login",
-      name: "login",
-      component: TheLoginView,
-    },
-    {
-      path: "/attraction",
-      name: "attraction",
-      component: TheAttractionView
-    },
-    {
-      path: "/board",
-      name: "board",
-      // component: TheBoardView,
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/TheBoardView.vue"),
-      redirect: { name: "article-list" },
-      children: [
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
         {
             path: "/",
             name: "main",
             component: TheMainView,
         },
         {
-          path: "view/:articleNo",
-          name: "article-view",
-          component: () => import("@/components/board/BoardDetail.vue"),
+            path: "/login",
+            name: "login",
+            component: TheLoginView,
+        },
+        {
+            path: "/attraction",
+            name: "attraction",
+            component: TheAttractionView,
         },
         {
             path: "/board",
@@ -59,7 +40,7 @@ const router = createRouter({
                     component: () => import("@/components/board/BoardList.vue"),
                 },
                 {
-                    path: "view/:articleno",
+                    path: "view/:articleNo",
                     name: "article-view",
                     component: () => import("@/components/board/BoardDetail.vue"),
                 },
@@ -69,50 +50,28 @@ const router = createRouter({
                     component: () => import("@/components/board/BoardWrite.vue"),
                 },
                 {
-                    path: "modify/:articleno",
+                    path: "modify/:articleNo",
                     name: "article-modify",
                     component: () => import("@/components/board/BoardModify.vue"),
                 },
                 {
-                    path: "reply/:articleno",
+                    path: "reply/:articleNo",
                     name: "article-reply",
                     component: () => import("@/components/board/BoardReplyWrite.vue"),
                 },
                 {
-                    path: "reply/modify/:articleno/:replyno",
+                    path: "reply/modify/:articleNo/:replyNo",
                     name: "article-reply-modify",
                     component: () => import("@/components/board/BoardReplyModify.vue"),
                 },
                 {
-                    path: "reply/delete/:replyno",
+                    path: "reply/delete/:replyNo",
                     name: "article-reply-delete",
                     component: () => import("@/components/board/ReplyDelete.vue"),
                 },
             ],
         },
-        {
-          path: "modify/:articleNo",
-          name: "article-modify",
-          component: () => import("@/components/board/BoardModify.vue"),
-        },
-        {
-          path: "reply/:articleNo",
-          name: "article-reply",
-          component: () => import("@/components/board/BoardReplyWrite.vue"),
-        },
-        {
-          path: "reply/modify/:articleNo/:replyNo",
-          name: "article-reply-modify",
-          component: () => import("@/components/board/BoardReplyModify.vue"),
-        },
-        {
-          path: "reply/delete/:replyNo",
-          name: "article-reply-delete",
-          component: () => import("@/components/board/ReplyDelete.vue"),
-        },
-      ],
-    },
-  ],
+    ],
 });
 
 router.beforeEach((to, from) => {

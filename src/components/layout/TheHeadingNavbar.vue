@@ -10,16 +10,15 @@ const { currentPage, totalPage } = storeToRefs(pageInfo);
 const router = useRouter();
 
 // 페이지 이동 함수
-const moveQnA = () => {
-  // currentPage.value = 1;
-  router.push({name: "board"})
-}
-
-const moveAttraction = () => {
-  // console.log(router)
-  // currentPage.value = 1;
-  router.push({name: "attraction"})
-} 
+// function moveQnA(event) {
+//   event.preventDefault();
+//   router.push({name: "board"})
+// }
+// function moveAttraction = () => {
+//   // console.log(router)
+//   // currentPage.value = 1;
+//   router.push({name: "attraction"})
+// } 
 
 </script>
 
@@ -49,10 +48,12 @@ const moveAttraction = () => {
             <a href="#" class="nav-link">커뮤니티</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" @click="moveQnA">Q&A 게시판</a>
+            <!-- <a href="#" class="nav-link" @click="moveQnA($event)">Q&A 게시판</a> -->
+            <router-link :to="{ name: 'board' }" class="nav-link">Q&A 게시판</router-link>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" @click="moveAttraction">관광지 검색</a>
+            <!-- <a href="#" class="nav-link" @click="moveAttraction">관광지 검색</a> -->
+            <router-link :to="{ name: 'attraction' }" class="nav-link">Q&A 게시판</router-link>
           </li>
 
           <navbar-my-page/>
