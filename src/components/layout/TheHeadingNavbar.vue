@@ -2,10 +2,6 @@
 // 헤더 네비게이션 이동 시 페이징 정보 초기화하도록 수정
 import NavbarMyPage from "./NavbarMypage.vue"
 import { useRouter } from "vue-router";
-import { usePageInfo } from "@/stores/pageInfo";
-import { storeToRefs } from "pinia";
-const pageInfo = usePageInfo();
-const { currentPage, totalPage } = storeToRefs(pageInfo);
 
 const router = useRouter();
 
@@ -15,8 +11,6 @@ const router = useRouter();
 //   router.push({name: "board"})
 // }
 // function moveAttraction = () => {
-//   // console.log(router)
-//   // currentPage.value = 1;
 //   router.push({name: "attraction"})
 // } 
 
@@ -53,7 +47,7 @@ const router = useRouter();
           </li>
           <li class="nav-item">
             <!-- <a href="#" class="nav-link" @click="moveAttraction">관광지 검색</a> -->
-            <router-link :to="{ name: 'attraction' }" class="nav-link">Q&A 게시판</router-link>
+            <router-link :to="{ name: 'attraction' }" class="nav-link">관광지 검색</router-link>
           </li>
 
           <navbar-my-page/>

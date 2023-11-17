@@ -6,10 +6,8 @@ import VSelect from "@/components/common/VSelect.vue";
 
 // 페이징 정보
 import PageNavigation from "@/components/common/PageNavigation.vue";
-import { usePageInfo } from "@/stores/pageInfo";
-import { storeToRefs } from "pinia";
-const pageInfo = usePageInfo();
-const { currentPage, totalPage } = storeToRefs(pageInfo);
+const currentPage = ref(1);
+const totalPage = ref(0);
 const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 
 // 검색 조건 및 결과 리스트
