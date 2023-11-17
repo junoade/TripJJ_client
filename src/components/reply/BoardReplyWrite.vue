@@ -1,5 +1,5 @@
 <script setup>
-import ReplyFormItem from '@/components/reply/item/ReplyFormItem';
+import ReplyFormItem from '@/components/reply/item/ReplyFormItem.vue';
 </script>
 
 <template>
