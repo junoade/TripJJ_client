@@ -4,8 +4,10 @@ import NavbarMyPage from "./NavbarMypage.vue"
 import { useRouter } from "vue-router";
 import { usePageInfo } from "@/stores/pageInfo";
 import { storeToRefs } from "pinia";
-const pageInfo = usePageInfo();
+import { useNavbarInfoStore } from "@/stores/navbarInfo";
+
 const { currentPage, totalPage } = storeToRefs(pageInfo);
+const { navbarList } = storeToRefs(navbarInfoStore);
 
 const router = useRouter();
 
@@ -53,7 +55,7 @@ const router = useRouter();
           </li>
           <li class="nav-item">
             <!-- <a href="#" class="nav-link" @click="moveAttraction">관광지 검색</a> -->
-            <router-link :to="{ name: 'attraction' }" class="nav-link">Q&A 게시판</router-link>
+            <router-link :to="{ name: 'attraction' }" class="nav-link">관광지 검색</router-link>
           </li>
 
           <navbar-my-page/>
