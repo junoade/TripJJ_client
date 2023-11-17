@@ -7,10 +7,8 @@ import PageNavigation from "@/components/common/PageNavigation.vue";
 import { getQnaList } from "@/api/qna";
 
 // 페이징
-import { usePageInfo } from "@/stores/pageInfo";
-import { storeToRefs } from "pinia";
-const pageInfo = usePageInfo()
-const { currentPage, totalPage } = storeToRefs(pageInfo);
+const currentPage = ref(1);
+const totalPage = ref(0);
 const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 
 const router = useRouter();
@@ -79,7 +77,7 @@ const moveWrite = () => {
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">글목록</mark>
+          <mark class="sky">Q&A</mark>
         </h2>
       </div>
       <div class="col-lg-10">

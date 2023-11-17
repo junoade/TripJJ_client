@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { deleteQna, detailQna } from '@/api/qna'
-import TheRepliesView from '@/components/board/ReplieList.vue';
+import { deleteQna, detailQna } from '@/api/qna';
+import TheRepliesView from "@/components/reply/ReplieList.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -63,50 +63,56 @@ const getRepliesLength = computed(() => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="d-flex">
+    <button type="button" class="btn mb-3 me-auto" @click="moveList" style="background-color: rgb(230, 230, 230);">
+      글목록
+    </button>
+    <button class="btn mb-3 ms-1" @click="moveReply" style="background-color: rgb(230, 230, 230);">
+      댓글등록
+    </button>
+    <button class="btn mb-3 ms-1" @click="moveModify" style="background-color: rgb(230, 230, 230);">
+      글수정
+    </button>
+    <button class="btn mb-3 ms-1" @click="onDeleteArticle" style="background-color: rgb(230, 230, 230);">
+      글삭제
+    </button>
+  </div>
+
+  <div class="card container-fluid">
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">글보기</mark>
+          <!-- <mark class="sky">글보기</mark> -->
+          {{ article.title }}
         </h2>
       </div>
       <div class="col-lg-10 text-start">
-        <div class="row my-2">
+        <!-- <div class="row my-2">
           <h2 class="text-secondary px-5">{{ article.articleNo }}. {{ article.title }}</h2>
-        </div>
+        </div> -->
         <div class="row">
           <div class="col-md-8">
             <div class="clearfix align-content-center">
               <img class="avatar me-2 float-md-start bg-light p-2"
                 src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
               <p>
-                <span class="fw-bold">{{ article.userId }}</span> <br />
-                <span class="text-secondary fw-light">조회수 : {{ article.hit }}</span>
+                <span class="fw-bold">{{ article.userId }}</span> <br/>
+                <span class="text-secondary fw-light">{{ article.publishedDate }} | 조회 {{ article.hit }}</span>
               </p>
             </div>
           </div>
-          <div class="col-md-4 align-self-center text-end">댓글수 : {{ getRepliesLength }}</div>
-          <div class="divider mb-3"></div>
-          <div class="text-secondary">
-            {{ article.content }}
-          </div>
-          <div class="divider mt-3 mb-3"></div>
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-outline-primary mb-3" @click="moveReply">댓글 작성</button>
-            <button type="button" class="btn btn-outline-primary mb-3" @click="moveList">
-              글목록
-            </button>
-            <button type="button" class="btn btn-outline-success mb-3 ms-1" @click="moveModify">
-              글수정
-            </button>
-            <button type="button" class="btn btn-outline-danger mb-3 ms-1" @click="onDeleteArticle">
-              글삭제
-            </button>
-          </div>
-
-          <!-- 답글 -->
-          <TheRepliesView :replies="replies"/>
+          <div class="col-md-4 align-self-center text-end"><i class="bi bi-chat-dots"></i> {{ getRepliesLength }}</div>
         </div>
+        <hr>
+        
+        <!-- 내용 -->
+        <div>
+            {{ article.content }}
+        </div>
+        <hr>
+
+        <!-- 답글 -->
+        <TheRepliesView :replies="replies"/>
       </div>
     </div>
   </div>

@@ -3,14 +3,12 @@ import { ref, onMounted } from "vue";
 import { listAttractions, listSido, listGugun } from "@/api/attraction"
 import VKakaoMap  from "@/components/layout/VKakaoMap.vue";
 import VSelect from "@/components/common/VSelect.vue";
+import AttractionListItem from "@/components/Attraction/item/AttractionListItem.vue";
 
 // 페이징 정보
 import PageNavigation from "@/components/common/PageNavigation.vue";
-import { usePageInfo } from "@/stores/pageInfo";
-import { storeToRefs } from "pinia";
-const pageInfo = usePageInfo();
-const { currentPage, totalPage } = storeToRefs(pageInfo);
-const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
+const currentPage = ref(1);
+const totalPage = ref(0);
 
 // 검색 조건 및 결과 리스트
 const sidoList = ref([{ text: "시/도", value: "" }]);
@@ -34,7 +32,8 @@ const conditions = ref({
   contentTypeId: "",
   title: "",
   pgno: currentPage.value,
-  spp: VITE_ARTICLE_LIST_SIZE
+  // spp: VITE_ARTICLE_LIST_SIZE
+  spp: 9
 });
 
 const getSidoList = () => {
@@ -130,47 +129,49 @@ onMounted(() => {
 
 <template>
   <div class="container text-center mt-3">
-    <!-- <div class="alert alert-success" role="alert">관광지 검색</div> -->
-    <form class="d-flex my-3" onsubmit="return false;" role="search">
-      <VSelect :selectOption="sidoList" @onKeySelect="onChangeSido" />
-      <VSelect :selectOption="gugunList" @onKeySelect="onChangeGugun" />
-      <VSelect :selectOption="contentTypeList" @onKeySelect="onChangeContentType" />
-      <input id="search-keyword" class="form-control me-2" type="search"
-              placeholder="검색어" aria-label="검색어" v-model="conditions.title" />
-      <button id="btn-search" class="btn btn-outline-success" type="button" @click="onSearch">검색</button>
-    </form>
+    <div class="table equal"></div>
+    <div class="row">
+      <!-- 중앙 left -->
+      <div class="col-md-6">
+        <!-- <div class="alert alert-success" role="alert">관광지 검색</div> -->
+        <!-- 검색 바 -->
+        <form class="d-flex my-3" onsubmit="return false;" role="search">
+          <VSelect :selectOption="sidoList" @onKeySelect="onChangeSido" />
+          <VSelect :selectOption="gugunList" @onKeySelect="onChangeGugun" />
+          <VSelect :selectOption="contentTypeList" @onKeySelect="onChangeContentType" />
+          <input id="search-keyword" class="form-control me-2" type="search"
+                  placeholder="검색어" aria-label="검색어" v-model="conditions.title" />
+          <button id="btn-search" class="btn btn-outline-success" type="button" @click="onSearch">검색</button>
+        </form>
 
-    <VKakaoMap 
-      :attractions="attractions" 
-      :selectedAttraction="selectedAttraction">
-    </VKakaoMap>
-    <table class="table table-hover">
-      <thead>
-        <tr class="text-center">
-          <th scope="col">대표이미지</th>
-          <th scope="col">관광지명</th>
-          <th scope="col">주소</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          class="text-center"
-          v-for="attraction in attractions"
-          :key="attraction.firstimage"
-          @click="viewAttraction(attraction)"
-        >
-          <th><img :src="attraction.firstImage" onerror="this.src='src/assets/not_found.png'" style="width: auto; height:100px"></th>
-          <td>{{ attraction.title }}</td>
-          <td>{{ attraction.addr1 }} {{ attraction.addr2 }}</td>
-        </tr>
-      </tbody>
-    </table>
+        <!-- 지도 -->
+        <VKakaoMap 
+          :attractions="attractions" 
+          :selectedAttraction="selectedAttraction">
+        </VKakaoMap>
+      </div>
+
+      <!-- 중앙 right -->
+      <div class="col-md-6">
+        <!-- 관광지 검색 결과 아이템 => 가로에 3개-4개씩 뿌리면 될 듯...? -->
+        <div class="row overflow-auto" style="max-width: 100%; max-height: 750px ">
+          <AttractionListItem
+            v-for="attraction in attractions"
+            :key="attraction.title"
+            :attraction="attraction"
+            @click="viewAttraction(attraction)">
+          </AttractionListItem>
+        </div>
+
+        <!-- 페이징 -->
+        <PageNavigation 
+          :current-page="currentPage"
+          :total-page="totalPage"
+          @pageChange="onPageChange">
+        </PageNavigation>
+      </div>
+    </div>
   </div>
-  <PageNavigation 
-    :current-page="currentPage"
-    :total-page="totalPage"
-    @pageChange="onPageChange">
-  </PageNavigation>
 </template>
 
 <style scoped>
