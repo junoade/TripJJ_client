@@ -9,7 +9,6 @@ import AttractionListItem from "@/components/Attraction/item/AttractionListItem.
 import PageNavigation from "@/components/common/PageNavigation.vue";
 const currentPage = ref(1);
 const totalPage = ref(0);
-const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 
 // 검색 조건 및 결과 리스트
 const sidoList = ref([{ text: "시/도", value: "" }]);
