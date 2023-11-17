@@ -21,8 +21,8 @@ const router = createRouter({
             component: TheLoginView,
         },
         {
-            path:"/registration",
-            name: "registration",
+            path:"/joinUs",
+            name: "joinUs",
             component: TheRegistrationView,
         },
         {
