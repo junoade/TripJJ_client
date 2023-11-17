@@ -37,15 +37,17 @@ import { doRegistration } from "@/api/member.js";
             </div>
             
 
-            <div class="form-check d-flex justify-content-center mb-5">
+            <div class="form-check d-flex justify-content-center mb-4">
                 <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
                 <label class="form-check-label" for="form2Example3">
                     <a href="#!">개인 정보 활용 방침</a>에 동의합니다.
                 </label>
             </div>
 
-            <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                <button type="button" class="btn btn-primary btn-lg">Register</button>
+            <div class="d-grid gap-2 col-6 mx-auto w-100">
+                <button type="submit" class="btn btn-primary p-2">
+                    회원가입
+                </button>
             </div>
 
         </form>
