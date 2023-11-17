@@ -29,28 +29,26 @@ function onSubmit() {
 </script>
 
 <template>
-    <div class="card-body p-5">
-        <h1 class="fs-4 card-title fw-bold mb-4">로그인</h1>
-        <form class="needs-validation" @submit.prevent="onSubmit" novalidate="" autocomplete="off">
-            <div class="mb-3">
-                <label class="mb-2 text-muted" for="id">아이디</label>
-                <input id="id" type="text" class="form-control" v-model="userInfo.id" required autofocus>
+    <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">로그인</p>
+
+        <form class="mx-1 mx-md-4 needs-validation" @submit.prevent="onSubmit" novalidate="" autocomplete="off">
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" v-model="userInfo.id" required autofocus
+                    placeholder="">
+                <label for="floatingInput">아이디</label>
                 <div class="invalid-feedback">
-                    Email is invalid
+                    아이디를 입력해주세요!
                 </div>
             </div>
 
-            <div class="mb-3">
-                <div class="mb-2 w-100">
-                    <label class="text-muted" for="password">비밀번호</label>
-                    <a href="forgot.html" class="float-end">
-                        비밀번호 찾기
-                    </a>
-                </div>
-                <input id="password" type="password" class="form-control" v-model="userInfo.password" name="password"
-                    required>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" v-model="userInfo.password"
+                    placeholder="Password">
+                <label for="floatingPassword">비밀번호</label>
                 <div class="invalid-feedback">
-                    Password is required
+                    비밀번호를 입력해주세요!
                 </div>
             </div>
 
@@ -59,11 +57,18 @@ function onSubmit() {
                     <input type="checkbox" name="remember" id="remember" class="form-check-input">
                     <label for="remember" class="form-check-label">아이디 저장</label>
                 </div>
-                <button type="submit" class="btn btn-primary ms-auto">
+                <a href="#" class="ms-auto">
+                    비밀번호 찾기
+                </a>
+            </div>
+
+            <div class="d-grid gap-2 col-6 mx-auto w-100 mt-2">
+                <button type="submit" class="btn btn-primary p-2">
                     로그인
                 </button>
             </div>
         </form>
+
     </div>
 </template>
 
