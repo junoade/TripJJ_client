@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { deleteQna, detailQna } from '@/api/qna'
-import TheRepliesView from '@/components/board/ReplieList.vue';
+import { deleteQna, detailQna } from '@/api/qna';
+import TheRepliesView from "@/components/reply/ReplieList.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -66,6 +66,9 @@ const getRepliesLength = computed(() => {
   <div class="d-flex">
     <button type="button" class="btn mb-3 me-auto" @click="moveList" style="background-color: rgb(230, 230, 230);">
       글목록
+    </button>
+    <button class="btn mb-3 ms-1" @click="moveReply" style="background-color: rgb(230, 230, 230);">
+      댓글등록
     </button>
     <button class="btn mb-3 ms-1" @click="moveModify" style="background-color: rgb(230, 230, 230);">
       글수정

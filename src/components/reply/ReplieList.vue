@@ -1,5 +1,5 @@
 <script setup>
-import ReplyListItem from './item/ReplyListItem.vue';
+import ReplyListItem from '@/components/reply/item/ReplyListItem.vue';
 
 defineProps({ replies: Array });
 

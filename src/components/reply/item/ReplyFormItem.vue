@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-
 import { registReply, getModifyReply, modifyReply } from "@/api/qna";
 
 const router = useRouter();
