@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import TheMainView from "../views/TheMainView.vue";
 import TheLoginView from "@/views/TheLoginView.vue";
 import TheAttractionView from "@/views/TheAttractionView.vue";
+import TheRegistrationView from "@/views/TheRegistrationView.vue";
 
 // import TheBoardView from "../views/TheBoardView.vue";
 // import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
@@ -18,6 +19,11 @@ const router = createRouter({
             path: "/login",
             name: "login",
             component: TheLoginView,
+        },
+        {
+            path:"/registration",
+            name: "registration",
+            component: TheRegistrationView,
         },
         {
             path: "/attraction",

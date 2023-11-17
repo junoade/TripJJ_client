@@ -17,7 +17,8 @@ function onSubmit() {
     console.log("id", userInfo.value.id);
     console.log("password", userInfo.value.password);
 
-    doLogin(userInfo.value, () => {
+    doLogin(userInfo.value, (data) => {
+        console.log(data);
         alert("로그인 성공");
         // 
     }, (error) => {

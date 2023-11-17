@@ -169,7 +169,7 @@ watch(
             <router-link :to="{name: 'login'}" class="nav-link">로그인</router-link>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">회원가입</a>
+            <router-link :to="{name: 'registration'}" class="nav-link">회원가입</router-link>
           </li>
         </ul>
         <ul class="navbar-nav d-lg-block d-none">
