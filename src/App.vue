@@ -1,7 +1,7 @@
 <script setup>
 import { RouterView } from "vue-router";
-// import TheHeadingNavbar from "@/components/layout/TheHeadingNavbar.vue";
-import NavbarDefault from "@/components/layout/NavbarDefault.vue";
+import TheHeadingNavbar from "@/components/layout/TheHeadingNavbar.vue";
+// import NavbarDefault from "@/components/layout/NavbarDefault.vue";
 
 </script>
 
@@ -10,7 +10,7 @@ import NavbarDefault from "@/components/layout/NavbarDefault.vue";
   <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
       <div class="col-12">
-        <NavbarDefault/>
+        <TheHeadingNavbar/>
       </div>
     </div>
   </div>
