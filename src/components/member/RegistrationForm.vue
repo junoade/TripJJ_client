@@ -11,7 +11,7 @@ import { doRegistration } from "@/api/member.js";
 
         <form class="mx-1 mx-md-4">
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="">
+                <input type="text" class="form-control" id="floatingInput" placeholder="">
                 <label for="floatingInput">아이디</label>
             </div>
 
@@ -21,7 +21,7 @@ import { doRegistration } from "@/api/member.js";
             </div>
 
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="">
+                <input type="text" class="form-control" id="floatingInput" placeholder="">
                 <label for="floatingInput">이름</label>
             </div>
 

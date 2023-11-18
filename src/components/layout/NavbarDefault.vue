@@ -1,14 +1,28 @@
 <script setup>
 import { RouterLink } from "vue-router";
 import { ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+
 import { useMemberStore } from "@/stores/member";
+import { usePageInfo } from "@/stores/pageInfo.js";
 
 // dropdown
 import NavbarMyPage from "./NavbarMypage.vue"
-import { storeToRefs } from "pinia";
 
 const memberStore = useMemberStore();
 const { memberMenu } = storeToRefs(memberStore);
+
+// 페이지 이동 함수
+// function moveQnA(event) {
+//   event.preventDefault();
+//   router.push({name: "board"})
+// }
+// function moveAttraction = () => {
+//   // console.log(router)
+//   // currentPage.value = 1;
+//   router.push({name: "attraction"})
+// } 
+
 
 </script>
 <template>

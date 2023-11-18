@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TheMainView from "../views/TheMainView.vue";
-// import TheMainView from "../views/TheNewMainView.vue";
 import TheLoginView from "@/views/TheLoginView.vue";
 import TheAttractionView from "@/views/TheAttractionView.vue";
 import TheRegistrationView from "@/views/TheRegistrationView.vue";
+import TheLogout from "@/components/member/Logout.vue";
+import ModifyForm from "@/components/member/ModifyForm.vue";
+
 
 // import TheBoardView from "../views/TheBoardView.vue";
 // import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
@@ -26,16 +28,16 @@ const router = createRouter({
             name: "joinUs",
             component: TheRegistrationView,
         },
-        // {
-        //     path:"/logout",
-        //     name: "logout",
-        //     component: TheLogout,
-        // },
-        // {
-        //     path:"/mypage",
-        //     name: "mypage",
-        //     component:"TheMyPageView",
-        // },
+        {
+            path:"/logout",
+            name: "logout",
+            component: TheLogout,
+        },
+        {
+            path:"/member-modify",
+            name: "member-modify",
+            component: ModifyForm,
+        },
         {
             path: "/attraction",
             name: "attraction",
