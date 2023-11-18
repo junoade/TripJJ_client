@@ -1,29 +1,46 @@
 <script setup>
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
+import { useMemberStore } from "@/stores/member";
 
-import { doLogin } from "@/api/auth.js";
+const router = useRouter();
+const memberStore = useMemberStore();
 
-const userInfo = ref({
-    id: "",
-    password: ""
+const { isLogin } = storeToRefs(memberStore);
+const { userLogin, getUserInfo } = memberStore;
+
+const loginUser = ref({
+    userId: "",
+    userPass: ""
 })
 
 // 유효성 검증 관련
 
 // 회원 로그인과 관련된 API 호출
-function onSubmit() {
+async function onSubmit() {
+
+    // if(isLogin) {
+    //     // 토큰에 body에 있는 사용자 정보 관련
+    //     // await getUserInfo(token);
+    //     alert("이미 로그인된 사용자입니다.")
+    //     return;
+    // }
+
     // event.preventDefault();
     console.log("로그인 폼 전송");
-    console.log("id", userInfo.value.id);
-    console.log("password", userInfo.value.password);
+    console.log("id", loginUser.value.userId);
+    console.log("password", loginUser.value.userPass);
+    
+    await userLogin(loginUser.value);
 
-    doLogin(userInfo.value, (data) => {
-        console.log(data);
-        alert("로그인 성공");
-        // 
-    }, (error) => {
-        alert("로그인 실패");
-    })
+    // 동기 - 토큰 받아올 때까지 기다려
+    let token = sessionStorage.getItem("accessToken");
+    console.log("current Access toekn : ", token);
+    
+    alert("로그인 성공");
+
+    router.push("/");
 }
 
 </script>
@@ -35,7 +52,7 @@ function onSubmit() {
 
         <form class="mx-1 mx-md-4 needs-validation" @submit.prevent="onSubmit" novalidate="" autocomplete="off">
         <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" v-model="userInfo.id" required autofocus
+            <input type="email" class="form-control" id="floatingInput" v-model="loginUser.userId" required autofocus
                     placeholder="">
                 <label for="floatingInput">아이디</label>
                 <div class="invalid-feedback">
@@ -44,7 +61,7 @@ function onSubmit() {
             </div>
 
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="floatingPassword" v-model="userInfo.password"
+                <input type="password" class="form-control" id="floatingPassword" v-model="loginUser.userPass"
                     placeholder="Password">
                 <label for="floatingPassword">비밀번호</label>
                 <div class="invalid-feedback">

@@ -1,14 +1,16 @@
 <script setup>
 // 헤더 네비게이션 이동 시 페이징 정보 초기화하도록 수정
-import NavbarMyPage from "./NavbarMypage.vue"
 import { useRouter } from "vue-router";
-import { usePageInfo } from "@/stores/pageInfo";
+import { usePageInfo } from "@/stores/pageInfo.js";
 import { storeToRefs } from "pinia";
-import { useNavbarInfoStore } from "@/stores/navbarInfo";
+import { useMemberStore } from "@/stores/member";
 
-const { currentPage, totalPage } = storeToRefs(pageInfo);
-const { navbarList } = storeToRefs(navbarInfoStore);
+import NavbarMyPage from "./NavbarMypage.vue"
 
+const { currentPage, totalPage } = storeToRefs(usePageInfo);
+
+const memberStore = useMemberStore();
+const { memberMenu } = storeToRefs(memberStore);
 const router = useRouter();
 
 // 페이지 이동 함수
@@ -25,60 +27,57 @@ const router = useRouter();
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
-    <div class="container-fluid">
-      <router-link :to="{ name: 'main' }" class="navbar-brand">
-        <img src="@/assets/trip.png" class="rounded mx-auto d-block" alt="..." width="60"/>
-      </router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarScroll"
-        aria-controls="navbarScroll"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse d-fex justify-content-center" id="navbarScroll">
-        <ul
-          class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll ml-auto"
-          style="--bs-scroll-height: 100px"
-        >
-          <li class="nav-item">
-            <a href="#" class="nav-link">커뮤니티</a>
-          </li>
-          <li class="nav-item">
-            <!-- <a href="#" class="nav-link" @click="moveQnA($event)">Q&A 게시판</a> -->
-            <router-link :to="{ name: 'board' }" class="nav-link">Q&A 게시판</router-link>
-          </li>
-          <li class="nav-item">
-            <!-- <a href="#" class="nav-link" @click="moveAttraction">관광지 검색</a> -->
-            <router-link :to="{ name: 'attraction' }" class="nav-link">관광지 검색</router-link>
-          </li>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+        <div class="container-fluid">
+            <router-link :to="{ name: 'main' }" class="navbar-brand">
+                <img src="@/assets/trip.png" class="rounded mx-auto d-block" alt="..." width="60" />
+            </router-link>
 
-          <navbar-my-page/>
+            <!-- 반응형 웹 UI / 토글 햄버거 버튼 -->
+            <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon mt-2">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                </span>
+            </button>
 
-          <li class="nav-item">
-            <router-link :to="{name: 'login'}" class="nav-link">로그인</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{name: 'registration'}" class="nav-link">회원가입</router-link>
-          </li>
-        </ul>
-        <!-- <form class="d-flex" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="검색..."
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-success" type="button">search</button>
-        </form> -->
-      </div>
-    </div>
-  </nav>
+            <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+                <ul class="navbar-nav navbar-nav-hover ms-auto">
+
+                    <!-- 커뮤니티 탭 -->
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">커뮤니티</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <router-link :to="{ name: 'board' }" class="nav-link">Q&A 게시판</router-link>
+                    </li>
+
+                    <li class="nav-item">
+                        <router-link :to="{ name: 'attraction' }" class="nav-link">관광지 검색</router-link>
+                    </li>
+                    <template v-if="memberMenu['login'].show">
+                        <li class="nav-item" v-if="memberMenu['login'].show">
+                            <!-- <router-link :to="{ name: 'login' }" class="nav-link">로그인</router-link> -->
+                            <router-link :to="memberMenu['login']" class="nav-link">로그인</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="memberMenu['joinUs']" class="nav-link">회원가입</router-link>
+                        </li>
+                    </template>
+                    <template v-else>
+                        <navbar-my-page />
+                        <li class="nav-item">
+                            <router-link to="#" class="nav-link">로그아웃</router-link>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </template>
 
 <style scoped></style>

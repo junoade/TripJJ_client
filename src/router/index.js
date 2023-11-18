@@ -25,6 +25,16 @@ const router = createRouter({
             name: "joinUs",
             component: TheRegistrationView,
         },
+        // {
+        //     path:"/logout",
+        //     name: "logout",
+        //     component: TheLogout,
+        // },
+        // {
+        //     path:"/mypage",
+        //     name: "mypage",
+        //     component:"TheMyPageView",
+        // },
         {
             path: "/attraction",
             name: "attraction",
