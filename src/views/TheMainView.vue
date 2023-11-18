@@ -3,7 +3,6 @@ import { onMounted, onUnmounted } from "vue";
 
 // import NavbarDefault from "@/components/layout/NavbarDefault.vue"
 import Carousel from "@/views/TheCarouselView.vue";
-import DefaultCounterCard from "@/components/layout/cards/DefaultCard.vue";
 import IntroducingAround from "@/components/layout/TheIntroductionView.vue";
 import FilledInfoCard from "@/components/layout/cards/FilledInfoCard.vue";
 import Footer from "@/components/layout/Footer.vue";
@@ -12,23 +11,23 @@ import StatisticsInfo from "@/components/layout/StatisticsInfo.vue";
 import SearchBar from "@/components/layout/SearchBar.vue";
 
 // imgs
-
+import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
 </script>
 
 <template>
     <main>
         <Carousel />
         <!-- 여행-->
-        <AttractionType/>
+        <AttractionType />
 
         <!-- 여행지 통계 정보-->
-       <StatisticsInfo/>
+        <StatisticsInfo />
         <!-- 여행 검색 -->
-        <SearchBar/>
+        <SearchBar />
         <!-- Marketing messaging and featurettes
-              ================================================== -->
+                  ================================================== -->
         <!-- Wrap the rest of the page in another container to center all the content. -->
-        
+
         <div class="container">
             <hr class="featurette-divider">
             <IntroducingAround />
@@ -76,15 +75,15 @@ import SearchBar from "@/components/layout/SearchBar.vue";
                     <div class="col-lg-4">
                         <FilledInfoCard class="px-lg-1 mt-lg-0 mt-4 p-4" height="h-100"
                             :icon="{ component: 'precision_manufacturing', color: 'success' }" title="Plugins" description="Get inspiration and have an overview about the plugins that we
-                            used to create the Material Kit." :action="{
-                                route:
-                                    'https://www.creative-tim.com/learning-lab/vue/input/material-kit/',
-                                label: { text: 'Read more' }
-                            }" />
+                                used to create the Material Kit." :action="{
+                                    route:
+                                        'https://www.creative-tim.com/learning-lab/vue/input/material-kit/',
+                                    label: { text: 'Read more' }
+                                }" />
                     </div>
                     <div class="col-lg-4">
-                        <FilledInfoCard class="px-lg-1 mt-lg-0 mt-4 p-4"
-                            :icon="{ component: 'receipt_long', color: 'success' }" title="Utility Classes" description="Material Kit is giving you a lot of pre-made elements. For those
+                    <FilledInfoCard class="px-lg-1 mt-lg-0 mt-4 p-4"
+                        :icon="{ component: 'receipt_long', color: 'success' }" title="Utility Classes" description="Material Kit is giving you a lot of pre-made elements. For those
                             who want flexibility, we included many utility classes." :action="{
                                 route:
                                     'https://www.creative-tim.com/learning-lab/vue/utilities/material-kit/',
@@ -101,15 +100,31 @@ import SearchBar from "@/components/layout/SearchBar.vue";
 
         <!-- FOOTER -->
         <!-- <footer class="container">
-                        <p class="float-end"><a href="#">Back to top</a></p>
-                        <p>&copy; 2017–2021 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-                    </footer> -->
+                            <p class="float-end"><a href="#">Back to top</a></p>
+                            <p>&copy; 2017–2021 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+                        </footer> -->
 
         <Footer />
     </main>
 </template>
 
 <style scoped>
+.site-header {
+    background-color: rgba(0, 0, 0, .85);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+}
+
+.site-header a {
+    color: #8e8e8e;
+    transition: color .15s ease-in-out;
+}
+
+.site-header a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -129,5 +144,4 @@ body {
     padding-bottom: 3rem;
     color: #5a5a5a;
 }
-
 </style>

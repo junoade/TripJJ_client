@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import TheMainView from "../views/TheMainView.vue";
+// import TheMainView from "../views/TheNewMainView.vue";
 import TheLoginView from "@/views/TheLoginView.vue";
 import TheAttractionView from "@/views/TheAttractionView.vue";
 import TheRegistrationView from "@/views/TheRegistrationView.vue";
