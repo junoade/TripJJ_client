@@ -6,14 +6,12 @@ defineProps({
 
 <template>
   <!-- 관광지 검색 결과 아이템 => 가로에 3개-4개씩 뿌리면 될 듯...? -->
-  <div class="col-lg-4 col-md-6 mt-4 mb-4">
-    <div class="card z-index-2 ">
-      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+  <div class="mb-md-3">
+    <div class="card">
+      <div class="card-header p-0 mx-3 bg-transparent">
         <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-          <div class="chart">
-            <img :src="attraction.firstImage" onerror="this.src='src/assets/not_found.png'" class="chart-canvas" 
-            style="width: 100%;">
-          </div>
+            <img :src="attraction.firstImage" onerror="this.src='src/assets/not_found.png'" 
+                  style="max-width: 80px; max-height:60px">
         </div>
       </div>
       <div class="card-body">
