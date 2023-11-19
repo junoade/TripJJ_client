@@ -1,4 +1,8 @@
 <script setup>
+import { ref } from "vue";
+import { useMemberStore } from "@/stores/member";
+const memberStore = useMemberStore();
+
 
 </script>
 
@@ -17,7 +21,7 @@
             <router-link :to="{name: 'member-modify'}"  class="dropdown-item">회원정보수정</router-link>
             <li><a class="dropdown-item" href="#">나만의 핫플레이스 보기</a></li>
             <li><a class="dropdown-item" href="#">나만의 핫플레이스 추가</a></li>
-            <router-link to="logout" class="dropdown-item">로그아웃</router-link>
+            <router-link :to="{name: 'logout'}" class="dropdown-item">로그아웃</router-link>
         </ul>
     </li>
 </template>

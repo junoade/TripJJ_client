@@ -35,7 +35,7 @@ async function onSubmit() {
     await userLogin(loginUser.value);
 
     // 동기 - 토큰 받아올 때까지 기다려
-    let token = sessionStorage.getItem("accessToken");
+    let token = localStorage.getItem("accessToken");
     console.log("current Access toekn : ", token);
     
     alert("로그인 성공");

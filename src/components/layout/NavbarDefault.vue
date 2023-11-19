@@ -59,13 +59,13 @@ const { memberMenu } = storeToRefs(memberStore);
                     <li class="nav-item">
                         <router-link :to="{ name: 'attraction' }" class="nav-link">관광지 검색</router-link>
                     </li>
-                    <template v-if="memberMenu['login'].show">
-                        <li class="nav-item" v-if="memberMenu['login'].show">
+                    <template v-if="!memberStore.isLogin">
+                        <li class="nav-item">
                             <!-- <router-link :to="{ name: 'login' }" class="nav-link">로그인</router-link> -->
-                            <router-link :to="memberMenu['login']" class="nav-link">로그인</router-link>
+                            <router-link :to="{name: 'login'}" class="nav-link">로그인</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link :to="memberMenu['joinUs']" class="nav-link">회원가입</router-link>
+                            <router-link :to="{name: 'joinUs'}" class="nav-link">회원가입</router-link>
                         </li>
                     </template>
                     <template v-else>

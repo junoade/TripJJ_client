@@ -16,16 +16,17 @@ export const useMemberStore = defineStore('memberStore', () => {
     const isValidToken = ref(false);
 
     // login 상태에 의존
-    const memberMenu = ref({
-        "joinUs" : { name: "joinUs", routeName: "joinUs" },
-        "login" : { name: "login", show: true, routeName: "login" },
-        // "myPage" : { name: "마이페이지", show: false, routeName: "user-mypage" },
-    });
+    // const memberMenu = ref({
+    //     "joinUs" : { name: "joinUs", routeName: "joinUs" },
+    //     "login" : { name: "login", show: isLogin, routeName: "login" },
+    //     // "myPage" : { name: "마이페이지", show: false, routeName: "user-mypage" },
+    // });
 
-    const changeMemberState = () => {
-        memberMenu.value["login"]["show"] = !memberMenu.value["login"]["show"];
-    };
+    // const changeMemberState = () => {
+    //     memberMenu.value["login"]["show"] = !memberMenu.value["login"]["show"];
+    // };
 
+    // 토큰 정보 받아옴
     const userLogin = async (loginUser) => {
         await doLogin(
             loginUser,
@@ -44,14 +45,13 @@ export const useMemberStore = defineStore('memberStore', () => {
                     isLoginError.value = false;
                     isValidToken.value = true;
 
-                    sessionStorage.setItem("accessToken", accessToken);
-                    sessionStorage.setItem("refreshToken", refreshToken);
-
-                    console.log("sessiontStorage에 담았다", isLogin.value);
-
-                    changeMemberState();
+                    // sessionStorage.setItem("accessToken", accessToken);
+                    // sessionStorage.setItem("refreshToken", refreshToken);
+                    // console.log("sessiontStorage에 담았다", isLogin.value);
                     
-                    console.log("뀨");
+                    console.log("localStorage에도 쿠키처럼 토큰 담았다");
+                    localStorage.setItem("accessToken", accessToken);
+                    localStorage.setItem("refreshToken", refreshToken);
 
                 } else {
                     console.log("로그인 실패했다");
@@ -66,9 +66,12 @@ export const useMemberStore = defineStore('memberStore', () => {
         );
     };
 
+    // 사용자가 지속적으로 서비스를 이용할 수 있게
+    // 토큰 -> 서버; 유효한 토큰 검증 후 사용자 정보 get
     const getUserInfo = async (token) => {
         let decodeToken = jwtDecode(token);
         console.log("2. decodeToken", decodeToken);
+        console.log("> userId in token", decodeToken.userId);
 
         await findById(
             decodeToken.userId,
@@ -76,6 +79,12 @@ export const useMemberStore = defineStore('memberStore', () => {
                 if (response.status === httpStatusCode.OK) {
                     userInfo.value = response.data.userInfo;
                     console.log("3. getUserInfo data >> ", response.data);
+
+                    // 새로고침하더라도 유지되도록 
+                    isLogin.value = true;
+                    isLoginError.value = false;
+                    isValidToken.value = true;
+                    
                 } else {
                     console.log("유저 정보 없음!!!!");
                 }
@@ -93,14 +102,15 @@ export const useMemberStore = defineStore('memberStore', () => {
     };
 
     const tokenRegenerate = async () => {
-        console.log("토큰 재발급 >> 기존 토큰 정보 : {}", sessionStorage.getItem("accessToken"));
+        console.log("토큰 재발급 >> 기존 토큰 정보 : {}", localStorage.getItem("accessToken"));
         await tokenRegeneration(
             JSON.stringify(userInfo.value),
             (response) => {
                 if (response.status === httpStatusCode.CREATE) {
                     let accessToken = response.data["access-token"];
                     console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
-                    sessionStorage.setItem("accessToken", accessToken);
+                    // sessionStorage.setItem("accessToken", accessToken);
+                    localStorage.setItem("accessToken", accessToken);
                     isValidToken.value = true;
                 }
             },
@@ -142,8 +152,11 @@ export const useMemberStore = defineStore('memberStore', () => {
                     isLogin.value = false;
                     userInfo.value = null;
                     isValidToken.value = false;
-                    sessionStorage.removeItem("accessToken");
-                    sessionStorage.removeItem("refreshToken");
+                    // sessionStorage.removeItem("accessToken");
+                    // sessionStorage.removeItem("refreshToken");
+                    localStorage.removeItem("accessToken");
+                    localStorage.removeItem("refreshToken");
+
                 } else {
                     console.error("유저 정보 없음!!!!");
                 }
@@ -152,7 +165,13 @@ export const useMemberStore = defineStore('memberStore', () => {
                 console.log(error);
             }
         );
+
+        alert("로그아웃 되었습니다.");
+        router.replace({name: "main"});
     };
+
+    // 새로 고침시에도 로그인 유지되도록
+
 
     return {
         isLogin,
@@ -163,6 +182,5 @@ export const useMemberStore = defineStore('memberStore', () => {
         getUserInfo,
         tokenRegenerate,
         userLogout,
-        memberMenu,
     };
 })

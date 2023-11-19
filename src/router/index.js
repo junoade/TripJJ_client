@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useMemberStore } from "@/stores/member";
+
 import TheMainView from "../views/TheMainView.vue";
 import TheLoginView from "@/views/TheLoginView.vue";
 import TheAttractionView from "@/views/TheAttractionView.vue";
@@ -11,12 +13,54 @@ import TheCommunityView from "@/views/TheCommunityView.vue";
 // import TheBoardView from "../views/TheBoardView.vue";
 // import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
 
+// import { onlyAuthUser } from "@/util/auth.js";
+
+const onlyAuthUser = async (to, from, next) => {
+    const memberStore = useMemberStore();
+    // let token = sessionStorage.getItem("accessToken");
+    let token = localStorage.getItem("accessToken");
+
+    console.log("로그인 처리 전", memberStore.userInfo, token);
+
+    // 일단 현재 쿠키에 저장된 jwt 토큰이 있다면 유효성 검증을 위해 서버로 전송 
+    if(token) {
+        console.log("토큰 유효성 체크하러 가자!!!!");
+        // 유효한 토큰, 유효한 사용자라면 
+        // userInfo 값 갱신될 것
+        // 아니라면 토큰 다시 받아올 것
+        await memberStore.getUserInfo(token);
+    }    
+
+    // 그래도 안되면
+    if (!memberStore.isValidToken || memberStore.userInfo === null) {
+        alert("로그인이 필요한 페이지입니다..");
+        next({ name: "login" });
+    } else {
+        console.log("로그인 상태 유효");
+        next();
+    }
+};
+
+const loginRemainIfTokenValid = async (to, from, next) => {
+    const memberStore = useMemberStore();
+    let token = localStorage.getItem("accessToken");
+    if(token) {
+        console.log("토큰 유효성 체크하러 가자!!!!");
+        // 유효한 토큰, 유효한 사용자라면 
+        // userInfo 값 갱신될 것
+        // 아니라면 토큰 다시 받아올 것
+        await memberStore.getUserInfo(token);
+    }    
+    next();
+}
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: "/",
             name: "main",
+            beforeEnter: loginRemainIfTokenValid,
             component: TheMainView,
         },
         {
@@ -25,27 +69,30 @@ const router = createRouter({
             component: TheLoginView,
         },
         {
-            path:"/joinUs",
+            path: "/joinUs",
             name: "joinUs",
             component: TheRegistrationView,
         },
         {
-            path:"/logout",
+            path: "/logout",
             name: "logout",
+            beforeEnter: onlyAuthUser,
             component: TheLogout,
         },
         {
-            path:"/member-modify",
+            path: "/member-modify",
             name: "member-modify",
+            beforeEnter: onlyAuthUser,
             component: ModifyForm,
-        },{
-            path:"/community",
+        }, {
+            path: "/community",
             name: "community",
             component: TheCommunityView,
         },
         {
             path: "/attraction",
             name: "attraction",
+            beforeEnter: onlyAuthUser,
             component: TheAttractionView,
         },
         {
@@ -56,6 +103,7 @@ const router = createRouter({
             // this generates a separate chunk (About.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
             component: () => import("../views/TheBoardView.vue"),
+            beforeEnter: onlyAuthUser,
             redirect: { name: "article-list" },
             children: [
                 {
