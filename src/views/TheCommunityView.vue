@@ -1,5 +1,10 @@
 <script setup>
 
+import { ref } from 'vue';
+import StoryUpload from '@/components/community/StoryUpload.vue';
+
+const dataBsTarget = ref("#example");
+
 </script>
 
 <template>
@@ -10,9 +15,10 @@
                 <p class="lead text-muted">여행은 새로운 문화와 경험을 만날 수 있는 창입니다! <br>한국의 아름다운 곳곳을 여행하며 인상 깊었던<br> 당신의 여행 기록을 나누어
                     주세요.</p>
                 <p>
-                    <a href="#" class="btn btn-primary m-2">기록 공유하기</a>
-                    <!-- <a href="#" class="btn btn-secondary m-2">Secondary action</a> -->
+                    <a href="#" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#exampleModal">기록 공유하기</a>
+                <!-- <a href="#" class="btn btn-secondary m-2">Secondary action</a> -->
                 </p>
+                <StoryUpload/>
             </div>
         </div>
     </section>
@@ -283,7 +289,6 @@
 </template>
 
 <style lang="scss">
-
 .masonry {
     columns: 4;
     column-gap: 16px;
@@ -361,5 +366,4 @@
 
 .mt-auto {
     margin-top: auto;
-}
-</style>
+}</style>
