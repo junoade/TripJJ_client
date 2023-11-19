@@ -1,5 +1,11 @@
 <script setup>
-import JoinUsImg from "@/assets/img/joinUs.png";
+import { useMemberStore } from "@/stores/member";
+
+const memberStore = useMemberStore();
+const userInfo = memberStore.userInfo;
+
+console.log(memberStore.userInfo);
+
 </script>
 
 <template>
@@ -16,31 +22,37 @@ import JoinUsImg from "@/assets/img/joinUs.png";
 
                                     <form class="mx-1 mx-md-4">
                                         <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" id="floatingInput" placeholder="" readonly>
-                                            <label for="floatingInput">아이디</label>
+                                            <input type="text" class="form-control" id="floatingInputUserId" v-model="userInfo.userId" readonly>
+                                            <label for="floatingInputUserId">아이디</label>
                                         </div>
 
                                         <div class="form-floating mb-3">
-                                            <input type="email" class="form-control" id="floatingInput" placeholder="">
-                                            <label for="floatingInput">이메일</label>
+                                            <input type="email" class="form-control" id="floatingInputEmail" v-model="userInfo.userEmail">
+                                            <label for="floatingInputEmail">이메일</label>
                                         </div>
 
                                         <div class="form-floating mb-3">
-                                            <input type="email" class="form-control" id="floatingInput" placeholder="">
-                                            <label for="floatingInput">이름</label>
+                                            <input type="text" class="form-control" id="floatingInputName" v-model="userInfo.userName">
+                                            <label for="floatingInputName">이름</label>
                                         </div>
 
-
                                         <div class="form-floating mb-3">
-                                            <input type="password" class="form-control" id="floatingPassword"
+                                            <input type="password" class="form-control" id="floatingPasswordOrigin"
                                                 placeholder="Password">
-                                            <label for="floatingPassword">비밀번호</label>
+                                            <label for="floatingPasswordOrigin">현재 비밀번호</label>
+                                        </div>
+
+
+                                        <div class="form-floating mb-3">
+                                            <input type="password" class="form-control" id="floatingPasswordNew"
+                                                placeholder="Password">
+                                            <label for="floatingPasswordNew">새 비밀번호</label>
                                         </div>
 
                                         <div class="form-floating mb-3">
-                                            <input type="password" class="form-control" id="floatingPassword"
+                                            <input type="password" class="form-control" id="floatingPasswordNewVerify"
                                                 placeholder="Password">
-                                            <label for="floatingPassword">비밀번호 확인</label>
+                                            <label for="floatingPasswordNewVerify">새 비밀번호 확인</label>
                                         </div>
 
                                         <div class="d-grid gap-2 col-6 mx-auto w-100 mt-2">
