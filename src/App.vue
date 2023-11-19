@@ -10,4 +10,6 @@ import NavbarDefault from "@/components/layout/NavbarDefault.vue";
   <router-view></router-view>
 </template>
 
-<style scoped></style>
+<style>
+@import "@/assets/css/font.css";
+</style>

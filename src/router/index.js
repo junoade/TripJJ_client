@@ -5,6 +5,7 @@ import TheAttractionView from "@/views/TheAttractionView.vue";
 import TheRegistrationView from "@/views/TheRegistrationView.vue";
 import TheLogout from "@/components/member/Logout.vue";
 import ModifyForm from "@/components/member/ModifyForm.vue";
+import TheCommunityView from "@/views/TheCommunityView.vue";
 
 
 // import TheBoardView from "../views/TheBoardView.vue";
@@ -37,6 +38,10 @@ const router = createRouter({
             path:"/member-modify",
             name: "member-modify",
             component: ModifyForm,
+        },{
+            path:"/community",
+            name: "community",
+            component: TheCommunityView,
         },
         {
             path: "/attraction",

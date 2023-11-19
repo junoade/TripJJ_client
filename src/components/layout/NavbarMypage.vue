@@ -24,4 +24,7 @@
 
 <style scoped>
 
+a {
+    font-size: large;
+}
 </style>

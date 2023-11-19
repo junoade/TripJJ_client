@@ -97,9 +97,10 @@ import welcomePageImgKorea from "@/assets/img/welcome-wallpaper.svg";
                     </svg>
                 </div>
                 <div class="carousel-caption">
-                    <h1>Trip With</h1>
-                    <h1>Double JJ!</h1>
-                    <p>맛, 문화, 자연 속으로! 한국 여행의 모든 것.</p>
+                    <h1>맛, 문화, 자연 속으로!</h1>
+                    <h1>한국 여행의 모든 것.</h1>
+                    <p></p>
+                    <!-- <p>맛, 문화, 자연 속으로! 한국 여행의 모든 것.</p> -->
                         <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
                     </div>
             </div>
@@ -126,4 +127,19 @@ import welcomePageImgKorea from "@/assets/img/welcome-wallpaper.svg";
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+h1, p {
+    font-family: 'Black Han Sans';
+}
+
+
+h1 {
+    font-size: 48px;
+}
+
+p {
+    font-size: 32px;;
+}
+</style>

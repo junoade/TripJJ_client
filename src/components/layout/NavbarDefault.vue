@@ -48,8 +48,8 @@ const { memberMenu } = storeToRefs(memberStore);
                 <ul class="navbar-nav navbar-nav-hover ms-auto">
 
                     <!-- 커뮤니티 탭 -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">커뮤니티</a>
+                    <li class="nav-item">            
+                        <router-link :to="{ name: 'community' }" class="nav-link">커뮤니티</router-link>
                     </li>
 
                     <li class="nav-item">
@@ -79,7 +79,13 @@ const { memberMenu } = storeToRefs(memberStore);
 </template>
 
 <style scoped>
+
 .navbar {
-    background-color: azure;
+    background-color: rgba(252, 250, 247, 0.93);
+    /* azure */
+}
+
+a {
+    font-size: large;
 }
 </style>
