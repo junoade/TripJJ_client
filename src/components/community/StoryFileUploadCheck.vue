@@ -34,19 +34,22 @@ const sampleUrl = ref("https://images.unsplash.com/photo-1485470733090-0aae1788d
                     <div class='carousel-inner'>
                         <StoryFileItem
                             :active="true"
-                            :imgSize="img-size"
                             :src="sampleUrl"
                         />
                         <StoryFileItem
                             :active="false"
-                            :imgSize="img-size"
                             :src="sampleUrl"
                         />
                         <StoryFileItem
                             :active="false"
-                            :imgSize="img-size"
                             :src="sampleUrl"
                         />
+                        <!-- <template v-for="image in images">
+                            <StoryFileItem
+                            :active="false"
+                            :src="image.url"
+                        />
+                        </template> -->
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                         data-bs-slide="prev">
