@@ -33,19 +33,19 @@ const sampleUrl = ref("https://images.unsplash.com/photo-1485470733090-0aae1788d
                     </div>
                     <div class='carousel-inner'>
                         <StoryFileItem
-                            :active=true
+                            :active="true"
+                            :imgSize="img-size"
                             :src="sampleUrl"
-                            :alt="Firstslide"
                         />
                         <StoryFileItem
-                            :active=false
+                            :active="false"
+                            :imgSize="img-size"
                             :src="sampleUrl"
-                            :alt="Secondslide"
                         />
                         <StoryFileItem
-                            :active=false
+                            :active="false"
+                            :imgSize="img-size"
                             :src="sampleUrl"
-                            :alt="Thirdslide"
                         />
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -78,15 +78,6 @@ const sampleUrl = ref("https://images.unsplash.com/photo-1485470733090-0aae1788d
     border-radius: 5px;
     overflow: hidden;
     padding: 0;
-}
-
-.img-size {
-    /* 	padding: 0;
-	margin: 0; */
-    height: 450px;
-    width: 700px;
-    background-size: cover;
-    overflow: hidden;
 }
 
 .modal-content {
