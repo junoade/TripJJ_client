@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref } from 'vue';
-import StoryUpload from '@/components/community/StoryUpload.vue';
+import StoryUploadModal from '@/components/community/StoryUploadModal.vue';
 
 const dataBsTarget = ref("#example");
 
@@ -18,7 +18,7 @@ const dataBsTarget = ref("#example");
                     <a href="#" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#exampleModal">기록 공유하기</a>
                 <!-- <a href="#" class="btn btn-secondary m-2">Secondary action</a> -->
                 </p>
-                <StoryUpload/>
+                <StoryUploadModal/>
             </div>
         </div>
     </section>

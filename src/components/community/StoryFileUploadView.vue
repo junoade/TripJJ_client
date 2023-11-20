@@ -1,29 +1,10 @@
 <script setup>
 
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
-defineProps({
-    dataBsToggle: "",
-    dataBsTarget: "",
-});// 예를 들어, 다음과 같이 변환할 수 있습니다.
-
-const fileInput = ref(null);
 const images = ref([]);
 const isDragging = ref(false);
 
-/**
- * 선택한 파일들을 고른다
- */
-
- onMounted(() => {
-    console.log(fileInput);
-    
- }),
-
-function selectFiles() {
-    console.log(fileInput);
-    fileInput.click();
-}
 
 /**
  * 파일 업로드를 위해 업로드한 사진의 개수를 반영한다
@@ -40,6 +21,8 @@ function onFileSelect(event) {
             images.value.push({ name: files[i].name, url: URL.createObjectURL(files[i]) });
         }
     }
+
+    console.log(images.value);
 }
 
 /**
@@ -73,51 +56,32 @@ function onDrop(event) {
             images.value.push({ name: files[i].name, url: URL.createObjectURL(files[i]) });
         }
     }
-
 }
 
 </script>
 
 <template>
-    <div class="modal fade" id="exampleModal" tabindex="-1" :aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">여행 기록 공유</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="drag-area" 
-                        @dragover.prevent="onDragOver" 
-                        @dragleaver.prevent="onDragLeave"
-                        @drop.prevent="onDrop">
-                        <span v-if="!isDragging">사진과 동영상을 여기에 끌어다 놓으세요</span>
-                        <div v-else class="select">여기에 끌어다 놓으세요</div>                
-                        <label for="file">
-                            <div class="btn-upload">컴퓨터에서 선택</div>
-                        </label>
-                        <input type="file" 
-                            id="file" 
-                            class="file" 
-                            multiple 
-                            accept="image/jpeg, image/png"
-                            @change="onFileSelect">
+    <div class="modal-body">
+        <div class="drag-area" @dragover.prevent="onDragOver" @dragleaver.prevent="onDragLeave" @drop.prevent="onDrop">
+            <span v-if="!isDragging">사진과 동영상을 여기에 끌어다 놓으세요</span>
+            <div v-else class="select">여기에 끌어다 놓으세요</div>
+            <label for="file">
+                <div class="btn-upload">컴퓨터에서 선택</div>
+            </label>
+            <input type="file" id="file" class="file" multiple accept="image/jpeg, image/png" @change="onFileSelect">
 
-                    </div>
-                    <div class="container">
-                        <div class="image" v-for="(image, index) in images" :key="index">
-                            <span class="delete" @click="deleteImage(index)">&times;</span>
-                            <img :src="image.url" />
-                        </div>
-                        <!-- <button type="button"  class="btn btn-primary">Upload</button> -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                    <button type="button" class="btn btn-primary">공유하기</button>
-                </div>
-            </div>
         </div>
+        <div class="container">
+            <div class="image" v-for="(image, index) in images" :key="index">
+                <span class="delete" @click="deleteImage(index)">&times;</span>
+                <img :src="image.url" />
+            </div>
+            <!-- <button type="button"  class="btn btn-primary">Upload</button> -->
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="$emit('clearStatus')">닫기</button>
+        <button type="button" class="btn btn-primary" @click="$emit('afterUploadImages', images)">다음으로</button>
     </div>
 </template>
 
@@ -219,24 +183,24 @@ function onDrop(event) {
 }
 
 .btn-upload {
-  width: 150px;
-  height: 30px;
-  background: rgb(100, 149, 237);
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: cornsilk;
+    width: 150px;
+    height: 30px;
+    background: rgb(100, 149, 237);
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: cornsilk;
 }
 
 .btn-upload:hover {
-    background: rgb(59,113,211);
+    background: rgb(59, 113, 211);
     color: #fff;
 }
 
 #file {
-  display: none;
+    display: none;
 }
 </style>
