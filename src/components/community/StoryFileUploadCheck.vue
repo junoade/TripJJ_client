@@ -24,32 +24,19 @@ const sampleUrl = ref("https://images.unsplash.com/photo-1485470733090-0aae1788d
                 <!-- carousel -->
                 <div id='carouselExampleIndicators' class='carousel slide' data-ride='carousel'>
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
-                            class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
+                        <button type="button" v-for="(image, index) in images" :key="index" 
+                            data-bs-target="#carouselExampleIndicators" 
+                            :data-bs-slide-to="index"
+                            :class="{'active' : index === 0}">
+                        </button>
                     </div>
-                    <div class='carousel-inner'>
-                        <StoryFileItem
-                            :active="true"
-                            :src="sampleUrl"
-                        />
-                        <StoryFileItem
-                            :active="false"
-                            :src="sampleUrl"
-                        />
-                        <StoryFileItem
-                            :active="false"
-                            :src="sampleUrl"
-                        />
-                        <!-- <template v-for="image in images">
+                    <div class='carousel-inner'>                
+                        <template v-for="(image, index) in images" :key="index">
                             <StoryFileItem
-                            :active="false"
+                            :active="index === 0"
                             :src="image.url"
                         />
-                        </template> -->
+                        </template>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                         data-bs-slide="prev">

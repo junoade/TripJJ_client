@@ -14,11 +14,12 @@ function onFileSelect(event) {
     console.log("뀨")
     const files = event.target.files;
     if (files.length === 0) return;
+    let index = 0;
     for (let i = 0; i < files.length; i++) {
         if (files[i].type.split("/")[0] != "image") continue;
 
         if (!images.value.some((e) => e.name === files[i].name)) {
-            images.value.push({ name: files[i].name, url: URL.createObjectURL(files[i]) });
+            images.value.push({ name: files[i].name, url: URL.createObjectURL(files[i]), index: index++ });
         }
     }
 
