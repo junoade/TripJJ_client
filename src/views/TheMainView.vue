@@ -1,78 +1,147 @@
-<script setup></script>
+<script setup>
+import { onMounted, onUnmounted } from "vue";
+
+// import NavbarDefault from "@/components/layout/NavbarDefault.vue"
+import Carousel from "@/views/TheCarouselView.vue";
+import IntroducingAround from "@/components/layout/TheIntroductionView.vue";
+import FilledInfoCard from "@/components/layout/cards/FilledInfoCard.vue";
+import Footer from "@/components/layout/Footer.vue";
+import AttractionType from "@/views/TheAttractionTypeView.vue";
+import StatisticsInfo from "@/components/layout/StatisticsInfo.vue";
+import SearchBar from "@/components/layout/SearchBar.vue";
+
+// imgs
+import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
+</script>
 
 <template>
-  <div class="text-center mt-4">
-    <h1>어디로 가시나요?</h1>
+    <main>
+        <Carousel />
+        <!-- 여행-->
+        <AttractionType />
 
-  </div>
-  <div class="d-flex justify-content-center p-2">
-    <form class="" role="search">
-        <div class="input-group">
-          <input class="form-control" type="text" name="search" placeholder="Search..." required/>
-          <span class="input-group-btn">
-            <button class="btn btn-success" type="submit">Search</button>
-          </span>
-        </div>
-      </form>
-  </div>
-  <div class="container mt-5">
-    <div class="row d-flex justify-content-evenly">
-        <div class="card shadow-1-strong col-3"
-          style="background-image: url(https://content.r9cdn.net/rimg/dimg/30/0c/6318617a-city-35982-163ff913019.jpg?width=1366&height=768&xhint=2421&yhint=1876&crop=true);
-          width: 17em; height: 20rem; border-color: white;"
-        >
-            <div class="card-body text-white">
-                <h5 class="card-title fw-bold fs-2 p-3">서울</h5>
-                <p class="card-text fw-bold fs-4 p-3">
-                    350여개의 <br/>여행 관광지
-                </p>
-                <a href="#" class="btn btn-light mt-4 fw-bolder">둘러보기</a>
-            </div>
-        </div>
-        <div
-                class="card shadow-1-strong col-3"
-                style="background-image: url(https://english.visitkorea.or.kr/public/images/2023/04/13/45cc09e6cf7641308177a8751b3ed1ca.jpg); 
-                width: 17em; height: 20rem; border-color: white;"
-        >
-            <div class="card-body text-white">
-                <h5 class="card-title fw-bold fs-2 p-3">부산</h5>
-                <p class="card-text fw-bold fs-4 p-3">
-                    230여개의 <br/>여행 관광지
-                </p>
-                <a href="#" class="btn btn-light mt-4 fw-bolder">둘러보기</a>
-            </div>
-        </div>
-        <div
-                class="card shadow-1-strong col-3"
-                style="background-image: url(https://onceuponahallyu.files.wordpress.com/2018/01/gwangju.jpg?w=1200); 
-                width: 17em; height: 20rem; border-color: white;"
-        >
-            <div class="card-body text-white">
-                <h5 class="card-title fw-bold fs-2 p-3">광주</h5>
-                <p class="card-text fw-bold fs-4 p-3">
-                    170여개의 <br/>여행 관광지
-                </p>
-                <a href="#" class="btn btn-light mt-4 fw-bolder">둘러보기</a>
-            </div>
-        </div>
-        <div
-                class="card shadow-1-strong col-3"
-                style="background-image: url(https://cdn.hellodd.com/news/photo/202108/93976_307091_140.jpg); 
-                width: 17em; height: 20rem; border-color: white;"
-        >
-            <div class="card-body text-white">
-                <h5 class="card-title fw-bold fs-2 p-3">제주도</h5>
-                <p class="card-text fw-bold fs-4 p-3">
-                    200여개의 <br/>여행 관광지
-                </p>
-                <a href="#" class="btn btn-light mt-4 fw-bolder">둘러보기</a>
-            </div>
+        <!-- 여행지 통계 정보-->
+        <StatisticsInfo />
+        <!-- 여행 검색 -->
+        <SearchBar />
+        <!-- Marketing messaging and featurettes
+                  ================================================== -->
+        <!-- Wrap the rest of the page in another container to center all the content. -->
+
+        <div class="container">
+            <hr class="featurette-divider">
+            <IntroducingAround />
         </div>
 
-    </div>
-</div>
+        <div class="container marketing">
+            <!-- START THE FEATURETTES -->
+            <hr class="featurette-divider">
 
-  
+            <div class="row featurette">
+                <div class="col-md-7">
+                    <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It’ll blow your
+                            mind.</span></h2>
+                    <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting
+                        prose here.</p>
+                </div>
+                <div class="col-md-5">
+                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
+                        height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
+                        preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa"
+                            dy=".3em">500x500</text>
+                    </svg>
+
+                </div>
+            </div>
+
+            <hr class="featurette-divider">
+
+            <IntroducingAround />
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <FilledInfoCard class="p-4" :color="{ text: 'white', background: 'bg-gradient-success' }"
+                            :icon="{ component: 'flag', color: 'white' }" title="Getting Started"
+                            description="Check the possible ways of working with our product and the necessary files for building your own project."
+                            :action="{
+                                route:
+                                    'https://www.creative-tim.com/learning-lab/vue/overview/material-kit/',
+                                label: { text: 'Let\'s start', color: 'white' }
+                            }" />
+                    </div>
+                    <div class="col-lg-4">
+                        <FilledInfoCard class="px-lg-1 mt-lg-0 mt-4 p-4" height="h-100"
+                            :icon="{ component: 'precision_manufacturing', color: 'success' }" title="Plugins" description="Get inspiration and have an overview about the plugins that we
+                                used to create the Material Kit." :action="{
+                                    route:
+                                        'https://www.creative-tim.com/learning-lab/vue/input/material-kit/',
+                                    label: { text: 'Read more' }
+                                }" />
+                    </div>
+                    <div class="col-lg-4">
+                    <FilledInfoCard class="px-lg-1 mt-lg-0 mt-4 p-4"
+                        :icon="{ component: 'receipt_long', color: 'success' }" title="Utility Classes" description="Material Kit is giving you a lot of pre-made elements. For those
+                            who want flexibility, we included many utility classes." :action="{
+                                route:
+                                    'https://www.creative-tim.com/learning-lab/vue/utilities/material-kit/',
+                                label: { text: 'Read more' }
+                            }" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- /END THE FEATURETTES -->
+
+        </div><!-- /.container -->
+
+
+        <!-- FOOTER -->
+        <!-- <footer class="container">
+                            <p class="float-end"><a href="#">Back to top</a></p>
+                            <p>&copy; 2017–2021 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+                        </footer> -->
+
+        <Footer />
+    </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.site-header {
+    background-color: rgba(0, 0, 0, .85);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+}
+
+.site-header a {
+    color: #8e8e8e;
+    transition: color .15s ease-in-out;
+}
+
+.site-header a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+body {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    color: #5a5a5a;
+}
+</style>
