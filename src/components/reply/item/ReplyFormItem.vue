@@ -24,7 +24,8 @@ const reply = ref({
 if (props.type === "modify") {
   console.log(replyNo + "번 댓글 얻어와서 수정할거야");
   // API 호출
-  getModifyReply(replyNo, ({data}) => {
+  getModifyReply(replyNo, ({ data }) => {
+    
     console.log(data);
     reply.value = data;
   }, (error) => {

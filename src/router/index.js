@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useMemberStore } from "@/stores/member";
-
 import TheMainView from "../views/TheMainView.vue";
 import TheLoginView from "@/views/TheLoginView.vue";
 import TheAttractionView from "@/views/TheAttractionView.vue";
@@ -53,6 +52,17 @@ const loginRemainIfTokenValid = async (to, from, next) => {
     }
     next();
 };
+
+// const checkModifyArticleValid = (to, from, next) => {
+//     const targetStore = useTargetStore();
+//     const { targetArticle } = storeToRefs(targetStore);
+//     targetStore.setTargetArticle(to?.params.articleNo);
+//     console.log("checkModifyArticleValid: ", from, to, targetArticle.value);
+
+//     if (targetArticle.value == null) next(false);
+//     else next();
+    
+// }
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -127,14 +137,20 @@ const router = createRouter({
                     path: "modify/:articleNo",
                     name: "article-modify",
                     component: () => import("@/components/board/BoardModify.vue"),
+                    // beforeEnter: checkModifyArticleValid,
                 },
                 {
                     path: "reply/:articleNo",
                     name: "article-reply",
                     component: () => import("@/components/reply/BoardReplyWrite.vue"),
                 },
+                // {
+                //     path: "reply/modify/:articleNo/:replyNo",
+                //     name: "article-reply-modify",
+                //     component: () => import("@/components/reply/BoardReplyModify.vue"),
+                // },
                 {
-                    path: "reply/modify/:articleNo/:replyNo",
+                    path: "reply/modify/:replyNo",
                     name: "article-reply-modify",
                     component: () => import("@/components/reply/BoardReplyModify.vue"),
                 },
@@ -149,8 +165,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-    console.log(to);
-    console.log(from);
+    // console.log(to, val, from);
+    // console.log(from);
 });
 
 export default router;

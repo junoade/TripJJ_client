@@ -1,11 +1,13 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { deleteReply } from "@/api/qna";
+import { useMemberStore } from "@/stores/member";
 
 // const reply = defineProps({ reply: Object });
 defineProps({ reply: Object });
 
 const router = useRouter();
+const memberInfo = useMemberStore();
 
 // 이건 아직 잘 모르겠다.
 function deleteEvent(replyNo) {
@@ -41,14 +43,16 @@ function deleteEvent(replyNo) {
             {{reply.publishedDate}}
           </p>
           <router-link
-            :to="{name: 'article-reply-modify', params: {articleNo : reply.articleNo, replyNo : reply.replyNo}}"
-            class="link-muted"
-            type="modify"
+            :to="{name: 'article-reply-modify', params: {replyNo : reply.replyNo}}"
+            class="link-muted" type="modify"
+            v-if="reply.userId === memberInfo.userInfo.userId"
           >
             <i class="bi bi-pencil-square p-2"></i>
           </router-link>
 
-          <router-link :to="{name:'article-reply-delete', params: {replyNo : reply.replyNo}}">
+          <router-link 
+            :to="{name:'article-reply-delete', params: { replyNo : reply.replyNo }}"
+            v-if="reply.userId === memberInfo.userInfo.userId">
             <i class="bi bi-trash3"></i>
           </router-link>
         </div>

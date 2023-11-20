@@ -108,10 +108,9 @@ const onSearch = () => {
 const onPageChange = (val) => {
   console.log(val + "번 페이지로 이동 준비 끝!!!");
   currentPage.value = val;
-  conditions.value.pgno = val;
+  conditions.value.pgno = val;  
   getAttractionList();
 };
-
 
 const viewAttraction = (attraction) => {
   selectedAttraction.value = attraction;
