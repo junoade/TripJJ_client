@@ -2,11 +2,14 @@
 
 import { ref, onMounted } from 'vue';
 
+import StoryFileItem from "./StoryFileItem.vue";
+
 const props = defineProps({
     images: Array,
 });
 
 console.log("부모 컴포넌트로부터 전달받은 이미지 파일 목록: ", props.images);
+const sampleUrl = ref("https://images.unsplash.com/photo-1485470733090-0aae1788d5af?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1391&q=80");
 
 </script>
 
@@ -29,21 +32,21 @@ console.log("부모 컴포넌트로부터 전달받은 이미지 파일 목록: 
                             aria-label="Slide 3"></button>
                     </div>
                     <div class='carousel-inner'>
-                        <div class='carousel-item active'>
-                            <img class='img-size'
-                                src='https://images.unsplash.com/photo-1485470733090-0aae1788d5af?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1391&q=80'
-                                alt='First slide' />
-                        </div>
-                        <div class='carousel-item'>
-                            <img class='img-size'
-                                src='https://images.unsplash.com/photo-1491555103944-7c647fd857e6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'
-                                alt='Second slide' />
-                        </div>
-                        <div class='carousel-item'>
-                            <img class='img-size'
-                                src='https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'
-                                alt='Second slide' />
-                        </div>
+                        <StoryFileItem
+                            :active=true
+                            :src="sampleUrl"
+                            :alt="Firstslide"
+                        />
+                        <StoryFileItem
+                            :active=false
+                            :src="sampleUrl"
+                            :alt="Secondslide"
+                        />
+                        <StoryFileItem
+                            :active=false
+                            :src="sampleUrl"
+                            :alt="Thirdslide"
+                        />
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
                         data-bs-slide="prev">
