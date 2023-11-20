@@ -17,7 +17,7 @@ const sampleUrl = ref("https://images.unsplash.com/photo-1485470733090-0aae1788d
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">사진 확인</h5>
+                <h5 class="modal-title" id="exampleModalLabel">여행 사진 확인</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -79,7 +79,7 @@ const sampleUrl = ref("https://images.unsplash.com/photo-1485470733090-0aae1788d
     background-color: black;
 }
 
-/* .carousel-control-prev-icon {
+.carousel-control-prev-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
     width: 30px;
     height: 48px;
@@ -89,5 +89,5 @@ const sampleUrl = ref("https://images.unsplash.com/photo-1485470733090-0aae1788d
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
     width: 30px;
     height: 48px;
-} */
+}
 </style>

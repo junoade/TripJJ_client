@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const images = ref([]);
 const isDragging = ref(false);

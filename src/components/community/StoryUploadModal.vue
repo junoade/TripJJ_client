@@ -25,6 +25,12 @@ const clearStatus = () => {
  * @param {*} uploadedImages (Object)
  */
 const afterUploadImages = (uploadedImages) => {
+
+    if(uploadedImages.length === 0) {
+        alert("여행 이미지를 등록해주세요!");
+        return;
+    }
+
     isFileUpload.value = true;
     images.value = uploadedImages;
     console.log("자식 컴포넌트로부터 업로드된 이미지 파일을 전달받았다!", images.value);
