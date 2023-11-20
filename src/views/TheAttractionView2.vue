@@ -117,10 +117,7 @@ const viewAttraction = (attraction) => {
   selectedAttraction.value = attraction;
 };
 
-onMounted(() => {
-  // 현재 페이지 번호 초기화
-  getSidoList();
-});
+getSidoList();
 
 </script>
 
