@@ -4,7 +4,7 @@ import { ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 
 import { useMemberStore } from "@/stores/member";
-import { usePageInfo } from "@/stores/pageInfo.js";
+// import { usePageInfo } from "@/stores/pageInfo.js";
 
 // dropdown
 import NavbarMyPage from "./NavbarMypage.vue"
