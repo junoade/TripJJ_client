@@ -18,10 +18,15 @@ const onSubmit = async () => {
                 alert("회원 가입 성공!");
                 router.replace({ name: "main"});
             } else {
-                alert("회원 가입 실패");
+                alert("회원 가입 실패.");
             }
         }, (error) => {
-            console.error(error);
+            if (error.response.status == httpStatusCode.CONFLICT) {
+                alert("이미 등록된 회원입니다.");
+            } else {
+                alert("회원 가입 실패.");
+            }
+            
         });
 }
 
