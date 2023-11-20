@@ -1,13 +1,12 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useMemberStore } from "@/stores/member";
+import { updateMember } from "@/api/member.js";
+import { httpStatusCode } from "@/util/http-status";
 
 const memberStore = useMemberStore();
 const userInfo = memberStore.userInfo;
 const router = useRouter();
-
-import { updateMember } from "@/api/member.js";
-import { httpStatusCode } from "@/util/http-status";
 
 userInfo.userPass = "";
 
