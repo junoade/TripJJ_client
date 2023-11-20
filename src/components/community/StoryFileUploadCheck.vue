@@ -11,13 +11,59 @@ console.log("부모 컴포넌트로부터 전달받은 이미지 파일 목록: 
 </script>
 
 <template>
-    <div class="modal-body">
-        업로드 파일 확인
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="$emit('clearStatus')">닫기</button>
-        <button type="button" class="btn btn-primary" @click="$emit('afterCheckUploadImages', false)">이전으로</button>
-        <button type="button" class="btn btn-primary" @click="$emit('afterCheckUploadImages', true)">다음으로</button>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">사진 확인</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- carousel -->
+                <div id='carouselExampleIndicators' class='carousel slide' data-ride='carousel'>
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+                            class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
+                    <div class='carousel-inner'>
+                        <div class='carousel-item active'>
+                            <img class='img-size'
+                                src='https://images.unsplash.com/photo-1485470733090-0aae1788d5af?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1391&q=80'
+                                alt='First slide' />
+                        </div>
+                        <div class='carousel-item'>
+                            <img class='img-size'
+                                src='https://images.unsplash.com/photo-1491555103944-7c647fd857e6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'
+                                alt='Second slide' />
+                        </div>
+                        <div class='carousel-item'>
+                            <img class='img-size'
+                                src='https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'
+                                alt='Second slide' />
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    @click="$emit('clearStatus')">닫기</button>
+                <button type="button" class="btn btn-primary" @click="$emit('afterCheckUploadImages', false)">이전으로</button>
+                <button type="button" class="btn btn-primary" @click="$emit('afterCheckUploadImages', true)">다음으로</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -28,115 +74,36 @@ console.log("부모 컴포넌트로부터 전달받은 이미지 파일 목록: 
     box-shadow: 0 0 5px #ffdfdf;
     border-radius: 5px;
     overflow: hidden;
+    padding: 0;
 }
 
-/* .modal-body button {
-    outline: 0;
-    border: 0;
-    color: #fff;
-    border-radius: 4px;
-    font-weight: 400;
-    padding: 8px 13px;
-    width: 100%;
-    background: #fe0000;
+.img-size {
+    /* 	padding: 0;
+	margin: 0; */
+    height: 450px;
+    width: 700px;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.modal-content {
+    width: 700px;
+    border: none;
+}
+
+.carousel-indicators button {
+    background-color: black;
+}
+
+/* .carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+    width: 30px;
+    height: 48px;
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23009be1' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+    width: 30px;
+    height: 48px;
 } */
-
-.modal-body .drag-area {
-    height: 300px;
-    border-radius: 5px;
-    border: 2px dashed #fe0000;
-    background: #f4f3f9;
-    justify-content: center;
-    align-items: center;
-    user-select: center;
-    -webkit-user-select: none;
-    margin-top: 10px;
-    font-size: larger;
-}
-
-.modal-body .drag-area span {
-    line-height: 12em;
-}
-
-.modal-body .drag-area .visibile {
-    font-size: 18px;
-}
-
-.modal-body .select {
-    color: #5256ad;
-    margin-left: 5px;
-    cursor: pointer;
-    transition: 0.4s;
-}
-
-.modal-body .select:hover {
-    opacity: 0.6;
-}
-
-.modal-body .container {
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    max-height: 200px;
-    position: relative;
-    margin-bottom: 8px;
-    padding-top: 20px;
-}
-
-.modal-body .container .image {
-    width: 75px;
-    margin-right: 5px;
-    height: 75px;
-    position: relative;
-    margin-bottom: 8px;
-}
-
-.modal-body .container .image img {
-    width: 100%;
-    height: 100%;
-    border-radius: 5px;
-}
-
-.modal-body .container .image span {
-    position: absolute;
-    top: -2px;
-    right: 9px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.card input,
-.card .drag-area .on-drop,
-.card .drag-area.draover .visibile {
-    display: none;
-}
-
-.delete {
-    z-index: 999;
-}
-
-.btn-upload {
-    width: 150px;
-    height: 30px;
-    background: rgb(100, 149, 237);
-    border-radius: 4px;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: cornsilk;
-}
-
-.btn-upload:hover {
-    background: rgb(59, 113, 211);
-    color: #fff;
-}
-
-#file {
-    display: none;
-}
 </style>

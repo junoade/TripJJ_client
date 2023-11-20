@@ -61,27 +61,38 @@ function onDrop(event) {
 </script>
 
 <template>
-    <div class="modal-body">
-        <div class="drag-area" @dragover.prevent="onDragOver" @dragleaver.prevent="onDragLeave" @drop.prevent="onDrop">
-            <span v-if="!isDragging">사진과 동영상을 여기에 끌어다 놓으세요</span>
-            <div v-else class="select">여기에 끌어다 놓으세요</div>
-            <label for="file">
-                <div class="btn-upload">컴퓨터에서 선택</div>
-            </label>
-            <input type="file" id="file" class="file" multiple accept="image/jpeg, image/png" @change="onFileSelect">
-
-        </div>
-        <div class="container">
-            <div class="image" v-for="(image, index) in images" :key="index">
-                <span class="delete" @click="deleteImage(index)">&times;</span>
-                <img :src="image.url" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">여행 기록 공유</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- <button type="button"  class="btn btn-primary">Upload</button> -->
+            <div class="modal-body">
+                <div class="drag-area" @dragover.prevent="onDragOver" @dragleaver.prevent="onDragLeave"
+                    @drop.prevent="onDrop">
+                    <span v-if="!isDragging">사진과 동영상을 여기에 끌어다 놓으세요</span>
+                    <div v-else class="select">여기에 끌어다 놓으세요</div>
+                    <label for="file">
+                        <div class="btn-upload">컴퓨터에서 선택</div>
+                    </label>
+                    <input type="file" id="file" class="file" multiple accept="image/jpeg, image/png"
+                        @change="onFileSelect">
+
+                </div>
+                <div class="container">
+                    <div class="image" v-for="(image, index) in images" :key="index">
+                        <span class="delete" @click="deleteImage(index)">&times;</span>
+                        <img :src="image.url" />
+                    </div>
+                    <!-- <button type="button"  class="btn btn-primary">Upload</button> -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    @click="$emit('clearStatus')">닫기</button>
+                <button type="button" class="btn btn-primary" @click="$emit('afterUploadImages', images)">다음으로</button>
+            </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="$emit('clearStatus')">닫기</button>
-        <button type="button" class="btn btn-primary" @click="$emit('afterUploadImages', images)">다음으로</button>
     </div>
 </template>
 
@@ -202,5 +213,4 @@ function onDrop(event) {
 
 #file {
     display: none;
-}
-</style>
+}</style>
