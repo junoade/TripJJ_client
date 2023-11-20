@@ -8,7 +8,7 @@ import TheRegistrationView from "@/views/TheRegistrationView.vue";
 import TheLogout from "@/components/member/Logout.vue";
 import ModifyForm from "@/components/member/ModifyForm.vue";
 import TheCommunityView from "@/views/TheCommunityView.vue";
-
+import TheAttractionView2 from "@/views/TheAttractionView2.vue";
 
 // import TheBoardView from "../views/TheBoardView.vue";
 // import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
@@ -22,14 +22,14 @@ const onlyAuthUser = async (to, from, next) => {
 
     console.log("로그인 처리 전", memberStore.userInfo, token);
 
-    // 일단 현재 쿠키에 저장된 jwt 토큰이 있다면 유효성 검증을 위해 서버로 전송 
-    if(token) {
+    // 일단 현재 쿠키에 저장된 jwt 토큰이 있다면 유효성 검증을 위해 서버로 전송
+    if (token) {
         console.log("토큰 유효성 체크하러 가자!!!!");
-        // 유효한 토큰, 유효한 사용자라면 
+        // 유효한 토큰, 유효한 사용자라면
         // userInfo 값 갱신될 것
         // 아니라면 토큰 다시 받아올 것
         await memberStore.getUserInfo(token);
-    }    
+    }
 
     // 그래도 안되면
     if (!memberStore.isValidToken || memberStore.userInfo === null) {
@@ -44,15 +44,15 @@ const onlyAuthUser = async (to, from, next) => {
 const loginRemainIfTokenValid = async (to, from, next) => {
     const memberStore = useMemberStore();
     let token = localStorage.getItem("accessToken");
-    if(token) {
+    if (token) {
         console.log("토큰 유효성 체크하러 가자!!!!");
-        // 유효한 토큰, 유효한 사용자라면 
+        // 유효한 토큰, 유효한 사용자라면
         // userInfo 값 갱신될 것
         // 아니라면 토큰 다시 받아올 것
         await memberStore.getUserInfo(token);
-    }    
+    }
     next();
-}
+};
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -84,7 +84,8 @@ const router = createRouter({
             name: "member-modify",
             beforeEnter: onlyAuthUser,
             component: ModifyForm,
-        }, {
+        },
+        {
             path: "/community",
             name: "community",
             component: TheCommunityView,
@@ -93,7 +94,8 @@ const router = createRouter({
             path: "/attraction",
             name: "attraction",
             beforeEnter: onlyAuthUser,
-            component: TheAttractionView,
+            // component: TheAttractionView,
+            component: TheAttractionView2,
         },
         {
             path: "/board",
@@ -129,17 +131,17 @@ const router = createRouter({
                 {
                     path: "reply/:articleNo",
                     name: "article-reply",
-                    component: () => import("@/components/board/BoardReplyWrite.vue"),
+                    component: () => import("@/components/reply/BoardReplyWrite.vue"),
                 },
                 {
                     path: "reply/modify/:articleNo/:replyNo",
                     name: "article-reply-modify",
-                    component: () => import("@/components/board/BoardReplyModify.vue"),
+                    component: () => import("@/components/reply/BoardReplyModify.vue"),
                 },
                 {
                     path: "reply/delete/:replyNo",
                     name: "article-reply-delete",
-                    component: () => import("@/components/board/ReplyDelete.vue"),
+                    component: () => import("@/components/reply/ReplyDelete.vue"),
                 },
             ],
         },

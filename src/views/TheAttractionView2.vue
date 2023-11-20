@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { listAttractions, listSido, listGugun } from "@/api/attraction"
-import VKakaoMap  from "@/components/layout/VKakaoMap.vue";
+import VKakaoMap2  from "@/components/layout/VKakaoMap2.vue";
 import VSelect from "@/components/common/VSelect.vue";
 import AttractionListItem from "@/components/Attraction/item/AttractionListItem.vue";
 
@@ -9,6 +9,7 @@ import AttractionListItem from "@/components/Attraction/item/AttractionListItem.
 import PageNavigation from "@/components/common/PageNavigation.vue";
 const currentPage = ref(1);
 const totalPage = ref(0);
+const navigationSize = ref(3);
 
 // 검색 조건 및 결과 리스트
 const sidoList = ref([{ text: "시/도", value: "" }]);
@@ -124,52 +125,56 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container text-center mt-3">
-    <div class="row">
-      <!-- 중앙 left -->
-      <div class="col-md-6">
-        <!-- <div class="alert alert-success" role="alert">관광지 검색</div> -->
-        <!-- 검색 바 -->
-        <form class="d-flex my-3" onsubmit="return false;" role="search">
-          <VSelect :selectOption="sidoList" @onKeySelect="onChangeSido" />
-          <VSelect :selectOption="gugunList" @onKeySelect="onChangeGugun" />
-          <VSelect :selectOption="contentTypeList" @onKeySelect="onChangeContentType" />
-          <input id="search-keyword" class="form-control me-2" type="search"
-                  placeholder="검색어" aria-label="검색어" v-model="conditions.title" />
-          <button id="btn-search" class="btn btn-outline-success" type="button" @click="onSearch">검색</button>
-        </form>
+  <!-- 검색 바 -->
+  <div class="container mt-md-3">
+    <form class="d-flex justify-content-center" onsubmit="return false;" role="search">
+        <VSelect :selectOption="sidoList" @onKeySelect="onChangeSido" />
+        <VSelect :selectOption="gugunList" @onKeySelect="onChangeGugun" />
+        <VSelect :selectOption="contentTypeList" @onKeySelect="onChangeContentType" />
+        <input id="search-keyword" class="form control form-control-sm me-2" type="search" 
+              placeholder="검색어" aria-label="검색어" v-model="conditions.title" />
 
-        <!-- 지도 -->
-        <VKakaoMap 
-          :attractions="attractions" 
-          :selectedAttraction="selectedAttraction">
-        </VKakaoMap>
+        <!-- 이게 계속 자동 줄바꿈이 됩니다. 해결 필요 -->
+        <button id="btn-search" class="btn btn-outline-success btn-sm" type="button" @click="onSearch">검색</button>
+    </form>
+  </div>
+
+  <!-- 결과 리스트 / 지도 -->
+  <div class="m-md-3 row">
+    <!-- 지도 -->
+    <VKakaoMap2
+      :attractions="attractions"
+      :selectedAttraction="selectedAttraction">
+    </VKakaoMap2>
+
+    <!-- 결과 리스트 -->
+    <div class="position-absolute m-md-3 justify-content-center" 
+        style="z-index: 2; max-width: 300px; max-height: 100%;" >
+      <!-- 리스트 -->
+      <div id="attractionList" class="overflow-auto mt-md-3"
+          style="max-width: 300px; max-height: 850px;" >
+        <AttractionListItem
+          v-for="attraction in attractions"
+          :key="attraction.title"
+          :attraction="attraction"
+          @click="viewAttraction(attraction)">
+        </AttractionListItem>
       </div>
 
-      <!-- 중앙 right -->
-      <div class="col-md-6">
-        <!-- 관광지 검색 결과 아이템 => 가로에 3개-4개씩 뿌리면 될 듯...? -->
-        <div class="row overflow-auto" style="max-width: 100%; max-height: 750px ">
-          <AttractionListItem
-            v-for="attraction in attractions"
-            :key="attraction.title"
-            :attraction="attraction"
-            @click="viewAttraction(attraction)">
-          </AttractionListItem>
-        </div>
-
-        <!-- 페이징 -->
-        <PageNavigation 
-          :current-page="currentPage"
-          :total-page="totalPage"
-          @pageChange="onPageChange">
-        </PageNavigation>
-      </div>
+      <!-- 페이징 -->
+      <PageNavigation 
+        :current-page="currentPage" :navigationSize="navigationSize"
+        :total-page="totalPage" class="mt-md-3"
+        @pageChange="onPageChange">
+      </PageNavigation>
     </div>
   </div>
 </template>
 
 <style scoped>
+#attractionList::-webkit-scrollbar{
+  display: none;
+}
 mark.purple {
   background: linear-gradient(to top, #c354ff 20%, transparent 30%);
 }

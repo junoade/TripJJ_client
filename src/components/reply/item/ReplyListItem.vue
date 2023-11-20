@@ -58,6 +58,7 @@ function deleteEvent(replyNo) {
       </div>
     </div>
   </div>
+  <hr>
 </template>
 
 <style scoped>
