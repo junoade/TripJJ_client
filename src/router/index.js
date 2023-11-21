@@ -10,6 +10,7 @@ import ModifyForm from "@/components/member/ModifyForm.vue";
 import TheSnapshotView from "@/views/TheSnapshotView.vue";
 import TheAttractionView2 from "@/views/TheAttractionView2.vue";
 
+
 // import TheBoardView from "../views/TheBoardView.vue";
 // import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
 
@@ -144,6 +145,16 @@ const router = createRouter({
                     component: () => import("@/components/reply/ReplyDelete.vue"),
                 },
             ],
+        },
+        {
+            path: "/location",
+            name: "location",
+            component: () => import("@/views/TheLocationSearchView.vue"),
+        },
+        {
+            path:"/mypage",
+            name:"mypage",
+            component: () => import("@/views/TheMySnapshotView.vue"),
         },
     ],
 });
