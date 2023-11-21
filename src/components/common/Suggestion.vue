@@ -30,11 +30,12 @@ const initSearch = () => {
     console.log("initSearch 후", kakaoPlaceSearch);
 }
 
-// watch(() => {
-//     const keyword = props.searchKeyword;
-//     console.log("현재 keyword : ", keyword);
-//     searchPlaces(keyword);
-// })
+watch(() => {
+    const keyword = props.searchKeyword;
+    console.log("현재 keyword : ", keyword);
+    console.log("현재 검색 객체", kakaoPlaceSearch);
+    // searchPlaces(keyword);
+}, { immediate: true });
 
 function searchPlaces(keyword) {
     console.log("kakaoPlaceSearch", kakaoPlaceSearch);
