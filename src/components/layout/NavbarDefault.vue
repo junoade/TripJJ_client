@@ -47,13 +47,13 @@ const { memberMenu } = storeToRefs(memberStore);
             <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
                 <ul class="navbar-nav navbar-nav-hover ms-auto">
 
-                    <!-- 커뮤니티 탭 -->
+                    <!-- 스토리 스냅샷 -->
                     <li class="nav-item">            
-                        <router-link :to="{ name: 'community' }" class="nav-link">커뮤니티</router-link>
+                        <router-link :to="{ name: 'community' }" class="nav-link">스냅샷</router-link>
                     </li>
 
                     <li class="nav-item">
-                        <router-link :to="{ name: 'board' }" class="nav-link">Q&A 게시판</router-link>
+                        <router-link :to="{ name: 'board' }" class="nav-link">여행 게시판</router-link>
                     </li>
 
                     <li class="nav-item">
