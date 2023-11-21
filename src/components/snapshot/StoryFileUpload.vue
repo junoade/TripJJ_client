@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { useMemberStore } from "@/stores/member";
 import { uploadStory } from '@/api/snapshot.js'
 import StoryFileItem from './StoryFileItem.vue';
+import Suggestion from "@/components/common/Suggestion.vue";
 
 const memberStore = useMemberStore();
 const userInfo = memberStore.userInfo;
@@ -148,6 +149,11 @@ const upload = async () => {
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="location" v-model="dto.location">
                                     <label for="location">어디를 다녀오셨나요?</label>
+                                    <!-- 카카오 맵 API를 사용해서 유사한 장소 검색 후 서버로 좌표값 보내도록 수행 -->
+                                    <Suggestion
+                                        :searchKeyword="dto.location"
+                                    />
+                                    
                                 </div>
                                 <div class="form-floating mb-3">
                                     <input type="date" class="form-control" id="startDate" v-model="dto.startDate"
@@ -244,4 +250,5 @@ input:-webkit-autofill:active {
     width: 30px;
     height: 48px;
 }
+
 </style>
