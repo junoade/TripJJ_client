@@ -77,7 +77,9 @@ function isStartDateBeforeEndDate(startDate, endDate) {
 const upload = async () => {
     console.log("서버로 전송하기 위해 formData를 생성합니다.");
     const formData = new FormData();
-    formData.append('snapshot', JSON.stringify(dto.value));
+    // formData.append('snapshot', JSON.stringify(dto.value));
+    formData.append('snapshot',
+        new Blob([JSON.stringify(dto.value)], { type: 'application/json' }));
 
     for (let item of props.fileList) {
         console.log(item.file);
