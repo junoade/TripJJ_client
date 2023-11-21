@@ -8,6 +8,7 @@ import TheLogout from "@/components/member/Logout.vue";
 import ModifyForm from "@/components/member/ModifyForm.vue";
 import TheCommunityView from "@/views/TheCommunityView.vue";
 import TheAttractionView2 from "@/views/TheAttractionView2.vue";
+import TheAttractionInterestView from "@/views/TheAttractionInterestView.vue"
 
 // import TheBoardView from "../views/TheBoardView.vue";
 // import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
@@ -160,6 +161,13 @@ const router = createRouter({
                     component: () => import("@/components/reply/ReplyDelete.vue"),
                 },
             ],
+        },
+        {
+            path: "/interest",
+            name: "interest",
+            beforeEnter: onlyAuthUser,
+            // component: TheAttractionView,
+            component: TheAttractionInterestView,
         },
     ],
 });

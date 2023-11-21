@@ -6,6 +6,7 @@ import { useMemberStore } from "@/stores/member";
 
 // URL 이동 시 이동하려는 페이지의 정보를 저장한다.
 // Q&A 게시글 정보, 댓글 정보
+// 현재 사용 X
 export const useTargetStore = defineStore('targetStore', () => {
 
     const targetArticle = ref({});

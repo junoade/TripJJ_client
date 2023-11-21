@@ -1,9 +1,34 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { listAttractions, listSido, listGugun } from "@/api/attraction"
 import VKakaoMap2  from "@/components/layout/VKakaoMap2.vue";
 import VSelect from "@/components/common/VSelect.vue";
 import AttractionListItem from "@/components/Attraction/item/AttractionListItem.vue";
+import { useInterestStore } from "@/stores/interest";
+import { storeToRefs } from "pinia";
+
+// 임시 관심 정보
+const interestStore = useInterestStore();
+const { interestMap } = storeToRefs(interestStore);
+const updateInterests = (attraction) => {
+    if (interestMap.value.has(attraction.contentId)) {
+        interestMap.value.delete(attraction.contentId);
+        console.log("관심 관광지 삭제! ", interestMap.value);
+
+
+    } else {
+        interestMap.value.set(attraction.contentId, attraction);
+        console.log("관심 관광지 저장! ", interestMap.value);
+
+
+    }
+}
+
+// 페이지에서 나가기 직전 DB에 저장 후 초기화
+onBeforeUnmount(() => {
+    console.log("DB에 저장 후 초기화 : ", interestMap.value);
+    interestMap.value.clear();
+})
 
 // 페이징 정보
 import PageNavigation from "@/components/common/PageNavigation.vue";
@@ -146,14 +171,15 @@ getSidoList();
     <!-- 결과 리스트 -->
     <div class="position-absolute m-md-3 justify-content-center" 
         style="z-index: 2; max-width: 300px; max-height: 100%;" >
-      <!-- 리스트 -->
       <div id="attractionList" class="overflow-auto mt-md-3"
           style="max-width: 300px; max-height: 850px;" >
         <AttractionListItem
           v-for="attraction in attractions"
           :key="attraction.title"
           :attraction="attraction"
-          @click="viewAttraction(attraction)">
+          @view-attraction="viewAttraction"
+          @update-interests="updateInterests"
+          >
         </AttractionListItem>
       </div>
 
