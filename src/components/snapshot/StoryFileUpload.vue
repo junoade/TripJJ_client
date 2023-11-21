@@ -25,6 +25,7 @@ const dto = ref({
 });
 
 const max_textarea = ref(250);
+const max_search_length = ref(4);
 
 watch(() => {
     const textArea = dto.value.content;
@@ -152,6 +153,7 @@ const upload = async () => {
                                     <!-- 카카오 맵 API를 사용해서 유사한 장소 검색 후 서버로 좌표값 보내도록 수행 -->
                                     <Suggestion
                                         :searchKeyword="dto.location"
+                                        :max_search_length="max_search_length"
                                     />
                                     
                                 </div>

@@ -1,8 +1,9 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 
 const props = defineProps({
-    searchKeyword: "서울"
+    searchKeyword: String,
+    max_search_length:Number,
 })
 
 const suggestions = ref([]);
@@ -34,8 +35,18 @@ watch(() => {
     const keyword = props.searchKeyword;
     console.log("현재 keyword : ", keyword);
     console.log("현재 검색 객체", kakaoPlaceSearch);
-    // searchPlaces(keyword);
+    
+    if(kakaoPlaceSearch) {
+        searchPlaces(keyword);
+    }
 }, { immediate: true });
+
+const mostSimilarPlace = computed(()=> {
+
+    console.log("현재 배열 길이 ", suggestions.value.length);
+    return suggestions.value.length > max_search_length ? suggestions.value.slice(0, max_search_length) : suggestions.value;
+})
+
 
 function searchPlaces(keyword) {
     console.log("kakaoPlaceSearch", kakaoPlaceSearch);
@@ -56,37 +67,60 @@ const placeSearchCallBack = function (data, status) {
 }
 
 function displayPlaces(places) {
+    suggestions.value = places;
+    console.log("검색 결과", places);
+    console.log(suggestions);
     for (let i = 0; i < places.legnth; i++) {
         console.log(places[i]);
     }
 }
+
+const hello = () => {
+    console.log("click");
+}
+
 
 </script>
 
 <template>
     <!-- 카카오 맵 API를 사용해서 유사한 장소 검색 후 서버로 좌표값 보내도록 수행 -->
     <ul id="suggestions" class="list-group">
-        <li class="list-group-item">뀨뀨</li>
-        <li class="list-group-item">뀨뀨</li>
-        <li class="list-group-item">뀨뀨</li>
-        <li class="list-group-item">뀨뀨</li>
+        <li class="list-group-item" v-for="area of mostSimilarPlace" @click="hello()">
+            {{area.address_name}} <span class="place_name">{{ area.place_name }}</span>
+        </li>
     </ul>
 </template>
 
 <style scoped>
 #suggestions {
     list-style-type: none;
-    padding: 0;
+    padding-left: 6px;
     margin: 0;
-    /* border: 1px solid #ccc; */
+    border: 1px solid #ccc;
     border-top: none;
+    text-align: left;
 
 }
 
 #suggestions li {
-    cursor: help;
-    padding: 5px;
+    cursor: pointer;
+    padding: 3px;
     /* border-bottom: px solid #ccc; */
     font-size: 14px;
+    border: none;
+}
+
+#suggestions li:hover{
+    cursor: pointer;
+    padding: 3px;
+    /* border-bottom: px solid #ccc; */
+    font-size: 14px;
+    border: none;
+    background-color: beige;
+    background-clip: border-box;
+}
+
+.place_name {
+    font-weight: 600;
 }
 </style>
