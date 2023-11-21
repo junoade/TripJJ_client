@@ -56,6 +56,7 @@ function onDrop(event) {
     event.preventDefault();
     isDragging.value = false;
     const files = event.dataTransfer.files;
+    let index = 0;
     for (let i = 0; i < files.length; i++) {
         if (files[i].type.split("/")[0] != "image") continue;
 
