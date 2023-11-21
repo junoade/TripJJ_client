@@ -1,4 +1,10 @@
 <script setup>
+import { ref } from "vue";
+import Suggestion from '../common/Suggestion.vue';
+
+const searchKeyword = ref("");
+const max_search_length = ref(6);
+const selectedArea = ref({});
 
 </script>
 
@@ -8,14 +14,15 @@
     </div>
     <div class="d-flex justify-content-center p-2">
         <div class="search-box">
-            <button class="btn-search"><i class="bi bi-search"></i></button>
-            <input type="text" class="input-search" placeholder="검색해주세요 :D">
+            <button class="btn-search"><i class="bi bi-search" id="searchIcon"></i></button>
+            <input type="text" class="input-search" placeholder="검색해주세요 :D" v-model="searchKeyword">
+            <Suggestion :search-keyword="searchKeyword" :max_search_length="max_search_length"/>
+
         </div>
     </div>
 </template>
 
 <style scoped>
-
 /* 버튼 관련 */
 .search-box {
     width: fit-content;
@@ -61,6 +68,43 @@
     pointer-events: painted;
 }
 
+.btn-search i {
+    color: aliceblue;
+    -webkit-animation: blink 0.5s ease-in-out infinite alternate;
+    -moz-animation: blink 0.5s ease-in-out infinite alternate;
+    animation: blink 0.5s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 .btn-search:hover~.input-search {
     width: 300px;
     border-radius: 0px;
@@ -69,11 +113,16 @@
     transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
 }
 
-.input-search:hover {
+.input-search:hover,
+.input-search:focus {
     width: 300px;
     border-radius: 0px;
     background-color: transparent;
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
     transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
 }
-</style>
+
+.input-search:hover ~ .btn-search i,
+.input-search:focus ~ .btn-search i {
+    color: #000000;
+}</style>

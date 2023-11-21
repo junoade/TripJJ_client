@@ -15,7 +15,10 @@ const props = defineProps({
 console.log("부모 컴포넌트로부터 전달받은 이미지 파일 목록: ", props.images);
 console.log("현재 로그인한 유저", userInfo);
 
-const dto = ref({
+/**
+ * 스냅샷 게시판의 작성하는 스토리 게시글과 관련된 DTO
+ */
+const snapshotDto = ref({
     userId: userInfo.userId,
     location: "",
     startDate: "",
@@ -24,41 +27,66 @@ const dto = ref({
     content: ""
 });
 
+/**
+ * 사용자가 방문한 지역과 관련된 DTO
+ */
+const areaDto = ref({});
+
+// const hasUserClickedArea = ref(false);
+
 const max_textarea = ref(250);
 const max_search_length = ref(4);
+const param_name_snapshotDto = "snapshot";
+const param_name_areaDto = "area";
+const param_name_fileDto = "multipartFile"; 
 
+/**
+ * textArea를 감시하면서 유효성 검증 로직 수행
+ */
 watch(() => {
-    const textArea = dto.value.content;
+    const textArea = snapshotDto.value.content;
 
     if (textArea.length >= max_textarea.value) {
         alert(`${max_textarea.value}자로 제한됩니다!`);
-        dto.value.content = textArea.slice(0, max_textarea.value);
+        snapshotDto.value.content = textArea.slice(0, max_textarea.value);
     }
 });
 
+/**
+ * 종료 날짜 관련 유효성 검증 수행
+ */
 const checkEndDate = () => {
-    if (!isStartDateBeforeEndDate(dto.value.startDate, dto.value.endDate)) {
+    if (!isStartDateBeforeEndDate(snapshotDto.value.startDate, snapshotDto.value.endDate)) {
         alert("여행 종료 날짜는 시작 날짜보다 빠를 수 없습니다!");
-        dto.value.endDate = dto.value.startDate;
+        snapshotDto.value.endDate = snapshotDto.value.startDate;
         return;
     }
 
     const today = new Date();
-    if (!isStartDateBeforeEndDate(dto.value.endDate, today)) {
+    console.log(today);
+    if (!isStartDateBeforeEndDate(snapshotDto.value.endDate, today)) {
         alert("이미 다녀온 여행 종료 날짜를 입력해주세요!");
-        dto.value.endDate = dateToStr(today);
+        snapshotDto.value.endDate = dateToStr(today);
         return;
     }
 }
 
+/**
+ * 시작 날짜 관련 유효성 검증 수행
+ */
 const checkStartDate = () => {
     const today = new Date();
-    if (!isStartDateBeforeEndDate(dto.value.startDate, today)) {
+    console.log(today);
+    if (!isStartDateBeforeEndDate(snapshotDto.value.startDate, today)) {
         alert("여행 시작 날짜를 확인해주세요!");
-        dto.value.startDate = dateToStr(today);
+        snapshotDto.value.startDate = dateToStr(today);
     }
 }
 
+/**
+ * Date 객체를 'YYYY-MM-DD' 형식으로 문자열 반환
+ * @param {*} date 
+ */
 function dateToStr(date) {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -66,11 +94,39 @@ function dateToStr(date) {
     return year + '-' + month + '-' + day;
 }
 
+/**
+ * 날짜 비교와 관련된 유효성 검증을 위한 공통 함수
+ * YYYY-MM-DD로만 비교하도록
+ * @param {*} startDate 
+ * @param {*} endDate 
+ */
 function isStartDateBeforeEndDate(startDate, endDate) {
     const startDateObj = new Date(startDate);
     const endDateObj = new Date(endDate);
+    startDateObj.setHours(0, 0, 0, 0);
+    endDateObj.setHours(0, 0, 0, 0);
+    return startDateObj <= endDateObj
+}
 
-    return startDateObj < endDateObj
+/**
+ * 검색 컴포넌트(자식 컴포넌트)로부터 전달(emit)받은 지역을 바탕으로 
+ * areaDto에 객체 저장
+ * @param {*} area 
+ */
+const currentSelectedArea = (area) => {
+
+    if(area === undefined || area === null) {
+        return;
+    }
+
+    areaDto.value = area;
+    snapshotDto.value.location = formatOnSearchKeyword(area);
+    // hasUserClickedArea.value = true;
+    console.log("부모 컴포넌트 선택된 주소 확인", area.address_name);
+}
+
+function formatOnSearchKeyword(area) {
+    return area.address_name + " " + area.place_name;
 }
 
 /**
@@ -80,20 +136,25 @@ const upload = async () => {
     console.log("서버로 전송하기 위해 formData를 생성합니다.");
     const formData = new FormData();
     // formData.append('snapshot', JSON.stringify(dto.value));
-    formData.append('snapshot',
-        new Blob([JSON.stringify(dto.value)], { type: 'application/json' }));
+    formData.append(param_name_snapshotDto,
+        new Blob([JSON.stringify(snapshotDto.value)], { type: 'application/json' }));
+
+    formData.append(param_name_areaDto,
+        new Blob([JSON.stringify(areaDto.value)], {type:'application/json'}));
 
     for (let item of props.fileList) {
         console.log(item.file);
-        formData.append('multipleFiles', item.file);
+        formData.append(param_name_fileDto, item.file);
     }
 
     await uploadStory(formData,
         (response) => {
             console.log("요청 응답 성공", response.status);
+            alert("성공적으로 등록되었습니다.");
 
         }, (error) => {
             console.log("요청 응답 실패", error);
+            alert("서버 에러로 인하여 등록이 실패했습니다 :(");
         });
 }
 
@@ -143,40 +204,41 @@ const upload = async () => {
                         <div class="col-md-6">
                             <form>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="userId" placeholder="" v-model="dto.userId"
+                                    <input type="text" class="form-control" id="userId" placeholder="" v-model="snapshotDto.userId"
                                         readonly>
                                     <label for="userId">아이디</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="location" v-model="dto.location">
+                                    <input type="text" class="form-control" id="location" v-model="snapshotDto.location">
                                     <label for="location">어디를 다녀오셨나요?</label>
                                     <!-- 카카오 맵 API를 사용해서 유사한 장소 검색 후 서버로 좌표값 보내도록 수행 -->
-                                    <Suggestion
-                                        :searchKeyword="dto.location"
+                                    <Suggestion 
+                                        :searchKeyword="snapshotDto.location" 
                                         :max_search_length="max_search_length"
-                                    />
-                                    
+                                        :hasUserClickedArea="hasUserClickedArea"
+                                        @currentSelectedArea="currentSelectedArea" />
+
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="startDate" v-model="dto.startDate"
+                                    <input type="date" class="form-control" id="startDate" v-model="snapshotDto.startDate"
                                         @input="checkStartDate">
                                     <label for="startDate">시작날짜</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="endDate" v-model="dto.endDate"
+                                    <input type="date" class="form-control" id="endDate" v-model="snapshotDto.endDate"
                                         @input="checkEndDate">
                                     <label for="startDate">종료날짜</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="tag" v-model="dto.tag">
+                                    <input type="text" class="form-control" id="tag" v-model="snapshotDto.tag">
                                     <label for="tag">태그</label>
                                 </div>
 
                                 <div class="form-floating mb-3">
                                     <textarea class="form-control" id="content" :maxlength="max_textarea" required
-                                        v-model="dto.content"></textarea>
-                                    <label for="content">추억 기록하기 {{ dto.content.length }} / {{ max_textarea }}</label>
+                                        v-model="snapshotDto.content"></textarea>
+                                    <label for="content">추억 기록하기 {{ snapshotDto.content.length }} / {{ max_textarea }}</label>
                                 </div>
                             </form>
                         </div>
@@ -252,5 +314,4 @@ input:-webkit-autofill:active {
     width: 30px;
     height: 48px;
 }
-
 </style>
