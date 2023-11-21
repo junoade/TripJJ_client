@@ -1,13 +1,8 @@
 <script setup>
-import { useInterestStore } from "@/stores/interest";
-import { storeToRefs } from "pinia";
-
-const interestStore = useInterestStore();
-const { interestMap } = storeToRefs(interestStore);
-
 defineEmits(["viewAttraction", "updateInterests"]);
 defineProps({
     attraction: Object,
+    interests: Map,
 })
 </script>
 
@@ -30,7 +25,7 @@ defineProps({
         <hr class="dark horizontal">
 
         <button class="favorite-icon" @click="$emit('updateInterests', attraction)">
-            <span v-if="interestMap.has(attraction.contentId)" role="img" style="color:red">❤</span>
+            <span v-if="interests.has(attraction.contentId)" role="img" style="color:red">❤</span>
             <span v-else role="img">🤍</span>
         </button>
       </div>

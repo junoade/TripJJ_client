@@ -1,34 +1,20 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { listAttractions, listSido, listGugun } from "@/api/attraction"
+import { ref, onBeforeUnmount } from "vue";
+import { listAttractions, listSido, listGugun, insertInterests } from "@/api/attraction"
 import VKakaoMap2  from "@/components/layout/VKakaoMap2.vue";
 import VSelect from "@/components/common/VSelect.vue";
 import AttractionListItem from "@/components/Attraction/item/AttractionListItem.vue";
-import { useInterestStore } from "@/stores/interest";
-import { storeToRefs } from "pinia";
 
-// 임시 관심 정보
-const interestStore = useInterestStore();
-const { interestMap } = storeToRefs(interestStore);
+const interests = ref(new Map());
 const updateInterests = (attraction) => {
-    if (interestMap.value.has(attraction.contentId)) {
-        interestMap.value.delete(attraction.contentId);
-        console.log("관심 관광지 삭제! ", interestMap.value);
-
-
+    if (interests.value.has(attraction.contentId)) {
+        interests.value.delete(attraction.contentId);
+        console.log("관심 관광지 삭제! ", interests.value);
     } else {
-        interestMap.value.set(attraction.contentId, attraction);
-        console.log("관심 관광지 저장! ", interestMap.value);
-
-
+        interests.value.set(attraction.contentId, attraction);
+        console.log("관심 관광지 저장! ", interests.value);
     }
 }
-
-// 페이지에서 나가기 직전 DB에 저장 후 초기화
-onBeforeUnmount(() => {
-    console.log("DB에 저장 후 초기화 : ", interestMap.value);
-    interestMap.value.clear();
-})
 
 // 페이징 정보
 import PageNavigation from "@/components/common/PageNavigation.vue";
@@ -40,11 +26,11 @@ const navigationSize = ref(3);
 const sidoList = ref([{ text: "시/도", value: "" }]);
 const gugunList = ref([{ text: "구/군", value: "" }]);
 const contentTypeList = ref([
-  { text: "유형", value: "" },
-  { text: "관광지", value: "12" }, { text: "문화시설", value: "14" },
-  { text: "축제공연행사", value: "15" }, { text: "여행코드", value: "25" },
-  { text: "레포츠", value: "28" }, { text: "숙박", value: "32" },
-  { text: "쇼핑", value: "38" }, { text: "음식점", value: "39" }
+    { text: "유형", value: "" },
+    { text: "관광지", value: "12" }, { text: "문화시설", value: "14" },
+    { text: "축제공연행사", value: "15" }, { text: "여행코드", value: "25" },
+    { text: "레포츠", value: "28" }, { text: "숙박", value: "32" },
+    { text: "쇼핑", value: "38" }, { text: "음식점", value: "39" }
 ]);
 
 // MAP => 
@@ -53,49 +39,47 @@ const selectedAttraction = ref({});   // 선택된 Attraction
 
 // 검색 조건 객체
 const conditions = ref({
-  sidoCode: "",
-  gugunCode: "",
-  contentTypeId: "",
-  title: "",
-  pgno: currentPage.value,
-  // spp: VITE_ARTICLE_LIST_SIZE
-  spp: 9
+    sidoCode: "",
+    gugunCode: "",
+    contentTypeId: "",
+    title: "",
+    pgno: currentPage.value,
+    spp: 9
 });
 
 const getSidoList = () => {
-  listSido(
-    ({ data }) => {
-      let options = [];
-      options.push({ text: "시/도", value: "" });
-      data.forEach((sido) => {
-        options.push({ text: sido.sidoName, value: sido.sidoCode });
-      });
-      sidoList.value = options;
-    },
-    (err) => {
-      console.log(err);
-    }
-  );
+    listSido(
+        ({ data }) => {
+            let options = [];
+            options.push({ text: "시/도", value: "" });
+            data.forEach((sido) => {
+                options.push({ text: sido.sidoName, value: sido.sidoCode });
+            });
+            sidoList.value = options;
+        },
+        (err) => {
+            console.log(err);
+        }
+    );
 };
 
 const onChangeSido = (val) => {
-  listGugun(
-    { sidoCode: val },
-    ({ data }) => {
-      let options = [];
-      options.push({ text: "구/군", value: "" });
-      console.log(data)
-      data.forEach((gugun) => {
-        options.push({ text: gugun.gugunName, value: gugun.gugunCode });
-      });
-      gugunList.value = options;
-    },
-    (err) => {
-      console.log(err);
-    }
-  );
-  conditions.value.sidoCode = val;
-  // conditions.value.gugunCode = '';
+    listGugun(
+        { sidoCode: val },
+        ({ data }) => {
+            let options = [];
+            options.push({ text: "구/군", value: "" });
+            console.log(data)
+            data.forEach((gugun) => {
+                options.push({ text: gugun.gugunName, value: gugun.gugunCode });
+            });
+            gugunList.value = options;
+        },
+        (err) => {
+            console.log(err);
+        }
+    );
+    conditions.value.sidoCode = val;
 };
 
 const onChangeGugun = (val) => {
@@ -146,51 +130,51 @@ getSidoList();
 </script>
 
 <template>
-  <!-- 검색 바 -->
-  <div class="container mt-md-3">
-    <form class="d-flex justify-content-center" onsubmit="return false;" role="search">
-        <VSelect :selectOption="sidoList" @onKeySelect="onChangeSido" />
-        <VSelect :selectOption="gugunList" @onKeySelect="onChangeGugun" />
-        <VSelect :selectOption="contentTypeList" @onKeySelect="onChangeContentType" />
-        <input id="search-keyword" class="form control form-control-sm me-2" type="search" 
-              placeholder="검색어" aria-label="검색어" v-model="conditions.title" />
+    <!-- 검색 바 -->
+    <div class="container mt-md-3">
+        <form class="d-flex justify-content-center" onsubmit="return false;" role="search">
+            <VSelect :selectOption="sidoList" @onKeySelect="onChangeSido" />
+            <VSelect :selectOption="gugunList" @onKeySelect="onChangeGugun" />
+            <VSelect :selectOption="contentTypeList" @onKeySelect="onChangeContentType" />
+            <input id="search-keyword" class="form control form-control-sm me-2" type="search" 
+                  placeholder="검색어" aria-label="검색어" v-model="conditions.title" />
 
-        <!-- 이게 계속 자동 줄바꿈이 됩니다. 해결 필요 -->
-        <button id="btn-search" class="btn btn-outline-success btn-sm" type="button" @click="onSearch">검색</button>
-    </form>
-  </div>
-
-  <!-- 결과 리스트 / 지도 -->
-  <div class="m-md-3 row">
-    <!-- 지도 -->
-    <VKakaoMap2
-      :attractions="attractions"
-      :selectedAttraction="selectedAttraction">
-    </VKakaoMap2>
-
-    <!-- 결과 리스트 -->
-    <div class="position-absolute m-md-3 justify-content-center" 
-        style="z-index: 2; max-width: 300px; max-height: 100%;" >
-      <div id="attractionList" class="overflow-auto mt-md-3"
-          style="max-width: 300px; max-height: 850px;" >
-        <AttractionListItem
-          v-for="attraction in attractions"
-          :key="attraction.title"
-          :attraction="attraction"
-          @view-attraction="viewAttraction"
-          @update-interests="updateInterests"
-          >
-        </AttractionListItem>
-      </div>
-
-      <!-- 페이징 -->
-      <PageNavigation 
-        :current-page="currentPage" :navigationSize="navigationSize"
-        :total-page="totalPage" class="mt-md-3"
-        @pageChange="onPageChange">
-      </PageNavigation>
+            <!-- 이게 계속 자동 줄바꿈이 됩니다. 해결 필요 -->
+            <button id="btn-search" class="btn btn-outline-success btn-sm" type="button" @click="onSearch">검색</button>
+        </form>
     </div>
-  </div>
+
+    <!-- 결과 리스트 / 지도 -->
+    <div class="m-md-3 row">
+        <!-- 지도 -->
+        <VKakaoMap2
+            :attractions="attractions"
+            :selectedAttraction="selectedAttraction">
+        </VKakaoMap2>
+      
+        <!-- 결과 리스트 -->
+        <div class="position-absolute m-md-3 justify-content-center" 
+            style="z-index: 2; max-width: 300px; max-height: 100%;" >
+            <div id="attractionList" class="overflow-auto mt-md-3"
+                style="max-width: 300px; max-height: 850px;" >
+                <AttractionListItem
+                    v-for="attraction in attractions"
+                    :key="attraction.title"
+                    :attraction="attraction" :interests="interests"
+                    @view-attraction="viewAttraction"
+                    @update-interests="updateInterests">
+                </AttractionListItem>
+            </div>
+        
+            <!-- 페이징 -->
+            <PageNavigation 
+                class="mt-md-3"
+                :current-page="currentPage" :navigationSize="navigationSize"
+                :total-page="totalPage"
+                @pageChange="onPageChange">
+            </PageNavigation>
+        </div>
+    </div>
 </template>
 
 <style scoped>
