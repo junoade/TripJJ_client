@@ -1,8 +1,7 @@
 <script setup>
-
 import { ref, watch } from 'vue';
 import { useMemberStore } from "@/stores/member";
-import { uploadStory } from "@/api/snapshot.js";
+// import { uploadStory } from '@/api/snapshot.js'
 
 import StoryFileItem from './StoryFileItem.vue';
 
@@ -49,8 +48,8 @@ function isStartDateBeforeEndDate(startDate, endDate) {
     return startDateObj < endDateObj
 }
 
-const upload = () => {
-
+const upload = async () => {
+    console.log("서버로 전송한다~", dto.value);
 }
 
 
@@ -134,8 +133,8 @@ const upload = () => {
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                     @click="$emit('clearStatus')">닫기</button>
-                <button type="button" class="btn btn-primary" @click="$emit('submitUploadImages', false)">이전으로</button>
-                <button type="button" class="btn btn-primary" @click="$emit('submitUploadImages', true)">글쓰기</button>
+                <button type="button" class="btn btn-primary" @click="$emit('checkUploadImages')">이전으로</button>
+                <button type="button" class="btn btn-primary" @click="upload">글쓰기</button>
             </div>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref } from 'vue';
-import StoryUploadModal from '@/components/community/StoryUploadModal.vue';
+import StoryUploadModal from '@/components/snapshot/StoryUploadModal.vue';
 
 const dataBsTarget = ref("#example");
 

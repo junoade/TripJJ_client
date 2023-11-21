@@ -49,7 +49,7 @@ const { memberMenu } = storeToRefs(memberStore);
 
                     <!-- 스토리 스냅샷 -->
                     <li class="nav-item">            
-                        <router-link :to="{ name: 'community' }" class="nav-link">스냅샷</router-link>
+                        <router-link :to="{ name: 'snapshot' }" class="nav-link">스냅샷</router-link>
                     </li>
 
                     <li class="nav-item">

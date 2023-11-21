@@ -1,9 +1,9 @@
 <script setup>
 
 import { ref } from 'vue';
-import StoryFileUploadView from "@/components/community/StoryFileUploadView.vue";
-import StoryFileUploadCheck from "@/components/community/StoryFileUploadCheck.vue";
-import StoryFileUpload from "@/components/community/StoryFileUpload.vue";
+import StoryFileUploadView from "@/components/snapshot/StoryFileUploadView.vue";
+import StoryFileUploadCheck from "@/components/snapshot/StoryFileUploadCheck.vue";
+import StoryFileUpload from "@/components/snapshot/StoryFileUpload.vue";
 
 const isFileUpload = ref(false); // 업로드 이미지를 올렸는가?
 const isFileChecked = ref(false); // 업로드 이미지를 확인했는가?
@@ -51,14 +51,9 @@ const afterCheckUploadImages = (status) => {
     }
 }
 
-const submit = (status) => {
-    if (status) {
-        // TODO - 서버로 이미지 파일 리스트 전송
-        console.log("서버로 이미지 파일 리스트 전송");
-    } else {
-        isFileChecked.value = false;
-        console.log("업로드될 이미지 목록 확인하러 갈래");
-    }
+const goBackToCheckUploadImages = () => {
+    isFileChecked.value = false;
+    console.log("업로드될 이미지 목록 확인하러 갈래");
 }
 
 </script>
@@ -73,7 +68,7 @@ const submit = (status) => {
                 @clearStatus="clearStatus" />
         </template>
         <template v-else-if="isFileUpload && isFileChecked">
-            <StoryFileUpload :images="images" @submitUploadImages="submit" @clearStatus="clearStatus" />
+            <StoryFileUpload :images="images" @checkUploadImages="goBackToCheckUploadImages" @clearStatus="clearStatus" />
         </template>
     </div>
 </template>
