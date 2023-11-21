@@ -1,6 +1,6 @@
-import { localAxios } from "@/util/http-commons";
+import { localAxios, uploadAxios } from "@/util/http-commons";
 
-const local = localAxios();
+const local = uploadAxios();
 const api_name = "snapshot";
 
 /**
@@ -10,7 +10,9 @@ const api_name = "snapshot";
  * @param {*} success
  * @param {*} fail
  */
-async function uploadStory(param, success, fail) {}
+async function uploadStory(param, success, fail) {
+    await local.post(`${api_name}`, param).then(success).catch(fail);
+}
 
 /**
  * 사용자가 스냅샷 게시판에 올린 스토리를 수정한다.

@@ -2,7 +2,8 @@
 
 import { ref, watch } from 'vue';
 
-const images = ref([]);
+const images = ref([]); // blob:URL; 클라이언트(로컬)에서만 확인하기 위해
+const fileList = ref([]); // 서버로 전달될 실제 파일
 const isDragging = ref(false);
 
 
@@ -19,11 +20,14 @@ function onFileSelect(event) {
         if (files[i].type.split("/")[0] != "image") continue;
 
         if (!images.value.some((e) => e.name === files[i].name)) {
-            images.value.push({ name: files[i].name, url: URL.createObjectURL(files[i]), index: index++ });
+            images.value.push({ name: files[i].name, url: URL.createObjectURL(files[i]), index: index });
+            fileList.value.push({ index: index, file: files[i]});
+            index++;
         }
     }
 
     console.log(images.value);
+    console.log(fileList.value);
 }
 
 /**
@@ -32,6 +36,8 @@ function onFileSelect(event) {
  */
 function deleteImage(index) {
     images.value.splice(index, 1);
+    fileList.value.splice(index, 1);
+    
 }
 
 function onDragOver(event) {
@@ -54,7 +60,9 @@ function onDrop(event) {
         if (files[i].type.split("/")[0] != "image") continue;
 
         if (!images.value.some((e) => e.name === files[i].name)) {
-            images.value.push({ name: files[i].name, url: URL.createObjectURL(files[i]) });
+            images.value.push({ name: files[i].name, url: URL.createObjectURL(files[i]), index: index });
+            fileList.value.push({ index: index, file: files[i]});
+            index++;
         }
     }
 }
@@ -91,7 +99,7 @@ function onDrop(event) {
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                     @click="$emit('clearStatus')">닫기</button>
-                <button type="button" class="btn btn-primary" @click="$emit('afterUploadImages', images)">다음으로</button>
+                <button type="button" class="btn btn-primary" @click="$emit('afterUploadImages', images, fileList)">다음으로</button>
             </div>
         </div>
     </div>

@@ -1,14 +1,14 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useMemberStore } from "@/stores/member";
-// import { uploadStory } from '@/api/snapshot.js'
-
+import { uploadStory } from '@/api/snapshot.js'
 import StoryFileItem from './StoryFileItem.vue';
 
 const memberStore = useMemberStore();
 const userInfo = memberStore.userInfo;
 const props = defineProps({
     images: Array,
+    fileList: Array,
 });
 
 console.log("부모 컴포넌트로부터 전달받은 이미지 파일 목록: ", props.images);
@@ -35,10 +35,33 @@ watch(() => {
 });
 
 const checkEndDate = () => {
-    if(!isStartDateBeforeEndDate(dto.value.startDate, dto.value.endDate)) {
-        alert("여행 종료 날짜를 확인해주세요!");
+    if (!isStartDateBeforeEndDate(dto.value.startDate, dto.value.endDate)) {
+        alert("여행 종료 날짜는 시작 날짜보다 빠를 수 없습니다!");
         dto.value.endDate = dto.value.startDate;
+        return;
     }
+
+    const today = new Date();
+    if (!isStartDateBeforeEndDate(dto.value.endDate, today)) {
+        alert("이미 다녀온 여행 종료 날짜를 입력해주세요!");
+        dto.value.endDate = dateToStr(today);
+        return;
+    }
+}
+
+const checkStartDate = () => {
+    const today = new Date();
+    if (!isStartDateBeforeEndDate(dto.value.startDate, today)) {
+        alert("여행 시작 날짜를 확인해주세요!");
+        dto.value.startDate = dateToStr(today);
+    }
+}
+
+function dateToStr(date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return year + '-' + month + '-' + day;
 }
 
 function isStartDateBeforeEndDate(startDate, endDate) {
@@ -48,8 +71,26 @@ function isStartDateBeforeEndDate(startDate, endDate) {
     return startDateObj < endDateObj
 }
 
+/**
+ * 서버로 전송 담당
+ */
 const upload = async () => {
-    console.log("서버로 전송한다~", dto.value);
+    console.log("서버로 전송하기 위해 formData를 생성합니다.");
+    const formData = new FormData();
+    formData.append('snapshot', JSON.stringify(dto.value));
+
+    for (let item of props.fileList) {
+        console.log(item.file);
+        formData.append('multipleFiles', item.file);
+    }
+
+    await uploadStory(formData,
+        (response) => {
+            console.log("요청 응답 성공", response.status);
+
+        }, (error) => {
+            console.log("요청 응답 실패", error);
+        });
 }
 
 
@@ -63,7 +104,7 @@ const upload = async () => {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="catchPhrase">"여행의 감동을 {{max_textarea}}자로<br> 당신만의 여행이야기를 캡처하세요!"</p>
+                <p class="catchPhrase">"여행의 감동을 {{ max_textarea }}자로<br> 당신만의 여행이야기를 캡처하세요!"</p>
                 <div class="container mt-4">
                     <div class="row">
                         <!-- Left side (Image) -->
@@ -98,7 +139,8 @@ const upload = async () => {
                         <div class="col-md-6">
                             <form>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="userId" placeholder="" v-model="dto.userId" readonly>
+                                    <input type="text" class="form-control" id="userId" placeholder="" v-model="dto.userId"
+                                        readonly>
                                     <label for="userId">아이디</label>
                                 </div>
                                 <div class="form-floating mb-3">
@@ -106,11 +148,13 @@ const upload = async () => {
                                     <label for="location">어디를 다녀오셨나요?</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="startDate" v-model="dto.startDate">
+                                    <input type="date" class="form-control" id="startDate" v-model="dto.startDate"
+                                        @input="checkStartDate">
                                     <label for="startDate">시작날짜</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="endDate" v-model="dto.endDate" @input="checkEndDate">
+                                    <input type="date" class="form-control" id="endDate" v-model="dto.endDate"
+                                        @input="checkEndDate">
                                     <label for="startDate">종료날짜</label>
                                 </div>
 
@@ -151,6 +195,7 @@ const upload = async () => {
     font-size: 20px;
     font-weight: 700;
 }
+
 .modal-body {
     width: 100%;
     padding: 10px;
