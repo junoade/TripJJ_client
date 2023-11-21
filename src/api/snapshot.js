@@ -1,6 +1,7 @@
 import { localAxios } from "@/util/http-commons";
 
 const local = localAxios();
+const api_name = "snapshot";
 
 /**
  * 사용자가 스냅샷 게시판에 올린 스토리를 서버로 전송한다.
@@ -9,7 +10,7 @@ const local = localAxios();
  * @param {*} success
  * @param {*} fail
  */
-function uploadStory(param, success, fail) {}
+async function uploadStory(param, success, fail) {}
 
 /**
  * 사용자가 스냅샷 게시판에 올린 스토리를 수정한다.
@@ -18,7 +19,7 @@ function uploadStory(param, success, fail) {}
  * @param {*} success
  * @param {*} fail
  */
-function modifyStory(param, success, fail) {}
+async function modifyStory(param, success, fail) {}
 
 /**
  * 사용자가 자신이 올린 스토리를 삭제한다.
@@ -27,7 +28,7 @@ function modifyStory(param, success, fail) {}
  * @param {*} success
  * @param {*} fail
  */
-function deleteStory(param, success, fail) {}
+async function deleteStory(param, success, fail) {}
 
 /**
  * 사용자 아이디(userId)를 바탕으로 자신이 업로드한 스토리 목록을 조회한다
@@ -36,7 +37,7 @@ function deleteStory(param, success, fail) {}
  * @param {*} success
  * @param {*} fail
  */
-function findStoryByUserId(param, success, fail) {}
+async function findStoryByUserId(param, success, fail) {}
 
 /**
  * 스토리 아이디(storyId)를 바탕으로 특정 스토리를 조회한다.
@@ -45,4 +46,6 @@ function findStoryByUserId(param, success, fail) {}
  * @param {*} success
  * @param {*} fail
  */
-function findStoryByStoryId(param, success, fail) {}
+async function findStoryByStoryId(param, success, fail) {}
+
+export { uploadStory, modifyStory, deleteStory, findStoryByUserId, findStoryByStoryId };

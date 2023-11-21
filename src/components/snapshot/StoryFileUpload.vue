@@ -2,6 +2,8 @@
 
 import { ref, watch } from 'vue';
 import { useMemberStore } from "@/stores/member";
+import { uploadStory } from "@/api/snapshot.js";
+
 import StoryFileItem from './StoryFileItem.vue';
 
 const memberStore = useMemberStore();
@@ -33,7 +35,6 @@ watch(() => {
     }
 });
 
-
 const checkEndDate = () => {
     if(!isStartDateBeforeEndDate(dto.value.startDate, dto.value.endDate)) {
         alert("여행 종료 날짜를 확인해주세요!");
@@ -47,6 +48,11 @@ function isStartDateBeforeEndDate(startDate, endDate) {
 
     return startDateObj < endDateObj
 }
+
+const upload = () => {
+
+}
+
 
 </script>
 
