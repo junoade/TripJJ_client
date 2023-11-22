@@ -77,8 +77,13 @@ const moveWrite = () => {
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">Q&A</mark>
+          <mark class="sky">여행 게시판</mark>
         </h2>
+      </div>
+      <div>
+        <h1 class="fw-light"> </h1>
+        <p class="lead text-muted">여행 계획의 도움을 얻고 또 조언해보세요!<br> 그리고 자유롭게 한국 여행 경험에 대해 이야기해보세요!
+        </p>
       </div>
       <div class="col-lg-10">
         <div class="row align-self-center mb-2">
