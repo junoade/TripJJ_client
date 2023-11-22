@@ -247,6 +247,8 @@
                     </div>
                 </div> <!-- end card-->
                 
+
+                <!-- TODO 내 장소-->
                 <div class="card">
                     <div class="card-body">
                         <div class="dropdown float-end">
@@ -265,7 +267,7 @@
                                 <a href="javascript:void(0);" class="dropdown-item">Action</a>
                             </div>
                         </div>
-                        <h4 class="header-title mb-3">나의 여행 지도</h4>
+                        <h4 class="header-title mb-3">나의 여행 장소</h4>
 
                         <div class="inbox-widget" data-simplebar="init" style="max-height: 350px;">
                             <div class="simplebar-wrapper" style="margin: 0px;">
