@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { useMemberStore } from "@/stores/member";
 import { uploadStory } from '@/api/snapshot.js'
+import { httpStatusCode } from "@/util/http-status";
 import StoryFileItem from './StoryFileItem.vue';
 import Suggestion from "@/components/common/Suggestion.vue";
 
@@ -149,8 +150,13 @@ const upload = async () => {
 
     await uploadStory(formData,
         (response) => {
-            console.log("요청 응답 성공", response.status);
-            alert("성공적으로 등록되었습니다.");
+
+            if (response.status === httpStatusCode.OK) {
+                console.log("요청 응답 성공", response.status);
+                alert("성공적으로 등록되었습니다.");
+            } else if (response.status === httpStatusCode.NOTFOUND) {
+                console.log("없는 장소는 등록할 수 없습니다 :(");
+            }
 
         }, (error) => {
             console.log("요청 응답 실패", error);
