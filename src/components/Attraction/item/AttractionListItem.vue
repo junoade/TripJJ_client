@@ -2,13 +2,13 @@
 defineEmits(["viewAttraction", "updateInterests"]);
 defineProps({
     attraction: Object,
-    interests: Map,
+    interests: Array,
 })
 </script>
 
 <template>
   <!-- 관광지 검색 결과 아이템 => 가로에 3개-4개씩 뿌리면 될 듯...? -->
-  <div class="mb-md-3">
+  <div class="mb-3">
     <div class="card text-center text-dark bg-light mb-3">
       <div class="card-img-top">
         <img 
@@ -25,7 +25,7 @@ defineProps({
         <hr class="dark horizontal">
 
         <button class="favorite-icon" @click="$emit('updateInterests', attraction)">
-            <span v-if="interests.has(attraction.contentId)" role="img" style="color:red">❤</span>
+            <span v-if="interests.some((contentId) => contentId===attraction.contentId)" role="img" style="color:red">❤</span>
             <span v-else role="img">🤍</span>
         </button>
       </div>
