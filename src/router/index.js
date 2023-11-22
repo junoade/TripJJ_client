@@ -8,7 +8,7 @@ import TheLogout from "@/components/member/Logout.vue";
 import ModifyForm from "@/components/member/ModifyForm.vue";
 import TheSnapshotView from "@/views/TheSnapshotView.vue";
 import TheAttractionView2 from "@/views/TheAttractionView2.vue";
-import TheAttractionInterestView from "@/views/TheAttractionInterestView.vue"
+import TheAttractionInterestView from "@/views/TheAttractionInterestView.vue";
 
 // import TheBoardView from "../views/TheBoardView.vue";
 // import TheElectricChargingStationView from '../views/TheElectricChargingStation.vue';
@@ -62,7 +62,7 @@ const loginRemainIfTokenValid = async (to, from, next) => {
 
 //     if (targetArticle.value == null) next(false);
 //     else next();
-    
+
 // }
 
 const router = createRouter({
@@ -171,6 +171,8 @@ const router = createRouter({
             path: "/mypage",
             name: "mypage",
             component: () => import("@/views/TheMySnapshotView.vue"),
+        },
+        {
             path: "/interest",
             name: "interest",
             beforeEnter: onlyAuthUser,
