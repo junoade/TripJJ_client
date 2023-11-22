@@ -6,7 +6,7 @@ import TheAttractionView from "@/views/TheAttractionView.vue";
 import TheRegistrationView from "@/views/TheRegistrationView.vue";
 import TheLogout from "@/components/member/Logout.vue";
 import ModifyForm from "@/components/member/ModifyForm.vue";
-import TheCommunityView from "@/views/TheCommunityView.vue";
+import TheSnapshotView from "@/views/TheSnapshotView.vue";
 import TheAttractionView2 from "@/views/TheAttractionView2.vue";
 import TheAttractionInterestView from "@/views/TheAttractionInterestView.vue"
 
@@ -97,9 +97,9 @@ const router = createRouter({
             component: ModifyForm,
         },
         {
-            path: "/community",
-            name: "community",
-            component: TheCommunityView,
+            path: "/snapshot",
+            name: "snapshot",
+            component: TheSnapshotView,
         },
         {
             path: "/attraction",
@@ -163,6 +163,14 @@ const router = createRouter({
             ],
         },
         {
+            path: "/location/:contentId",
+            name: "location",
+            component: () => import("@/views/TheLocationSearchView.vue"),
+        },
+        {
+            path: "/mypage",
+            name: "mypage",
+            component: () => import("@/views/TheMySnapshotView.vue"),
             path: "/interest",
             name: "interest",
             beforeEnter: onlyAuthUser,
