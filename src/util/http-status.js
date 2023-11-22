@@ -7,5 +7,5 @@ export const httpStatusCode = {
     UNAUTHORIZED: 401,
     FORBIDDEN: 403,
     NOTFOUND: 404,
-  };
-  
+    CONFLICT: 409,
+};
