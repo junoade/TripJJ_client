@@ -2,11 +2,13 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { registQna, modifyQna, getModifyQna } from "@/api/qna";
+import { useMemberStore } from "@/stores/member";
 
 const router = useRouter();
 const route = useRoute();
 const props = defineProps({ type: String });
 const isUseId = ref(false);
+const memberStore = useMemberStore();
 
 const article = ref({
   articleNo: 0,
@@ -22,13 +24,21 @@ if (props.type === "modify") {
   let { articleNo } = route.params;
   console.log(articleNo + "번글 얻어와서 수정할거야");
   // API 호출
-  getModifyQna(articleNo, ({data}) =>{
-    console.log(data); 
-    article.value = data;
+  getModifyQna(articleNo, ({ data }) => {
+    if (!data) {
+      alert("해당 게시글은 존재하지 않습니다!");
+      router.push({name: "article-list"})
+    } else if (data.userId != memberStore.userInfo.userId) {
+      alert("해당 게시글을 수정할 권한이 없습니다!");
+      router.push({name: "article-list"})
+    } else {
+      console.log("글 정보: ", data); 
+      article.value = data; 
+    }
   }, (error) => {
     alert("조회 실패");
+    router.push({name: "article-list"})
   });
-
   isUseId.value = true;
 }
 

@@ -5,14 +5,14 @@
 <template>
     <!-- 여행-->
     <div class="searchType topBotomBordersIn">
-            <a>관광지</a>
-            <a>지역 맛집</a>
-            <a>숙박 / 호캉스</a>
-            <a>축제 공연</a>
+        <a>관광지</a>
+        <a>지역 맛집</a>
+        <a>숙박 / 호캉스</a>
+        <a>축제 공연</a>
         <a>여행 코스</a>
-            <a>문화 시설</a>
-            <a>레포츠</a>
-        </div>
+        <a>문화 시설</a>
+        <a>레포츠</a>
+    </div>
 </template>
 
 <style scoped>
