@@ -1,10 +1,46 @@
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { searchByArea } from "@/api/search.js";
+
 import Suggestion from '../common/Suggestion.vue';
 
+const router = useRouter();
 const searchKeyword = ref("");
 const max_search_length = ref(6);
 const selectedArea = ref({});
+
+/**
+ * 검색 컴포넌트(자식 컴포넌트)에서 클릭이벤트의 발생 이후
+ * 전달(emit)받은 지역을 바탕으로 
+ * areaDto에 객체 저장
+ * @param {*} area 
+ */
+const currentSelectedArea = async (area) => {
+    if (area === undefined || area === null) {
+        return;
+    }
+
+    selectedArea.value = area;
+    // hasUserClickedArea.value = true;
+    console.log("부모 컴포넌트 선택된 주소 확인", area.address_name);
+
+    // get요청 후 페이징 이동
+    await searchByArea(selectedArea.value,
+        ((response) => {
+            console.log("요청 응답 성공", response);
+            // 라우터 이동
+            // response에서 관광지 정보 pk인 content_id로 검색
+            console.log(response.data.contentId);
+            const contentId = response.data.contentId;
+            router.replace({ name: "location", params: { contentId } });
+
+         }),
+        (error) => {
+            console.error(error);
+         });    
+}
+
 
 </script>
 
@@ -16,7 +52,8 @@ const selectedArea = ref({});
         <div class="search-box">
             <button class="btn-search"><i class="bi bi-search" id="searchIcon"></i></button>
             <input type="text" class="input-search" placeholder="검색해주세요 :D" v-model="searchKeyword">
-            <Suggestion :search-keyword="searchKeyword" :max_search_length="max_search_length"/>
+            <Suggestion :search-keyword="searchKeyword" :max_search_length="max_search_length"
+                @currentSelectedArea="currentSelectedArea" />
 
         </div>
     </div>
@@ -122,7 +159,8 @@ const selectedArea = ref({});
     transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
 }
 
-.input-search:hover ~ .btn-search i,
-.input-search:focus ~ .btn-search i {
+.input-search:hover~.btn-search i,
+.input-search:focus~.btn-search i {
     color: #000000;
-}</style>
+}
+</style>
