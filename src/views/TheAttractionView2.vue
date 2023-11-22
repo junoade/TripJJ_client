@@ -210,10 +210,12 @@ getInterests();
     <!-- 결과 리스트 / 지도 -->
     <div class="m-3 row">
         <!-- 지도 -->
-        <VKakaoMap2
-            :attractions="attractions"
-            :selectedAttraction="selectedAttraction">
-        </VKakaoMap2>
+        <div style="height: 1000px">
+            <VKakaoMap2
+                :attractions="attractions"
+                :selectedAttraction="selectedAttraction">
+            </VKakaoMap2>
+        </div>
       
         <!-- 결과 리스트 -->
         <div class="position-absolute m-3 justify-content-center bg-white bg-opacity-75" 
