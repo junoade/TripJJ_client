@@ -3,10 +3,11 @@ import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { deleteQna, detailQna } from '@/api/qna';
 import TheRepliesView from "@/components/reply/ReplieList.vue";
+import { useMemberStore } from "@/stores/member";
 
 const route = useRoute();
 const router = useRouter();
-
+const memberInfo = useMemberStore();
 // const articleno = ref(route.params.articleno);
 const { articleNo } = route.params;
 
@@ -20,13 +21,19 @@ onMounted(() => {
 const getArticle = () => {
   // const { articleno } = route.params;
   console.log(articleNo + "번글 얻으러 가자!!!");
+
   // API 호출
   detailQna(articleNo, ({ data }) => {
+    if (!data) {
+      alert("해당 게시글은 존재하지 않습니다!");
+      router.push({name: "article-list"})
+    }
     article.value = data.article;
     replies.value = data.article.replies;
     console.log(data);
   }, (error) => {
-    console.log(error);
+    alert("게시글 조회 실패!");
+    router.push({name: "article-list"})
   })
 
 };
@@ -60,6 +67,7 @@ const getRepliesLength = computed(() => {
   return replies.value.length;
   // return article.replies.length;
 })
+
 </script>
 
 <template>
@@ -70,10 +78,12 @@ const getRepliesLength = computed(() => {
     <button class="btn mb-3 ms-1" @click="moveReply" style="background-color: rgb(230, 230, 230);">
       댓글등록
     </button>
-    <button class="btn mb-3 ms-1" @click="moveModify" style="background-color: rgb(230, 230, 230);">
+    <button class="btn mb-3 ms-1" @click="moveModify" style="background-color: rgb(230, 230, 230);" 
+            v-if="article && article.userId === memberInfo.userInfo.userId">
       글수정
     </button>
-    <button class="btn mb-3 ms-1" @click="onDeleteArticle" style="background-color: rgb(230, 230, 230);">
+    <button class="btn mb-3 ms-1" @click="onDeleteArticle" style="background-color: rgb(230, 230, 230);"
+            v-if="article.userId === memberInfo.userInfo.userId">
       글삭제
     </button>
   </div>
@@ -97,7 +107,7 @@ const getRepliesLength = computed(() => {
                 src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
               <p>
                 <span class="fw-bold">{{ article.userId }}</span> <br/>
-                <span class="text-secondary fw-light">{{ article.publishedDate }} | 조회 {{ article.hit }}</span>
+                <span class="text-secondary fw-light">{{  article.publishedDate }} | 조회 {{ article.hit }}</span>
               </p>
             </div>
           </div>

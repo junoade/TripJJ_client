@@ -1,7 +1,11 @@
 <script setup>
+import { useRouter } from "vue-router";
+
 defineProps({
   article: Object
 });
+
+const router = useRouter();
 </script>
 
 <template>
