@@ -40,8 +40,4 @@ defineProps({
   background-color: transparent;
   border: 0;
 }
-
-.interest {
-    color: red;
-}
 </style>

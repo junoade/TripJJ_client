@@ -7,6 +7,10 @@ const markers = ref([]);
 var currentLocMarker;   // 사용자가 임의로 찍은 마커
 var targetOverlay;      // 관광지 마커 중 사용자가 찍은 마커
 var geocoder;           // 좌표 => 주소 변환 객체
+
+const isOverlayOn = ref(false);
+const currentTitle = ref('');
+
 const props = defineProps({
   attractions: Array,
   selectedAttraction: Object
@@ -71,31 +75,30 @@ const initMap = () => {
   };
   map = new kakao.maps.Map(container, options);
 
-  // 좌표 => 주소 변환 객체 생성
-  geocoder = new kakao.maps.services.Geocoder();
+  // // 좌표 => 주소 변환 객체 생성
+  // geocoder = new kakao.maps.services.Geocoder();
 
-  // 지도 클릭 시 해당 위치에 사용자 지정 마커 추가
-  console.log("마커 생성 이벤트 등록!")
-  kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+  // // 지도 클릭 시 해당 위치에 사용자 지정 마커 추가
+  // console.log("마커 생성 이벤트 등록!")
+  // kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
-    // 이전에 찍은 사용자 지정 마커 제거
-    if(currentLocMarker) currentLocMarker.setMap(null);
+  //   // 이전에 찍은 사용자 지정 마커 제거
+  //   if(currentLocMarker) currentLocMarker.setMap(null);
 
-    // 사용자 지정 마커 생성
-    currentLocMarker = new kakao.maps.Marker({
-      position: mouseEvent.latLng
-    });
+  //   // 사용자 지정 마커 생성
+  //   currentLocMarker = new kakao.maps.Marker({
+  //     position: mouseEvent.latLng
+  //   });
 
-    // 마커가 지도 위에 표시되도록 설정
-    console.log("마커 생성! ", mouseEvent.latLng);
-    currentLocMarker.setMap(map);
+  //   // 마커가 지도 위에 표시되도록 설정
+  //   console.log("마커 생성! ", mouseEvent.latLng);
+  //   currentLocMarker.setMap(map);
 
-    // 클릭한 좌표의 지번 주소 얻어오기
-    geocoder.coord2Address(mouseEvent.latLng.getLng(), mouseEvent.latLng.getLat(), function (result, status) {
-      console.log(result[0].address.address_name)
-    });
-
-  });
+  //   // 클릭한 좌표의 지번 주소 얻어오기
+  //   geocoder.coord2Address(mouseEvent.latLng.getLng(), mouseEvent.latLng.getLat(), function (result, status) {
+  //     console.log(result[0].address.address_name)
+  //   });
+  // });
 };
 
 const loadMarkers = () => {
@@ -120,26 +123,53 @@ const loadMarkers = () => {
     // 마커 클릭 이벤트 추가
     kakao.maps.event.addListener(marker, 'click', function() {
       // 마커 위에 인포윈도우를 표시합니다
-      console.log("관광지 마커 클릭!")
-
-      if(targetOverlay) targetOverlay.setMap(null);
+      if (targetOverlay) targetOverlay.setMap(null);    
 
       // 커스텀 오버레이
-      var content = document.createElement('div');
-      content.className = 'overlay';
-      content.innerHTML = 
-      '<div class="wrap">' + 
-      ' <div class="info">' + 
-      '   <div class="title">' + 
-            position.title  + 
-      '   </div>' + 
-      '   <div class="body">' +
-      '     <div class="desc">' + 
-      '       <div>' + position.desc + '</div>'
-      '     </div>' + 
-      '   </div>' +
-      ' </div>' +
-      '</div>';
+      let content = '';
+
+      if (currentTitle.value === position.title && isOverlayOn.value) {
+        isOverlayOn.value = false;
+      }
+      else {
+        content = document.createElement('div');
+        content.className = 'overlay';
+        content.innerHTML = 
+        '<div class="wrap">' + 
+        ' <div class="info">' + 
+        '   <div class="title">' + 
+              position.title  + 
+        '   </div>' + 
+        '   <div class="body">' +
+        '     <div class="desc">' + 
+        '       <div>' + position.desc + '</div>'
+        '     </div>' + 
+        '   </div>' +
+        ' </div>' +
+          '</div>';
+        if (currentTitle.value != position.title) {
+          currentTitle.value = position.title;   
+        }
+        isOverlayOn.value = true;
+
+        addEventHandle(content, 'wheel', function () {      // 오버레이 내 지도 스크롤 방지
+          kakao.maps.event.preventMap();
+        })
+        addEventHandle(content, 'mousedown', function () {  // 오버레이 내 지도 클릭 방지1
+          kakao.maps.event.preventMap();
+        });
+        addEventHandle(document, 'mouseup', null);   // 오버레이 내 지도 클릭 방지2
+
+        // target node에 이벤트 핸들러 등록
+        function addEventHandle(target, type, callback) {
+          if (target.addEventListener) {
+            target.addEventListener(type, callback);
+          } else {
+            target.attachEvent('on' + type, callback);
+          }
+        }
+      }
+      console.log("관광지 마커 클릭!", currentTitle.value, isOverlayOn.value);
 
       // 마커 위에 커스텀오버레이를 표시합니다
       // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -147,25 +177,7 @@ const loadMarkers = () => {
         content: content,
         map: map,
         position: marker.getPosition(),
-        // removable: true
       });
-
-      addEventHandle(content, 'wheel', function () {      // 오버레이 내 지도 스크롤 방지
-        kakao.maps.event.preventMap();
-      })
-      addEventHandle(content, 'mousedown', function () {  // 오버레이 내 지도 클릭 방지1
-        kakao.maps.event.preventMap();
-      });
-      addEventHandle(document, 'mouseup', null);   // 오버레이 내 지도 클릭 방지2
-
-      // target node에 이벤트 핸들러 등록
-      function addEventHandle(target, type, callback) {
-        if (target.addEventListener) {
-          target.addEventListener(type, callback);
-        } else {
-          target.attachEvent('on' + type, callback);
-        }
-      }
     });
   });
 
@@ -194,8 +206,6 @@ const deleteMarkers = () => {
 <style>
 #map {
   width: 100%;
-  height: 1000px;
-  /* height: 850px; */
   height: 100%;
 }
 

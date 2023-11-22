@@ -16,7 +16,7 @@ const newInterestsInfo = ref({
     delInterests: [],
 });
 
-// DB내 저장된 관심 관광지 정보를 받아와 로컬에 저장한다(원본, 수정 가능본).
+// DB내 저장된 관심 관광지 id를 받아와 로컬에 저장한다(원본, 수정 가능본).
 const getInterests = () => {
     newInterestsInfo.value.addInterests = [];
     newInterestsInfo.value.delInterests = [];
@@ -25,7 +25,7 @@ const getInterests = () => {
         ({ data }) => {
             originalInterests.value = data;
             newInterests.value = data.slice();
-            console.log("저장된 모든 관심 관광지 정보 출력 : ", originalInterests.value);
+            console.log("저장된 모든 관심 관광지 id 출력 : ", originalInterests.value);
         },
         (error) => {
             console.log(error);
@@ -185,7 +185,6 @@ const onPageChange = (val) => {
 const viewAttraction = (attraction) => {
   selectedAttraction.value = attraction;
 };
-
 
 getSidoList();
 getInterests();  
