@@ -2,13 +2,19 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { searchByArea } from "@/api/search.js";
-
+import { useSearchedPlace } from "@/stores/searchedPlace.js";
 import Suggestion from '../common/Suggestion.vue';
+
+const searchPlace = useSearchedPlace();
 
 const router = useRouter();
 const searchKeyword = ref("");
 const max_search_length = ref(6);
 const selectedArea = ref({});
+
+const _expected_attraction_key = "attraction_info";
+const _expected_nearPlaces_key = "nearPlaces";
+
 
 /**
  * 검색 컴포넌트(자식 컴포넌트)에서 클릭이벤트의 발생 이후
@@ -31,8 +37,9 @@ const currentSelectedArea = async (area) => {
             console.log("요청 응답 성공", response);
             // 라우터 이동
             // response에서 관광지 정보 pk인 content_id로 검색
-            console.log(response.data.contentId);
-            const contentId = response.data.contentId;
+            const contentId = response.data[_expected_attraction_key].contentId;
+            searchPlace.searchMap = response.data;
+            console.log(searchPlace.searchMap);
             router.replace({ name: "location", params: { contentId } });
 
          }),
