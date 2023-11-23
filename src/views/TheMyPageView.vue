@@ -157,6 +157,8 @@ getInterests();
                     </div>
                 </div> <!-- end card-->
                 
+
+                <!-- TODO 내 장소-->
                 <div class="card">
                     <div class="card-body">
                         <div class="dropdown float-end">
@@ -176,7 +178,6 @@ getInterests();
                             </div>
                         </div>
                         <h4 class="header-title mb-3">나의 관심 여행지</h4>
-
                         <div class="inbox-widget" style="max-height: 350px;">
                             <div class="simplebar-wrapper" style="margin: 0px;">
                                 <div class="simplebar-content-wrapper"
