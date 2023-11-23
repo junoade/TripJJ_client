@@ -1,12 +1,15 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { findStories } from "@/api/snapshot.js";
+import { findStories, getImage } from "@/api/snapshot.js";
+// import { useImagePlace } from "@/stores/images.js";
 
 import StoryUploadModal from '@/components/snapshot/StoryUploadModal.vue';
 import SnapshotItem from "@/components/snapshot/SnapshotItem.vue";
 
 const snapshots = ref([]);
+// const imageStore = useImagePlace();
+// const imageMap = imageStore.imageMap;
 
 onMounted(async () => {
     await findStories((response) => {
@@ -15,7 +18,39 @@ onMounted(async () => {
     }, (error) => {
         console.log(error);
     })
+
+    // 성능, 로딩 측면에서 이미지 렌더링이 원할하지 않아 주석처리함
+    // for(const snap of snapshots.value) {
+    //     console.log("내 이미지 내놔!", snap.id);
+    //     await requestImage(snap.id);
+    // }
+
+    // console.log("갖고왔다!", imageMap);
 });
+
+// 성능, 로딩 측면에서 이미지 렌더링이 원할하지 않아 이용하지 않는다
+async function requestImage(id){
+    await getImage(id, 
+    (response)=>{
+        console.log(response);
+        const image = `data:${response.headers['content-type']};base64,${arrayBufferToBase64(response.data)}`;
+        imageMap.set(id, image);
+    }, (error) => {
+        console.error("안돼잉 ㅠ");
+    }
+    )
+}
+
+function arrayBufferToBase64( buffer ) {
+	var binary = '';
+	var bytes = new Uint8Array( buffer );
+	var len = bytes.byteLength;
+	for (var i = 0; i < len; i++) {
+		binary += String.fromCharCode( bytes[ i ] );
+	}
+	return window.btoa( binary );
+}
+
 
 </script>
 
@@ -40,6 +75,7 @@ onMounted(async () => {
         <template v-for="snapshot of snapshots">
             <SnapshotItem
                 :snapshot="snapshot"
+                :snapshotImages="snapshotImages"
             />
         </template>
         <!-- <div class="grid">

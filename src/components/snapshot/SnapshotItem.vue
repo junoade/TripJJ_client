@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted , onUpdated } from "vue";
+// import { useImagePlace } from "@/stores/images.js";
 
 const props = defineProps({
     snapshot: Object,
@@ -7,8 +8,16 @@ const props = defineProps({
 
 const imgUrl = ref("");
 
+// 성능, 로딩 측면에서 이미지 렌더링이 원할하지 않아 주석처리함
+// const imageStore = useImagePlace();
+// const imageMap = imageStore.imageMap;
+
 onMounted(() => {
+    // console.log(snapshotId);
+    // console.log(snapshotImage);
     imgUrl.value = `https://source.unsplash.com/random/${props.snapshot.id}`;
+    //const id = props.snapshot.id;
+    //imgUrl.value = imageMap.get(id);
 });
 
 </script>

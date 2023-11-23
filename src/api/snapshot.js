@@ -56,6 +56,12 @@ async function findStories(success, fail) {
     await local.get(`${api_name}`).then(success).catch(fail);
 }
 
+async function getImage(param, success, fail) {
+    await local.get(`${api_name}/getImage/${param}`, {
+        responseType: 'arraybuffer'
+    }).then(success).catch(fail);
+}
+
 export {
     uploadStory,
     modifyStory,
@@ -63,4 +69,5 @@ export {
     findStoryByUserId,
     findStoryByStoryId,
     findStories,
+    getImage,
 };
