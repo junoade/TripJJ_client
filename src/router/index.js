@@ -170,7 +170,7 @@ const router = createRouter({
         {
             path: "/mypage",
             name: "mypage",
-            component: () => import("@/views/TheMySnapshotView.vue"),
+            component: () => import("@/views/TheMyPageView.vue"),
         },
         {
             path: "/interest",

@@ -157,6 +157,8 @@ getInterests();
                     </div>
                 </div> <!-- end card-->
                 
+
+                <!-- TODO 내 장소-->
                 <div class="card">
                     <div class="card-body">
                         <div class="dropdown float-end">
