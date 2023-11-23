@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeUnmount, onMounted } from "vue";
-import { listAttractions, listSido, listGugun,listInterestsContentIds, } from "@/api/attraction"
+import { listAttractions, listSido, listGugun, listInterestsContentIds, updateInterests } from "@/api/attraction";
 import VKakaoMap2  from "@/components/layout/VKakaoMap2.vue";
 import VSelect from "@/components/common/VSelect.vue";
 import AttractionListItem from "@/components/Attraction/item/AttractionListItem.vue";
@@ -10,22 +10,22 @@ import { useMemberStore } from "@/stores/member";
 const originalInterests = ref([]);      // 기존 관심 관광지 리스트(전부 다 받아올 것)
 const newInterests = ref([]);           // 새로운 관심 관광지 리스트
 
-const newInterestsInfo = {
+const newInterestsInfo = ref({
     userId: useMemberStore().userInfo.userId,
-    addInterests: Array,
-    delInterests: Array,
-}
+    addInterests: [],
+    delInterests: [],
+});
 
-// DB내 저장된 관심 관광지 정보를 받아와 로컬에 저장한다(원본, 수정 가능본).
+// DB내 저장된 관심 관광지 id를 받아와 로컬에 저장한다(원본, 수정 가능본).
 const getInterests = () => {
-    console.log("getInterests : ", newInterestsInfo.userId);
+    newInterestsInfo.value.addInterests = [];
+    newInterestsInfo.value.delInterests = [];
     listInterestsContentIds(
-        newInterestsInfo.userId,
+        newInterestsInfo.value.userId,
         ({ data }) => {
-            console.log("데이터 : ", data);
             originalInterests.value = data;
-            newInterests.value = data;
-            console.log("저장된 모든 관심 관광지 정보 출력 : ", originalInterests.value);
+            newInterests.value = data.slice();
+            console.log("저장된 모든 관심 관광지 id 출력 : ", originalInterests.value);
         },
         (error) => {
             console.log(error);
@@ -34,7 +34,7 @@ const getInterests = () => {
 }
 
 // 로컬에 위치한 새로운 관광지 정보를 수정한다.
-const updateInterests = (attraction) => {
+const updateNewInterests = (attraction) => {
     // 선택한 관광지의 존재 여부 확인 및 업데이트
     let idx = newInterests.value.findIndex((contentId) => contentId === attraction.contentId);
 
@@ -48,16 +48,33 @@ const updateInterests = (attraction) => {
 }
 
 // 로컬에 위치한 관심 관광지 원본과 수정 가능본을 비교하여 추가/삭제할 contentId 선정
-const updateDB = async () => {
-    originalInterests.value.forEach((contentId) => {
-        if (newInterests.value.includes(contentId))
-            newInterestsInfo.addInterests.push(contentId);
-        else
-            newInterestsInfo.delInterests.push(contentId);
+const updateInterestDB = async () => {
+    console.log("원본 : ", originalInterests.value);
+    console.log("신규 : ", newInterests.value);
+
+    // 신규 괌심 리스트를 순회하면서, 원본에 없는 것은 추가 관심 리스트에 추가
+    newInterests.value.forEach((contentId) => {
+        if (!originalInterests.value.includes(contentId))
+            newInterestsInfo.value.addInterests.push(contentId);
     })
-    
 
+    // 원본 관심 리스트를 순회하면서, 신규에 없는 것은 삭제 관심 리스트에 추가
+    originalInterests.value.forEach((contentId) => {
+        if (!newInterests.value.includes(contentId))
+            newInterestsInfo.value.delInterests.push(contentId);
+    })
 
+    console.log("관심 관광지 업데이트 시도 : ", newInterestsInfo.value);
+    await updateInterests(
+        newInterestsInfo.value,
+        ({data}) => {
+            alert("등록이 완료되었습니다!")
+        }, 
+        (error) => {
+            console.log(error);
+        }
+    )
+    getInterests();
 }
 
 // 페이징 정보
@@ -169,7 +186,6 @@ const viewAttraction = (attraction) => {
   selectedAttraction.value = attraction;
 };
 
-
 getSidoList();
 getInterests();  
 
@@ -193,14 +209,18 @@ getInterests();
     <!-- 결과 리스트 / 지도 -->
     <div class="m-3 row">
         <!-- 지도 -->
-        <VKakaoMap2
-            :attractions="attractions"
-            :selectedAttraction="selectedAttraction">
-        </VKakaoMap2>
+        <div style="height: 1000px">
+            <VKakaoMap2
+                :attractions="attractions"
+                :selectedAttraction="selectedAttraction">
+            </VKakaoMap2>
+        </div>
       
         <!-- 결과 리스트 -->
-        <div class="position-absolute m-3 justify-content-center" 
+        <div class="position-absolute m-3 justify-content-center bg-white bg-opacity-75" 
             style="z-index: 2; max-width: 300px; max-height: 100%;" >
+            <button class="btn btn-outline-info btn-sm mt-3" type="button" @click="updateInterestDB">관심 리스트 저장!</button>
+
             <div id="attractionList" class="overflow-auto mt-3"
                 style="max-width: 300px; max-height: 800px;" >
                 <AttractionListItem
@@ -208,7 +228,7 @@ getInterests();
                     :key="attraction.title"
                     :attraction="attraction" :interests="newInterests"
                     @view-attraction="viewAttraction"
-                    @update-interests="updateInterests">
+                    @update-new-interests="updateNewInterests">
                 </AttractionListItem>
             </div>
         

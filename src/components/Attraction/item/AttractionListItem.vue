@@ -1,5 +1,5 @@
 <script setup>
-defineEmits(["viewAttraction", "updateInterests"]);
+defineEmits(["viewAttraction", "updateNewInterests"]);
 defineProps({
     attraction: Object,
     interests: Array,
@@ -24,7 +24,7 @@ defineProps({
         <p class="card-text text-sm">{{ attraction.addr1 }} {{ attraction.addr2 }}</p>
         <hr class="dark horizontal">
 
-        <button class="favorite-icon" @click="$emit('updateInterests', attraction)">
+        <button class="favorite-icon" @click="$emit('updateNewInterests', attraction)">
             <span v-if="interests.some((contentId) => contentId===attraction.contentId)" role="img" style="color:red">❤</span>
             <span v-else role="img">🤍</span>
         </button>
@@ -39,9 +39,5 @@ defineProps({
   font-size: 24px;
   background-color: transparent;
   border: 0;
-}
-
-.interest {
-    color: red;
 }
 </style>
