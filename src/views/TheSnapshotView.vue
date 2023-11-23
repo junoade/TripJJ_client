@@ -1,9 +1,21 @@
 <script setup>
 
-import { ref } from 'vue';
-import StoryUploadModal from '@/components/snapshot/StoryUploadModal.vue';
+import { ref, onMounted } from 'vue';
+import { findStories } from "@/api/snapshot.js";
 
-const dataBsTarget = ref("#example");
+import StoryUploadModal from '@/components/snapshot/StoryUploadModal.vue';
+import SnapshotItem from "@/components/snapshot/SnapshotItem.vue";
+
+const snapshots = ref([]);
+
+onMounted(async () => {
+    await findStories((response) => {
+        console.log(response.data);
+        snapshots.value = response.data;
+    }, (error) => {
+        console.log(error);
+    })
+});
 
 </script>
 
@@ -25,7 +37,12 @@ const dataBsTarget = ref("#example");
 
 
     <div class="masonry px-5">
-        <div class="grid">
+        <template v-for="snapshot of snapshots">
+            <SnapshotItem
+                :snapshot="snapshot"
+            />
+        </template>
+        <!-- <div class="grid">
             <img src="https://source.unsplash.com/random/1">
             <div class="grid__body">
                 <div class="relative">
@@ -284,13 +301,13 @@ const dataBsTarget = ref("#example");
                     <span class="grid__tag">#tag1</span>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <style lang="scss">
 .masonry {
-    columns: 4;
+    columns: 3;
     column-gap: 16px;
 
     @media (max-width: 1200px) {
@@ -301,69 +318,6 @@ const dataBsTarget = ref("#example");
         columns: 2;
     }
 
-    //@media (max-width: 768px) {columns: 1;}
-    .grid {
-        display: inline-block;
-        margin-bottom: 16px;
-        position: relative;
-
-        &:before {
-            border-radius: 5px;
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background-color: rgba(0, 0, 0, .2);
-        }
-
-        img {
-            width: 100%;
-            border-radius: 5px;
-        }
-
-        &__title {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 0px 0px 10px 0px;
-        }
-
-        &__author {
-            font-size: 14px;
-            font-weight: 300;
-        }
-
-        &__link {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        &__body {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            padding: 30px 30px;
-            color: #fff;
-            display: flex;
-            flex-direction: column
-        }
-
-        &__tag {
-            background-color: rgba(255, 255, 255, .8);
-            color: #333;
-            border-radius: 5px;
-            padding: 5px 15px;
-            margin-bottom: 5px;
-        }
-    }
+    
 }
-
-.mt-auto {
-    margin-top: auto;
-}</style>
+</style>

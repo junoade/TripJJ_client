@@ -3,6 +3,9 @@ import { ref, watch } from 'vue';
 import { useMemberStore } from "@/stores/member";
 import { uploadStory } from '@/api/snapshot.js'
 import { httpStatusCode } from "@/util/http-status";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 import StoryFileItem from './StoryFileItem.vue';
 import Suggestion from "@/components/common/Suggestion.vue";
 
@@ -161,7 +164,10 @@ const upload = async () => {
         }, (error) => {
             console.log("요청 응답 실패", error);
             alert("서버 에러로 인하여 등록이 실패했습니다 :(");
-        });
+    });
+
+    // 새로고침 수행
+    router.replace({ name: "snapshot" });
 }
 
 
