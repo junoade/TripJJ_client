@@ -1,13 +1,17 @@
 <script setup>
 import VKakaoMap2 from "@/components/layout/VKakaoMap2.vue";
 import { listInterests } from "@/api/attraction";
+import { findStoryByUserId } from "@/api/snapshot.js";
 import { useMemberStore } from "@/stores/member";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+
 import AttractionInterestListItemVue from "@/components/Attraction/item/AttractionInterestListItem.vue";
+import MyPageSnapshotItem from "@/components/mypage/MyPageSnapshotItem.vue";
 
 const userId = useMemberStore().userInfo.userId;
 const attractions = ref([]);
 const selectedAttraction = ref({});
+const userSnapshots = ref([]);
 
 // DB내 로그인 유저의 모든 관심 관광지 정보 반환
 const getInterests = () => {
@@ -29,6 +33,26 @@ const viewAttraction = (attraction) => {
 }
 
 getInterests();
+
+/**
+ * onMounted() 시, 사용자가 올렸던 snapshot 목록을 등록 날짜를 기준으로 역순으로 가져온다
+ */
+const getUserSnapshots = async () => {
+    console.log('called');
+    await findStoryByUserId(userId,
+        (response) => {
+            console.log(response.data);
+            userSnapshots.value = response.data;
+        }
+        , (error) => {
+            console.log("error", error);
+        });
+}
+
+onMounted(() => {
+    getUserSnapshots(userId);
+})
+
 
 </script>
 
@@ -148,15 +172,13 @@ getInterests();
 
                         <div class="inbox-widget" data-simplebar="init" style="max-height: 350px;">
                             <div style="height: 300px;">
-                                <VKakaoMap2
-                                    :attractions="attractions"
-                                    :selectedAttraction="selectedAttraction">
+                                <VKakaoMap2 :attractions="attractions" :selectedAttraction="selectedAttraction">
                                 </VKakaoMap2>
                             </div>
                         </div> <!-- end inbox-widget -->
                     </div>
                 </div> <!-- end card-->
-                
+
 
                 <!-- TODO 내 장소-->
                 <div class="card">
@@ -181,14 +203,9 @@ getInterests();
 
                         <div class="inbox-widget" style="max-height: 350px;">
                             <div class="simplebar-wrapper" style="margin: 0px;">
-                                <div class="simplebar-content-wrapper"
-                                    style="height: auto;">
-                                    <AttractionInterestListItemVue
-                                        v-for="attraction in attractions"
-                                        :key="attraction.title"
-                                        :attraction="attraction"
-                                        @view-attraction="viewAttraction"
-                                        >
+                                <div class="simplebar-content-wrapper" style="height: auto;">
+                                    <AttractionInterestListItemVue v-for="attraction in attractions" :key="attraction.title"
+                                        :attraction="attraction" @view-attraction="viewAttraction">
                                     </AttractionInterestListItemVue>
                                 </div>
                             </div>
@@ -196,162 +213,34 @@ getInterests();
                     </div>
                 </div> <!-- end card-->
 
-                
+
             </div> <!-- end col-->
 
             <div class="col-xl-7">
                 <div class="card">
                     <div class="card-body">
-                        <!-- comment box -->
-                        <form action="#" class="comment-area-box mb-3">
-                            <span class="input-icon">
-                                <textarea rows="3" class="form-control" placeholder="Write something..."></textarea>
-                            </span>
-                            <div class="comment-area-btn">
-                                <div class="float-end">
-                                    <button type="submit" class="btn btn-sm btn-dark waves-effect waves-light">Post</button>
-                                </div>
-                                <div>
-                                    <a href="#" class="btn btn-sm btn-light text-black-50"><i class="far fa-user"></i></a>
-                                    <a href="#" class="btn btn-sm btn-light text-black-50"><i
-                                            class="fa fa-map-marker-alt"></i></a>
-                                    <a href="#" class="btn btn-sm btn-light text-black-50"><i class="fa fa-camera"></i></a>
-                                    <a href="#" class="btn btn-sm btn-light text-black-50"><i class="far fa-smile"></i></a>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- end comment box -->
-
+                        <h4 class="header-title mb-3">나의 여행 기록, 스냅샷</h4>
                         <!-- Story Box-->
-                        <div class="border border-light p-2 mb-3">
-                            <div class="d-flex align-items-start">
-                                <img class="me-2 avatar-sm rounded-circle"
-                                    src="https://bootdey.com/img/Content/avatar/avatar4.png"
-                                    alt="Generic placeholder image">
-                                <div class="w-100">
-                                    <h5 class="">Thelma Fridley <small class="text-muted"> 1 hour ago</small></h5>
-                                    <div class="">
-                                        Cras sit amet nibh libero, in
-                                        gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                                        purus odio, vestibulum in vulputate at, tempus viverra turpis. Duis
-                                        sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper
-                                        porta. Mauris massa.
-                                        <br>
-                                        <a href="javascript: void(0);" class="text-muted font-13 d-inline-block mt-2"><i
-                                                class="mdi mdi-reply"></i> Reply</a>
-                                    </div>
-                                </div>
-
+                        <template v-for="snapshot of userSnapshots">
+                            <div class="p-2 mb-3">
+                                <MyPageSnapshotItem
+                                    :snapshot="snapshot"    
+                                />
                             </div>
-
-
-                            <div class="post-user-comment-box">
-                                <div class="d-flex align-items-start">
-                                    <img class="me-2 avatar-sm rounded-circle"
-                                        src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                                        alt="Generic placeholder image">
-                                    <div class="w-100">
-                                        <h5 class="mt-0">Jeremy Tomlinson <small class="text-muted">3 hours ago</small></h5>
-                                        Nice work, makes me think of The Money Pit.
-
-                                        <br>
-                                        <a href="javascript: void(0);" class="text-muted font-13 d-inline-block mt-2"><i
-                                                class="mdi mdi-reply"></i> Reply</a>
-
-                                        <div class="d-flex align-items-start mt-3">
-                                            <a class="pe-2" href="#">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar4.png"
-                                                    class="avatar-sm rounded-circle" alt="Generic placeholder image">
-                                            </a>
-                                            <div class="w-100">
-                                                <h5 class="mt-0">Kathleen Thomas <small class="text-muted">5 hours
-                                                        ago</small></h5>
-                                                i'm in the middle of a timelapse animation myself! (Very different though.)
-                                                Awesome stuff.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex align-items-start mt-2">
-                                    <a class="pe-2" href="#">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="rounded-circle"
-                                            alt="Generic placeholder image" height="31">
-                                    </a>
-                                    <div class="w-100">
-                                        <input type="text" id="simpleinput" class="form-control border-0 form-control-sm"
-                                            placeholder="Add comment">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-2">
-                                <a href="javascript: void(0);" class="btn btn-sm btn-link text-danger"><i
-                                        class="mdi mdi-heart"></i> Like (28)</a>
-                                <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i
-                                        class="mdi mdi-share-variant"></i> Share</a>
-                            </div>
-                        </div>
-
-                        <!-- Story Box-->
-                        <div class="border border-light p-2 mb-3">
-                            <div class="d-flex align-items-start">
-                                <img class="me-2 avatar-sm rounded-circle"
-                                    src="https://bootdey.com/img/Content/avatar/avatar3.png"
-                                    alt="Generic placeholder image">
-                                <div class="w-100">
-                                    <h5 class="m-0">Jeremy Tomlinson</h5>
-                                    <p class="text-muted"><small>about 2 minuts ago</small></p>
-                                </div>
-                            </div>
-                            <p>Story based around the idea of time lapse, animation to post soon!</p>
-
-                            <img src="https://www.bootdey.com/image/800x540/FF7F50/000000" alt="post-img"
-                                class="rounded me-1" height="60">
-                            <img src="https://www.bootdey.com/image/800x540/FF7F50/000000" alt="post-img"
-                                class="rounded me-1" height="60">
-                            <img src="https://www.bootdey.com/image/800x540/FF7F50/000000" alt="post-img" class="rounded"
-                                height="60">
-
-                            <div class="mt-2">
-                                <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i
-                                        class="mdi mdi-reply"></i> Reply</a>
-                                <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i
-                                        class="mdi mdi-heart-outline"></i> Like</a>
-                                <a href="javascript: void(0);" class="btn btn-sm btn-link text-muted"><i
-                                        class="mdi mdi-share-variant"></i> Share</a>
-                            </div>
-                        </div>
-
-                        <!-- Story Box-->
-                        <div class="border border-light p-2 mb-3">
-                            <div class="d-flex align-items-start">
-                                <img class="me-2 avatar-sm rounded-circle"
-                                    src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                                    alt="Generic placeholder image">
-                                <div class="w-100">
-                                    <h5 class="m-0">Jeremy Tomlinson</h5>
-                                    <p class="text-muted"><small>15 hours ago</small></p>
-                                </div>
-                            </div>
-                            <p>The parallax is a little odd but O.o that house build is awesome!!</p>
-
-                            <iframe src="https://player.vimeo.com/video/87993762" height="300"
-                                class="img-fluid border-0"></iframe>
-                        </div>
-
+                        </template>
                         <div class="text-center">
                             <a href="javascript:void(0);" class="text-danger"><i class="mdi mdi-spin mdi-loading me-1"></i>
-                            Load more </a>
+                                Load more </a>
+                        </div>
                     </div>
-                </div>
-            </div> <!-- end card-->
+                </div> <!-- end card-->
 
-        </div> <!-- end col -->
+            </div> <!-- end col -->
+        </div>
+        <!-- end row-->
+
     </div>
-    <!-- end row-->
-
-</div></template>
+</template>
 
 <style scoped>
 body {
