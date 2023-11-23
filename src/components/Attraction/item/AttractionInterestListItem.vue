@@ -2,12 +2,10 @@
 defineEmits(["viewAttraction", "updateNewInterests"]);
 defineProps({
     attraction: Object,
-    // interests: Array,
 })
 </script>
 
 <template>
-    <!-- 관광지 검색 결과 아이템 => 가로에 3개-4개씩 뿌리면 될 듯...? -->
     <div class="d-flex align-items-center pb-1" id="tooltips-container">
         <img :src="attraction.firstImage"
             class="rounded-circle img-fluid avatar-md img-thumbnail bg-transparent"

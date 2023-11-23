@@ -14,7 +14,7 @@ const article = ref({
   articleNo: 0,
   title: "",
   content: "",
-  userId: "",
+  userId: memberStore.userInfo.userId,
   // userName: "",
   hit: 0,
   registerTime: "",
@@ -77,11 +77,11 @@ function onSubmit() {
   }
 }
 
-function writeArticle() {
+async function writeArticle() {
   console.log("글등록하자!!", article.value);
   // API 호출
 
-  registQna(article.value, (data) => {
+  await registQna(article.value, (data) => {
     console.log(data.data);
     alert("게시글 등록 완료!");
     moveDetail(data.data); // redirect
@@ -92,10 +92,10 @@ function writeArticle() {
 
 }
 
-function updateArticle() {
+async function updateArticle() {
   console.log(article.value.articleNo + "번글 수정하자!!", article.value);
    // API 호출
-   modifyQna(article.value, ()=> {
+   await modifyQna(article.value, ()=> {
     alert("게시글 수정 완료!");
     moveDetail(article.value.articleNo);
    }, (error) => {
@@ -114,13 +114,11 @@ function moveDetail(articleNo) {
 
 <template>
   <form @submit.prevent="onSubmit">
-    <div class="mb-3">
+    <div v-if="props.type!='regist'" class="mb-3">
       <label for="userid" class="form-label">작성자 ID : </label>
       <input
-        type="text" id="userid" class="form-control"
-        v-model="article.userId"
-        :disabled="isUseId"
-        placeholder="작성자ID..."
+        type="text" id="userid" class="form-control" disabled="true"
+        placeholder="작성자ID..." :value="memberStore.userInfo.userId"
       />
     </div>
     <div class="mb-3">
@@ -131,7 +129,7 @@ function moveDetail(articleNo) {
       <label for="content" class="form-label">내용 : </label>
       <textarea id="content" class="form-control" v-model="article.content" rows="10"></textarea>
     </div>
-    <div class="col-auto text-center">
+    <div class="col-auto align-content-end">
       <button type="submit" class="btn btn-outline-primary mb-3" v-if="type === 'regist'">
         글작성
       </button>

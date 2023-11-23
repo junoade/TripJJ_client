@@ -50,11 +50,11 @@ function moveReply() {
   router.push({ name: "article-reply", params: { articleNo } });
 }
 
-function onDeleteArticle() {
+async function onDeleteArticle() {
   // const { articleno } = route.params;
   console.log(articleNo + "번글 삭제하러 가자!!!");
   // API 호출
-  deleteQna(articleNo, () => {
+  await deleteQna(articleNo, () => {
     alert("게시글이 삭제되었습니다.");
     moveList();
   }, (error) => {
