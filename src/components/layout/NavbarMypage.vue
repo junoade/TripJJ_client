@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useMemberStore } from "@/stores/member";
 const memberStore = useMemberStore();
 
-
 </script>
 
 <template>

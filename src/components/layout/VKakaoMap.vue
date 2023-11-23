@@ -7,6 +7,10 @@ const markers = ref([]);
 var currentLocMarker;   // 사용자가 임의로 찍은 마커
 var targetOverlay;      // 관광지 마커 중 사용자가 찍은 마커
 var geocoder;           // 좌표 => 주소 변환 객체
+
+const isOverlayOn = ref(false);
+const currentTitle = ref('');
+
 const props = defineProps({
   attractions: Array,
   selectedAttraction: Object
@@ -71,31 +75,30 @@ const initMap = () => {
   };
   map = new kakao.maps.Map(container, options);
 
-  // 좌표 => 주소 변환 객체 생성
-  geocoder = new kakao.maps.services.Geocoder();
+  // // 좌표 => 주소 변환 객체 생성
+  // geocoder = new kakao.maps.services.Geocoder();
 
-  // 지도 클릭 시 해당 위치에 사용자 지정 마커 추가
-  console.log("마커 생성 이벤트 등록!")
-  kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+  // // 지도 클릭 시 해당 위치에 사용자 지정 마커 추가
+  // console.log("마커 생성 이벤트 등록!")
+  // kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
-    // 이전에 찍은 사용자 지정 마커 제거
-    if(currentLocMarker) currentLocMarker.setMap(null);
+  //   // 이전에 찍은 사용자 지정 마커 제거
+  //   if(currentLocMarker) currentLocMarker.setMap(null);
 
-    // 사용자 지정 마커 생성
-    currentLocMarker = new kakao.maps.Marker({
-      position: mouseEvent.latLng
-    });
+  //   // 사용자 지정 마커 생성
+  //   currentLocMarker = new kakao.maps.Marker({
+  //     position: mouseEvent.latLng
+  //   });
 
-    // 마커가 지도 위에 표시되도록 설정
-    console.log("마커 생성! ", mouseEvent.latLng);
-    currentLocMarker.setMap(map);
+  //   // 마커가 지도 위에 표시되도록 설정
+  //   console.log("마커 생성! ", mouseEvent.latLng);
+  //   currentLocMarker.setMap(map);
 
-    // 클릭한 좌표의 지번 주소 얻어오기
-    geocoder.coord2Address(mouseEvent.latLng.getLng(), mouseEvent.latLng.getLat(), function (result, status) {
-      console.log(result[0].address.address_name)
-    });
-
-  });
+  //   // 클릭한 좌표의 지번 주소 얻어오기
+  //   geocoder.coord2Address(mouseEvent.latLng.getLng(), mouseEvent.latLng.getLat(), function (result, status) {
+  //     console.log(result[0].address.address_name)
+  //   });
+  // });
 };
 
 const loadMarkers = () => {
@@ -120,26 +123,53 @@ const loadMarkers = () => {
     // 마커 클릭 이벤트 추가
     kakao.maps.event.addListener(marker, 'click', function() {
       // 마커 위에 인포윈도우를 표시합니다
-      console.log("관광지 마커 클릭!")
-
-      if(targetOverlay) targetOverlay.setMap(null);
+      if (targetOverlay) targetOverlay.setMap(null);    
 
       // 커스텀 오버레이
-      var content = document.createElement('div');
-      content.className = 'overlay';
-      content.innerHTML = 
-      '<div class="wrap">' + 
-      ' <div class="info">' + 
-      '   <div class="title">' + 
-            position.title  + 
-      '   </div>' + 
-      '   <div class="body">' +
-      '     <div class="desc">' + 
-      '       <div>' + position.desc + '</div>'
-      '     </div>' + 
-      '   </div>' +
-      ' </div>' +
-      '</div>';
+      let content = '';
+
+      if (currentTitle.value === position.title && isOverlayOn.value) {
+        isOverlayOn.value = false;
+      }
+      else {
+        content = document.createElement('div');
+        content.className = 'overlay';
+        content.innerHTML = 
+        '<div class="wrap">' + 
+        ' <div class="info">' + 
+        '   <div class="title">' + 
+              position.title  + 
+        '   </div>' + 
+        '   <div class="body">' +
+        '     <div class="desc">' + 
+        '       <div>' + position.desc + '</div>'
+        '     </div>' + 
+        '   </div>' +
+        ' </div>' +
+          '</div>';
+        if (currentTitle.value != position.title) {
+          currentTitle.value = position.title;   
+        }
+        isOverlayOn.value = true;
+
+        addEventHandle(content, 'wheel', function () {      // 오버레이 내 지도 스크롤 방지
+          kakao.maps.event.preventMap();
+        })
+        addEventHandle(content, 'mousedown', function () {  // 오버레이 내 지도 클릭 방지1
+          kakao.maps.event.preventMap();
+        });
+        addEventHandle(document, 'mouseup', null);   // 오버레이 내 지도 클릭 방지2
+
+        // target node에 이벤트 핸들러 등록
+        function addEventHandle(target, type, callback) {
+          if (target.addEventListener) {
+            target.addEventListener(type, callback);
+          } else {
+            target.attachEvent('on' + type, callback);
+          }
+        }
+      }
+      console.log("관광지 마커 클릭!", currentTitle.value, isOverlayOn.value);
 
       // 마커 위에 커스텀오버레이를 표시합니다
       // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
@@ -147,25 +177,7 @@ const loadMarkers = () => {
         content: content,
         map: map,
         position: marker.getPosition(),
-        // removable: true
       });
-
-      addEventHandle(content, 'wheel', function () {      // 오버레이 내 지도 스크롤 방지
-        kakao.maps.event.preventMap();
-      })
-      addEventHandle(content, 'mousedown', function () {  // 오버레이 내 지도 클릭 방지1
-        kakao.maps.event.preventMap();
-      });
-      addEventHandle(document, 'mouseup', null);   // 오버레이 내 지도 클릭 방지2
-
-      // target node에 이벤트 핸들러 등록
-      function addEventHandle(target, type, callback) {
-        if (target.addEventListener) {
-          target.addEventListener(type, callback);
-        } else {
-          target.attachEvent('on' + type, callback);
-        }
-      }
     });
   });
 
@@ -194,8 +206,7 @@ const deleteMarkers = () => {
 <style>
 #map {
   width: 100%;
-  height: 700px;
-  /* height: 100%; */
+  height: 100%;
 }
 
 /* modal 관련 */
@@ -250,44 +261,4 @@ const deleteMarkers = () => {
   display: -webkit-box;
   word-break: keep-all;
 }
-
-/* 전체 지도 틀 */
-.map_wrap, .map_wrap * {margin:0;padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-.map_wrap a, .map_wrap a:hover, .map_wrap a:active{color:#000;text-decoration: none;}
-.map_wrap {position:relative;width:100%;height:500px;}
-#menu_wrap {position:absolute;top:0;left:0;bottom:0;width:250px;margin:10px 0 30px 10px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255, 1.0);z-index: 1;font-size:12px;border-radius: 10px;}
-.bg_white {background:#fff;}
-#menu_wrap hr {display: block; height: 1px;border: 0; border-top: 2px solid #5F5F5F;margin:3px 0;}
-#menu_wrap .option{text-align: center;}
-#menu_wrap .option p {margin:10px 0;}  
-#menu_wrap .option button {margin-left:5px;}
-#placesList li {list-style: none;}
-#placesList .item {position:relative;border-bottom:1px solid #888;overflow: hidden;cursor: pointer;min-height: 65px;}
-#placesList .item span {display: block;margin-top:4px;}
-#placesList .item h5, #placesList .item .info {text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-#placesList .item .info{padding:10px 0 10px 55px;}
-#placesList .info .gray {color:#8a8a8a;}
-#placesList .info .jibun {padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;}
-#placesList .info .tel {color:#009900;}
-#placesList .item .markerbg {
-  float:left;
-  position:absolute;
-  width:36px; height:37px;
-  margin:10px 0 0 10px;
-  background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
-}
-#pagination {
-  margin:10px auto;
-  text-align: center;
-}
-#pagination a {
-  display:inline-block;
-  margin-right:10px;
-}
-#pagination .on {
-  font-weight: bold; 
-  cursor: default;
-  color:#777;
-}
-
 </style>

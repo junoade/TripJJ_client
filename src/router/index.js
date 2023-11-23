@@ -2,12 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useMemberStore } from "@/stores/member";
 import TheMainView from "../views/TheMainView.vue";
 import TheLoginView from "@/views/TheLoginView.vue";
-import TheAttractionView from "@/views/TheAttractionView.vue";
 import TheRegistrationView from "@/views/TheRegistrationView.vue";
 import TheLogout from "@/components/member/Logout.vue";
 import ModifyForm from "@/components/member/ModifyForm.vue";
 import TheSnapshotView from "@/views/TheSnapshotView.vue";
-import TheAttractionView2 from "@/views/TheAttractionView2.vue";
+import TheAttractionView from "@/views/TheAttractionView.vue";
 import TheAttractionInterestView from "@/views/TheAttractionInterestView.vue";
 
 // import TheBoardView from "../views/TheBoardView.vue";
@@ -105,8 +104,7 @@ const router = createRouter({
             path: "/attraction",
             name: "attraction",
             beforeEnter: onlyAuthUser,
-            // component: TheAttractionView,
-            component: TheAttractionView2,
+            component: TheAttractionView,
         },
         {
             path: "/board",
@@ -170,13 +168,13 @@ const router = createRouter({
         {
             path: "/mypage",
             name: "mypage",
+            beforeEnter: onlyAuthUser,
             component: () => import("@/views/TheMyPageView.vue"),
         },
         {
             path: "/interest",
             name: "interest",
             beforeEnter: onlyAuthUser,
-            // component: TheAttractionView,
             component: TheAttractionInterestView,
         },
     ],
