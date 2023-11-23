@@ -2,6 +2,7 @@
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { registReply, getModifyReply, modifyReply } from "@/api/qna";
+import { useMemberStore } from "@/stores/member";
 
 const router = useRouter();
 const route = useRoute();
@@ -9,6 +10,7 @@ const route = useRoute();
 const props = defineProps({ type: String });
 
 const isUseId = ref(false);
+const memberStore = useMemberStore();
 
 const { articleNo, replyNo } = route.params;
 console.log(route.params);
@@ -17,7 +19,7 @@ const reply = ref({
   replyNo: 0,
   articleNo: parseInt(articleNo),
   comment: "",
-  userId: "",
+  userId: memberStore.userInfo.userId,
   publishedDate: "",
 });
 
@@ -89,17 +91,6 @@ function moveDetail(articleno) {
 
 <template>
   <form @submit.prevent="onSubmit">
-    <!-- <div class="mb-3">
-      <label for="userid" class="form-label">작성자 ID : </label>
-      <input
-        type="text" id="userid"
-        class="form-control"
-        v-model="reply.userId"
-        :disabled="isUseId"
-        placeholder="작성자ID..."
-      />
-    </div> -->
-    
     <div class="mb-3">
       <label for="comment" class="form-label">내용 : </label>
       <textarea id="comment" class="form-control" v-model="reply.comment" rows="10"></textarea>

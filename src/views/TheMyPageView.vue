@@ -1,5 +1,5 @@
 <script setup>
-import VKakaoMap2 from "@/components/layout/VKakaoMap2.vue";
+import VKakaoMap from "@/components/layout/VKakaoMap.vue";
 import { listInterests } from "@/api/attraction";
 import { findStoryByUserId } from "@/api/snapshot.js";
 import { useMemberStore } from "@/stores/member";
@@ -176,8 +176,8 @@ onMounted(() => {
 
                         <div class="inbox-widget" data-simplebar="init" style="max-height: 350px;">
                             <div style="height: 300px;">
-                                <VKakaoMap2 :attractions="attractions" :selectedAttraction="selectedAttraction">
-                                </VKakaoMap2>
+                                <VKakaoMap :attractions="attractions" :selectedAttraction="selectedAttraction">
+                                </VKakaoMap>
                             </div>
                         </div> <!-- end inbox-widget -->
                     </div>
