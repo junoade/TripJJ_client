@@ -39,7 +39,7 @@ getInterests();
  */
 const getUserSnapshots = async () => {
     console.log('called');
-    await findStoryByUserId(userId,
+    await findStoryByUserId(userInfo.value.userId,
         (response) => {
             console.log(response.data);
             userSnapshots.value = response.data;
@@ -50,7 +50,7 @@ const getUserSnapshots = async () => {
 }
 
 onMounted(() => {
-    getUserSnapshots(userId);
+    getUserSnapshots();
 })
 
 
