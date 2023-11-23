@@ -163,7 +163,6 @@ const router = createRouter({
         {
             path: "/location/:contentId",
             name: "location",
-            beforeEnter: loginRemainIfTokenValid,
             component: () => import("@/views/TheLocationSearchView.vue"),
         },
         {
