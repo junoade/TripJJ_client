@@ -1,17 +1,20 @@
 <script setup>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 
 // import NavbarDefault from "@/components/layout/NavbarDefault.vue"
 import Carousel from "@/views/TheCarouselView.vue";
 import IntroducingAround from "@/components/layout/TheIntroductionView.vue";
-import FilledInfoCard from "@/components/layout/cards/FilledInfoCard.vue";
+import RandomIntroductingAround from "@/components/layout/TheRandomIntroductionView.vue"
 import Footer from "@/components/layout/Footer.vue";
 import AttractionType from "@/views/TheAttractionTypeView.vue";
 import StatisticsInfo from "@/components/layout/StatisticsInfo.vue";
 import SearchBar from "@/components/layout/SearchBar.vue";
+import SearchNearListVue from "@/components/search/SearchNearList.vue";
 
-// imgs
-import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
+
+const sampleNearPlaces = ref(
+    [{"contentId":126508,"title":"경복궁","addr1":"서울특별시 종로구 사직로 161","latitude":37.57882224,"longitude":126.976993,"contentTypeId":12,"readCount":113917,"addr2":"","firstImage":"http://tong.visitkorea.or.kr/cms/resource/23/2678623_image2_1.jpg","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/23/2678623_image3_1.jpg","overview":null},{"contentId":126512,"title":"광화문","addr1":"서울특별시 종로구 사직로 161","latitude":37.57607255,"longitude":126.9768042,"contentTypeId":12,"readCount":114233,"addr2":"","firstImage":"http://tong.visitkorea.or.kr/cms/resource/81/1075281_image2_1.jpg","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/81/1075281_image3_1.jpg","overview":null},{"contentId":141661,"title":"수문장 교대의식","addr1":"서울특별시 종로구 사직로 161","latitude":37.58018596,"longitude":126.9767236,"contentTypeId":15,"readCount":25682,"addr2":"(세종로)","firstImage":"http://tong.visitkorea.or.kr/cms/resource/96/868696_image2_1.jpg","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/96/868696_image3_1.jpg","overview":null},{"contentId":1604652,"title":"명성황후 조난지","addr1":"서울특별시 종로구 사직로 161","latitude":37.57741686,"longitude":126.9779874,"contentTypeId":12,"readCount":21294,"addr2":"(세종로)","firstImage":"http://tong.visitkorea.or.kr/cms/resource/64/1568164_image2_1.jpg","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/64/1568164_image3_1.jpg","overview":null},{"contentId":1998564,"title":"궁중문화축전","addr1":"서울특별시 종로구 사직로 161","latitude":37.57882224,"longitude":126.976993,"contentTypeId":15,"readCount":65522,"addr2":"","firstImage":"http://tong.visitkorea.or.kr/cms/resource/07/2718907_image2_1.png","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/07/2718907_image2_1.png","overview":null},{"contentId":2601364,"title":"경복궁 수라간 시식공감","addr1":"서울특별시 종로구 사직로 161","latitude":37.58162465,"longitude":126.9748959,"contentTypeId":15,"readCount":45,"addr2":"","firstImage":"http://tong.visitkorea.or.kr/cms/resource/65/2821665_image2_1.png","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/65/2821665_image3_1.png","overview":null},{"contentId":2615461,"title":"2022년 경복궁 생과방","addr1":"서울특별시 종로구 사직로 161 경복궁","latitude":37.57889445,"longitude":126.9770319,"contentTypeId":15,"readCount":0,"addr2":"","firstImage":"http://tong.visitkorea.or.kr/cms/resource/06/2844306_image2_1.jpg","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/06/2844306_image3_1.jpg","overview":null},{"contentId":2648460,"title":"경복궁 별빛야행","addr1":"서울특별시 종로구 사직로 161","latitude":37.57889445,"longitude":126.9770319,"contentTypeId":15,"readCount":1,"addr2":"","firstImage":"http://tong.visitkorea.or.kr/cms/resource/80/2847580_image2_1.jpg","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/80/2847580_image3_1.jpg","overview":null},{"contentId":2661632,"title":"세계유산축전","addr1":"서울특별시 종로구 사직로 161","latitude":37.57889445,"longitude":126.9770319,"contentTypeId":15,"readCount":2,"addr2":"(세종로)","firstImage":"http://tong.visitkorea.or.kr/cms/resource/71/2843571_image2_1.jpg","firstImage2":"http://tong.visitkorea.or.kr/cms/resource/71/2843571_image3_1.jpg","overview":null}])
+
 </script>
 
 <template>
@@ -37,62 +40,13 @@ import vueMkHeader from "@/assets/img/vue-mk-header.jpg";
             <!-- START THE FEATURETTES -->
             <hr class="featurette-divider">
 
-            <div class="row featurette">
-                <div class="col-md-7">
-                    <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It’ll blow your
-                            mind.</span></h2>
-                    <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting
-                        prose here.</p>
-                </div>
-                <div class="col-md-5">
-                    <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-                        height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
-                        preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa"
-                            dy=".3em">500x500</text>
-                    </svg>
-
-                </div>
-            </div>
+            <SearchNearListVue
+                :nearPlaces="sampleNearPlaces">         
+            </SearchNearListVue>
 
             <hr class="featurette-divider">
 
-            <IntroducingAround />
-
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <FilledInfoCard class="p-4" :color="{ text: 'white', background: 'bg-gradient-success' }"
-                            :icon="{ component: 'flag', color: 'white' }" title="Getting Started"
-                            description="Check the possible ways of working with our product and the necessary files for building your own project."
-                            :action="{
-                                route:
-                                    'https://www.creative-tim.com/learning-lab/vue/overview/material-kit/',
-                                label: { text: 'Let\'s start', color: 'white' }
-                            }" />
-                    </div>
-                    <div class="col-lg-4">
-                        <FilledInfoCard class="px-lg-1 mt-lg-0 mt-4 p-4" height="h-100"
-                            :icon="{ component: 'precision_manufacturing', color: 'success' }" title="Plugins" description="Get inspiration and have an overview about the plugins that we
-                                used to create the Material Kit." :action="{
-                                    route:
-                                        'https://www.creative-tim.com/learning-lab/vue/input/material-kit/',
-                                    label: { text: 'Read more' }
-                                }" />
-                    </div>
-                    <div class="col-lg-4">
-                    <FilledInfoCard class="px-lg-1 mt-lg-0 mt-4 p-4"
-                        :icon="{ component: 'receipt_long', color: 'success' }" title="Utility Classes" description="Material Kit is giving you a lot of pre-made elements. For those
-                            who want flexibility, we included many utility classes." :action="{
-                                route:
-                                    'https://www.creative-tim.com/learning-lab/vue/utilities/material-kit/',
-                                label: { text: 'Read more' }
-                            }" />
-                    </div>
-                </div>
-            </div>
-
+            <RandomIntroductingAround />
             <!-- /END THE FEATURETTES -->
 
         </div><!-- /.container -->

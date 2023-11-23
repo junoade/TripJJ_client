@@ -10,74 +10,25 @@
                 <!-- Section: Links -->
                 <section class="">
                     <!--Grid row-->
-                    <div class="row">
+                    
                         <!-- Grid column -->
-                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                            <h6 class="text-uppercase mb-4 font-weight-bold">
-                                Company name
-                            </h6>
+                        <div class="md-3 lg-3 xl-3 mx-auto mt-3">
+                            <h3 class="text-uppercase mb-4 font-weight-bold">
+                                제이여행, 이제 여행ㄴ
+                            </h3>
                             <p>
-                                Here you can use rows and columns to organize your footer
-                                content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                                elit.
-                            </p>
-                        </div>
-                        <!-- Grid column -->
-
-                        <hr class="w-100 clearfix d-md-none" />
-
-                        <!-- Grid column -->
-                        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-                            <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
-                            <p>
-                                <a class="text-white">MDBootstrap</a>
+                                지도 기반 검색 그리고 키워드 기반 여행 장소를 검색해보세요!
                             </p>
                             <p>
-                                <a class="text-white">MDWordPress</a>
+                                다녀온 관광지와 관련된 추억, 기록을 남기고 공유해보세요!
                             </p>
                             <p>
-                                <a class="text-white">BrandFlow</a>
+                                여행 장소에 대해 질문을 하고 답변할 수 있어요 :D
                             </p>
-                            <p>
-                                <a class="text-white">Bootstrap Angular</a>
-                            </p>
-                        </div>
-                        <!-- Grid column -->
-
-                        <hr class="w-100 clearfix d-md-none" />
-
-                        <!-- Grid column -->
-                        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-                            <h6 class="text-uppercase mb-4 font-weight-bold">
-                                Useful links
-                            </h6>
-                            <p>
-                                <a class="text-white">Your Account</a>
-                            </p>
-                            <p>
-                                <a class="text-white">Become an Affiliate</a>
-                            </p>
-                            <p>
-                                <a class="text-white">Shipping Rates</a>
-                            </p>
-                            <p>
-                                <a class="text-white">Help</a>
-                            </p>
-                        </div>
-
+                        </div>                                        
                         <!-- Grid column -->
                         <hr class="w-100 clearfix d-md-none" />
-
-                        <!-- Grid column -->
-                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-                            <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
-                            <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
-                            <p><i class="fas fa-envelope mr-3"></i> info@gmail.com</p>
-                            <p><i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
-                            <p><i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
-                        </div>
-                        <!-- Grid column -->
-                    </div>
+                    
                     <!--Grid row-->
                 </section>
                 <!-- Section: Links -->
@@ -91,30 +42,10 @@
                         <div class="col-md-7 col-lg-8 text-center text-md-start">
                             <!-- Copyright -->
                             <div class="p-3">
-                                © 2020 Copyright:
-                                <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+                                © 2023 Copyright:
+                                <a class="text-white" href="https://mdbootstrap.com/">팀 Double JJ</a>
                             </div>
                             <!-- Copyright -->
-                        </div>
-                        <!-- Grid column -->
-
-                        <!-- Grid column -->
-                        <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
-                            <!-- Facebook -->
-                            <a class="btn btn-outline-light btn-floating m-1" role="button"><i
-                                    class="fab fa-facebook-f"></i></a>
-
-                            <!-- Twitter -->
-                            <a class="btn btn-outline-light btn-floating m-1" role="button"><i
-                                    class="fab fa-twitter"></i></a>
-
-                            <!-- Google -->
-                            <a class="btn btn-outline-light btn-floating m-1" role="button"><i
-                                    class="fab fa-google"></i></a>
-
-                            <!-- Instagram -->
-                            <a class="btn btn-outline-light btn-floating m-1" role="button"><i
-                                    class="fab fa-instagram"></i></a>
                         </div>
                         <!-- Grid column -->
                     </div>
