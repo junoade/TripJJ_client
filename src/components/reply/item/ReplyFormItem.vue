@@ -89,7 +89,7 @@ function moveDetail(articleno) {
 
 <template>
   <form @submit.prevent="onSubmit">
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <label for="userid" class="form-label">작성자 ID : </label>
       <input
         type="text" id="userid"
@@ -98,7 +98,7 @@ function moveDetail(articleno) {
         :disabled="isUseId"
         placeholder="작성자ID..."
       />
-    </div>
+    </div> -->
     
     <div class="mb-3">
       <label for="comment" class="form-label">내용 : </label>
