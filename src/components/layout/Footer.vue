@@ -14,7 +14,7 @@
                         <!-- Grid column -->
                         <div class="md-3 lg-3 xl-3 mx-auto mt-3">
                             <h3 class="text-uppercase mb-4 font-weight-bold">
-                                제이여행, 이제 여행ㄴ
+                                제이여행, 이제 여행
                             </h3>
                             <p>
                                 지도 기반 검색 그리고 키워드 기반 여행 장소를 검색해보세요!
