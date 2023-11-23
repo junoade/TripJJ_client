@@ -50,4 +50,15 @@ async function findStoryByUserId(param, success, fail) {}
  */
 async function findStoryByStoryId(param, success, fail) {}
 
-export { uploadStory, modifyStory, deleteStory, findStoryByUserId, findStoryByStoryId };
+async function findStories(success, fail) {
+    await local.get(`${api_name}`).then(success).catch(fail);
+}
+
+export {
+    uploadStory,
+    modifyStory,
+    deleteStory,
+    findStoryByUserId,
+    findStoryByStoryId,
+    findStories,
+};
