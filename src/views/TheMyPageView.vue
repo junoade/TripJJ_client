@@ -5,17 +5,17 @@ import { useMemberStore } from "@/stores/member";
 import { ref } from "vue";
 import AttractionInterestListItemVue from "@/components/Attraction/item/AttractionInterestListItem.vue";
 
-const userId = useMemberStore().userInfo.userId;
+const userInfo = ref(useMemberStore().userInfo);
 const attractions = ref([]);
 const selectedAttraction = ref({});
 
 // DB내 로그인 유저의 모든 관심 관광지 정보 반환
 const getInterests = () => {
     listInterests(
-        { userId },
+        {userId: userInfo.value.userId},
         ({ data }) => {
             attractions.value = data.attractions;
-            console.log(userId, "모든 관심 관광지 정보 출력 : ", attractions.value);
+            console.log(userInfo.value, "모든 관심 관광지 정보 출력 : ", attractions.value);
         },
         (error) => {
             console.log(error);
@@ -56,8 +56,8 @@ getInterests();
                             <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
                                 class="rounded-circle avatar-lg img-thumbnail" alt="profile-image">
                             <div class="w-100 ms-3">
-                                <h4 class="my-0">Geneva McKnight</h4>
-                                <p class="text-muted">@webdesigner</p>
+                                <h4 class="my-0">{{ userInfo.userId }}</h4>
+                                <p class="text-muted">{{userInfo.joinDate.substr(0, 10)}}</p>
                                 <button type="button"
                                     class="btn btn-soft-primary btn-xs waves-effect mb-2 waves-light">Follow</button>
                                 <button type="button"
@@ -68,19 +68,23 @@ getInterests();
                         <div class="mt-3">
                             <h4 class="font-13 text-uppercase">About Me :</h4>
                             <p class="text-muted font-13 mb-3">
-                                Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s, when
-                                an unknown printer took a galley of type.
+                                한국의 아름다운 풍경과 문화를 탐험하는 것을 즐기며, 새로운 장소에서의 경험을 통해 인생을 더 풍요롭게 만들어 나가는 것을 목표로 하고 있습니다.
                             </p>
-                            <p class="text-muted mb-2 font-13"><strong>Full Name :</strong> <span class="ms-2">Geneva D.
-                                    McKnight</span></p>
+                            <p class="text-muted mb-2 font-13">
+                                <strong>Full Name :</strong> 
+                                <span class="ms-2">{{ userInfo.userName }}</span>
+                            </p>
 
-                            <p class="text-muted mb-2 font-13"><strong>Mobile :</strong><span class="ms-2">(123) 123
-                                    1234</span></p>
+                            <p class="text-muted mb-2 font-13">
+                                <strong>Mobile :</strong>
+                                <span class="ms-2">010-4255-8702</span>
+                            </p>
+                            <p class="text-muted mb-2 font-13">
+                                <strong>Email :</strong> 
+                                <span class="ms-2">{{userInfo.userEmail}}</span>
+                            </p>
 
-                            <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span
-                                    class="ms-2">user@email.domain</span></p>
-
-                            <p class="text-muted mb-1 font-13"><strong>Location :</strong> <span class="ms-2">USA</span></p>
+                            <p class="text-muted mb-1 font-13"><strong>Location :</strong> <span class="ms-2">KOREA</span></p>
                         </div>
 
                         <ul class="social-list list-inline mt-3 mb-0">
@@ -119,8 +123,8 @@ getInterests();
                                 <h2 class="mb-0 fw-bold">87</h2>
                             </div>
                             <div class="col-4">
-                                <h5 class="text-muted mt-1 mb-2 fw-normal">좋아요 </h5>
-                                <h2 class="mb-0 fw-bold">98</h2>
+                                <h5 class="text-muted mt-1 mb-2 fw-normal">관심 여행지</h5>
+                                <h2 class="mb-0 fw-bold">{{ attractions.length }}</h2>
                             </div>
                         </div>
                     </div>

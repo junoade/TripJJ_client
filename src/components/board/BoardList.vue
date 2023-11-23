@@ -40,10 +40,10 @@ const changeKey = (val) => {
   param.value.key = val;
 };
 
-const getArticleList = async () => {
+const getArticleList = () => {
   console.log("서버에서 글목록 얻어오자!!!", param.value);
   // API 호출
-  await getQnaList(param.value, ({ data }) => {
+  getQnaList(param.value, ({ data }) => {
     console.log(data);
     articles.value = data.articles;
     currentPage.value = data.currentPage;
@@ -77,7 +77,7 @@ const moveWrite = () => {
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">여행 게시판</mark>
+          여행 게시판
         </h2>
       </div>
       <div>

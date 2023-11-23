@@ -57,11 +57,11 @@ function onSubmit() {
   }
 }
 
-function writeReply() {
+async function writeReply() {
   console.log("글등록하자!!", reply.value);
   // API 호출
 
-  registReply(reply.value, () => {
+  await registReply(reply.value, () => {
     console.log("댓글 등록 성공");
     alert("댓글 등록 완료!");
     moveDetail(reply.value.articleNo);
@@ -71,10 +71,10 @@ function writeReply() {
   });
 }
 
-function updateReply() {
+async function updateReply() {
   console.log(reply.value.replyNo + "번글 수정하자!!", reply.value);
    // API 호출
-   modifyReply(reply.value, ()=> {
+   await modifyReply(reply.value, ()=> {
     alert("댓글 수정 완료!");
     moveDetail(reply.value.articleNo);;
    }, (error) => {

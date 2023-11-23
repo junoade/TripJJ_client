@@ -14,9 +14,9 @@ onMounted(() => {
     removeReply();
 })
 
-const removeReply = () => {
+const removeReply = async () => {
     console.log(replyNo + "번 댓글 삭제하자");
-    deleteReply(replyNo, () =>{
+    await deleteReply(replyNo, () =>{
         alert("삭제 성공");
         router.go(-1); // 이전 페이지로 돌아감
         // router.push("attraction")
