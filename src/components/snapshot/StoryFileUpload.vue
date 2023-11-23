@@ -167,7 +167,8 @@ const upload = async () => {
     });
 
     // 새로고침 수행
-    router.replace({ name: "snapshot" });
+    // router.replace({ name: "snapshot" });
+    router.go(0);
 }
 
 
