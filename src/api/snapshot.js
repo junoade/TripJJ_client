@@ -39,7 +39,9 @@ async function deleteStory(param, success, fail) {}
  * @param {*} success
  * @param {*} fail
  */
-async function findStoryByUserId(param, success, fail) {}
+async function findStoryByUserId(param, success, fail) {
+    local.get(`${api_name}/user/${param}`).then(success).catch(fail);
+}
 
 /**
  * 스토리 아이디(storyId)를 바탕으로 특정 스토리를 조회한다.
