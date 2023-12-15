@@ -24,10 +24,6 @@ https://drive.google.com/file/d/1Dm1B6kfl8MLUQQ7wD4LWfBUPL8zPgl13/view?usp=shari
 
 ## Features
 
-
-## Timeline
-
-
 ## Project Setup
 
 ```sh
@@ -51,6 +47,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Timeline
+231216 - Researching how to integrate backend & frontend repository with Jira Software.
 
 
 
