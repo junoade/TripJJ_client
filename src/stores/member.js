@@ -60,7 +60,7 @@ export const useMemberStore = defineStore('memberStore', () => {
                 }
             },
             (error) => {
-                alert("로그인 실패");
+                alert("유효하지 않은 회원정보이거나 아이디 또는 비밀번호가 틀렸습니다.");
                 console.error(error);
             }
         );
