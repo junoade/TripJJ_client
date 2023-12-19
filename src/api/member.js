@@ -10,7 +10,8 @@ async function doRegistration(member, success, fail) {
 }
 
 async function doLogin(member, success, fail) {
-    await local.post(`${api_name}/login`, JSON.stringify(member)).then(success).catch(fail);
+    const timeout = 1000;
+    await local.post(`${api_name}/login`, JSON.stringify(member), {timeout}).then(success).catch(fail);
 }
 
 async function findById(userid, success, fail) {
