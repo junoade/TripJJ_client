@@ -32,14 +32,11 @@ async function onSubmit() {
     console.log("id", loginUser.value.userId);
     console.log("password", loginUser.value.userPass);
     
-    await userLogin(loginUser.value);
+    await userLogin(loginUser.value); 
 
-    // 동기 - 토큰 받아올 때까지 기다려
     let token = localStorage.getItem("accessToken");
     console.log("current Access toekn : ", token);
     
-    alert("로그인 성공");
-
     router.push("/");
 }
 
