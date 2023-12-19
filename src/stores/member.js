@@ -52,7 +52,6 @@ export const useMemberStore = defineStore('memberStore', () => {
                     console.log("localStorage에도 쿠키처럼 토큰 담았다");
                     localStorage.setItem("accessToken", accessToken);
                     localStorage.setItem("refreshToken", refreshToken);
-
                 } else {
                     console.log("로그인 실패했다");
                     isLogin.value = false;
@@ -61,6 +60,7 @@ export const useMemberStore = defineStore('memberStore', () => {
                 }
             },
             (error) => {
+                alert("유효하지 않은 회원정보이거나 아이디 또는 비밀번호가 틀렸습니다.");
                 console.error(error);
             }
         );
