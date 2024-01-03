@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeMount } from 'vue';
 import { findStories, getImage } from "@/api/snapshot.js";
 // import { useImagePlace } from "@/stores/images.js";
 
@@ -11,8 +11,9 @@ const snapshots = ref([]);
 // const imageStore = useImagePlace();
 // const imageMap = imageStore.imageMap;
 
-onMounted(async () => {
+onBeforeMount(async () => {
     await findStories((response) => {
+        console.log("잘 가지고 왔는디");
         console.log(response.data);
         snapshots.value = response.data;
     }, (error) => {

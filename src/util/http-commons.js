@@ -36,4 +36,12 @@ function uploadAxios() {
     return instance;
 }
 
-export { localAxios, uploadAxios };
+function pureAxios() {
+    const instance = axios.create({
+        baseURL: VITE_VUE_API_URL,
+    });
+
+    return instance;
+}
+
+export { localAxios, uploadAxios, pureAxios };

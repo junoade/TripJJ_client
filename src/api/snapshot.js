@@ -1,6 +1,7 @@
-import { localAxios, uploadAxios } from "@/util/http-commons";
+import { localAxios, uploadAxios, pureAxios } from "@/util/http-commons";
 
 const local = uploadAxios();
+const pure = pureAxios();
 const api_name = "snapshot";
 
 /**
@@ -53,7 +54,7 @@ async function findStoryByUserId(param, success, fail) {
 async function findStoryByStoryId(param, success, fail) {}
 
 async function findStories(success, fail) {
-    await local.get(`${api_name}`).then(success).catch(fail);
+    await pure.get(`${api_name}`).then(success).catch(fail);
 }
 
 async function getImage(param, success, fail) {
