@@ -120,7 +120,7 @@ export const useMemberStore = defineStore('memberStore', () => {
                     console.log("갱신 실패");
                     // 다시 로그인 전 DB에 저장된 RefreshToken 제거.
                     await logout(
-                        userInfo.value.userid,
+                        userInfo.value.userId,
                         (response) => {
                             if (response.status === httpStatusCode.OK) {
                                 console.log("리프레시 토큰 제거 성공");
@@ -140,13 +140,15 @@ export const useMemberStore = defineStore('memberStore', () => {
                         }
                     );
                 }
+
+                // TODO - different userId in param and userId in requested accessToken.
             }
         );
     };
 
-    const userLogout = async (userid) => {
+    const userLogout = async (userId) => {
         await logout(
-            userid,
+            userId,
             (response) => {
                 if (response.status === httpStatusCode.OK) {
                     isLogin.value = false;
